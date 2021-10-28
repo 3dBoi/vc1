@@ -10,7 +10,18 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../jogamp-all-platforms/jar/gluegen-rt.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/OBJLoader-3.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/OBJLoader-3.0.0.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/gluegen-rt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +30,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../jogamp-all-platforms/jar/jogl-all.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jogl-all.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,28 +39,23 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../opencv/build/java/opencv-453.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/opencv-453.jar!/" />
         </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/opencv-453.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/opencv-453.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES />
         <JAVADOC />
         <NATIVE>
-          <root url="file://$MODULE_DIR$/../opencv/build/java/x64" />
-          <root url="file://$MODULE_DIR$/../opencv/build/x64/vc15/bin" />
+          <root url="file://$MODULE_DIR$/lib/bin" />
         </NATIVE>
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/../opencv/build/java/opencv-453.jar!/" />
-          <root url="jar://$MODULE_DIR$/../opencv/build/java/opencv-453.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/OBJLoader-3.0.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/lib/OBJLoader-3.0.0.jar!/" />
-        </SOURCES>
+        <SOURCES />
       </library>
     </orderEntry>
   </component>
