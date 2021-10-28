@@ -97,11 +97,7 @@ public class MainWindow extends JFrame {
                         if (animator.isStarted()) animator.stop();
                         System.exit(0);
                     }
-                    //Hai 8====D
-                    // wololololololo
-                    //asdgaskneicgggff
                 }.start();
-                //hallo hier bin ich nicht du
             }
         });
         this.setTitle(TITLE);
