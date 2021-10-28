@@ -103,6 +103,7 @@ public class MainWindow extends JFrame {
                 }.start();
                 //hallo nicht ich hier bin
                 //hallo hier bin ich nicht du
+                //testnez
             }
         });
         this.setTitle(TITLE);
