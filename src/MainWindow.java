@@ -99,7 +99,7 @@ public class MainWindow extends JFrame {
                     }
                     //Hai 8====D
                     // wololololololo
-                    //asdgaskneicgggff
+                    //asdgaskneicgggffsss
                 }.start();
                 //hallo nicht ich hier bin
                 //hallo hier bin ich nicht du
