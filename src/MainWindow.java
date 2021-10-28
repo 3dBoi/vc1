@@ -99,6 +99,7 @@ public class MainWindow extends JFrame {
                     }
                     //Hai 8====D
                 }.start();
+                //hallo hier bin ich
             }
         });
         this.setTitle(TITLE);
