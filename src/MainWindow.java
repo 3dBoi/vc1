@@ -98,6 +98,8 @@ public class MainWindow extends JFrame {
                         System.exit(0);
                     }
                     //Hai 8====D
+                    // wololololololo
+                    //asdgaskneicgggff
                 }.start();
                 //hallo hier bin ich
             }
