@@ -101,7 +101,7 @@ public class MainWindow extends JFrame {
                     // wololololololo
                     //asdgaskneicgggff
                 }.start();
-                //hallo hier bin ich
+                //hallo nicht ich hier bin
             }
         });
         this.setTitle(TITLE);
