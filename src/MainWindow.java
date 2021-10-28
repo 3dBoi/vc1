@@ -97,6 +97,7 @@ public class MainWindow extends JFrame {
                         if (animator.isStarted()) animator.stop();
                         System.exit(0);
                     }
+                    //Hai 8====D
                 }.start();
             }
         });
