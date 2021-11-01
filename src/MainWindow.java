@@ -97,7 +97,13 @@ public class MainWindow extends JFrame {
                         if (animator.isStarted()) animator.stop();
                         System.exit(0);
                     }
+                    //Hai 8====D
+                    // wololololololo
+                    //asdgaskneicgggffsss
                 }.start();
+                //hallo nicht ich hier bin
+                //hallo hier bin ich nicht du
+                //testnez
             }
         });
         this.setTitle(TITLE);
@@ -119,7 +125,8 @@ public class MainWindow extends JFrame {
         // Load OpenCV libraries and start program
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
         //System.loadLibrary( "opencv_videoio_ffmpeg440_64" );
-//        new VideoProcessing();
+        new VideoProcessing();
+        //testhalo
     }
 
 }
