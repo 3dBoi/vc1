@@ -125,7 +125,8 @@ public class MainWindow extends JFrame {
         // Load OpenCV libraries and start program
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
         //System.loadLibrary( "opencv_videoio_ffmpeg440_64" );
-//        new VideoProcessing();
+        new VideoProcessing();
+        //testhalo
     }
 
 }
