@@ -257,8 +257,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // Detach and delete shader program
         gl.glUseProgram(0);
-        objectArr[0].getShaderProgram().deleteShaderProgram();
-        objectArr[1].getShaderProgram().deleteShaderProgram();
+        for(int i=0; i<objectArr.length; i++){
+            objectArr[i].getShaderProgram().deleteShaderProgram();
+        }
 
         // deactivate VAO and VBO
         gl.glBindVertexArray(0);
