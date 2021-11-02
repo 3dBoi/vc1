@@ -76,7 +76,7 @@ public class MainWindow extends JFrame {
         capabilities.setSampleBuffers(true);
         capabilities.setNumSamples(8);
         // Create the OpenGL rendering canvas
-        GLCanvas canvas = new Renderer(capabilities);
+        GLCanvas canvas = new Renderer(CANVAS_WIDTH, CANVAS_HEIGHT, capabilities);
         canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 
         // Create an animator that drives the canvas display() at the specified

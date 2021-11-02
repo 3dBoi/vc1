@@ -63,6 +63,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
     DisplayObject[] displayArr = new DisplayObject[noOfObjects];
     OmegaLoader omegaLoader = new OmegaLoader();
 
+    int canvasWidth;
+    int canvasHeigth;
+
     // Pointers (names) for data transfer and handling on GPU
     private int[] vaoName;  // Name of vertex array object
     private int[] vboName;	// Name of vertex buffer object
@@ -83,30 +86,32 @@ public class Renderer extends GLCanvas implements GLEventListener {
         super();
         // Add this object as OpenGL event listener
         this.addGLEventListener(this);
-        createAndRegisterInteractionHandler();
+//        createAndRegisterInteractionHandler();
     }
 
     /**
      * Create the canvas with the requested OpenGL capabilities
      * @param capabilities The capabilities of the canvas, including the OpenGL profile
      */
-    public Renderer(GLCapabilities capabilities) {
+    public Renderer(int canvasWidth, int canvasHeigth, GLCapabilities capabilities) {
         // Create the canvas with the requested OpenGL capabilities
         super(capabilities);
+        this.canvasWidth = canvasWidth;
+        this.canvasHeigth = canvasHeigth;
         // Add this object as an OpenGL event listener
         this.addGLEventListener(this);
-        createAndRegisterInteractionHandler();
+//        createAndRegisterInteractionHandler();
     }
 
     /**
      * Helper method for creating an interaction handler object and registering it
      * for key press and mouse interaction callbacks.
      */
-    private void createAndRegisterInteractionHandler() {
+    private void createAndRegisterInteractionHandler(GL3 gl) {
         // The constructor call of the interaction handler generates meaningful default values
         // Nevertheless the start parameters can be set via setters
         // (see class definition of the interaction handler)
-        interactionHandler = new InteractionHandler();
+        interactionHandler = new InteractionHandler(gl, pmvMatrix);
         this.addKeyListener(interactionHandler);
         this.addMouseListener(interactionHandler);
         this.addMouseMotionListener(interactionHandler);
@@ -121,6 +126,8 @@ public class Renderer extends GLCanvas implements GLEventListener {
      */
     public void init(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
+
+        createAndRegisterInteractionHandler(gl);
 
         System.err.println("Chosen GLCapabilities: " + drawable.getChosenGLCapabilities());
         System.err.println("INIT GL IS: " + gl.getClass().getName());

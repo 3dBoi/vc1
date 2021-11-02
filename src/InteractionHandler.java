@@ -1,5 +1,10 @@
+import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.math.Matrix4;
+import com.jogamp.opengl.util.PMVMatrix;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 /**
  * Java class for handling the keyboard and mouse interaction.
@@ -37,10 +42,15 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
     private final float mouseTranslationFactor = 0.1f;
     private final float mouseWheelScrollFactor = 10f;
 
+    GL3 gl;
+    PMVMatrix pmvMatrix;
+
     /**
      * Standard constructor for creation of the interaction handler.
      */
-    public InteractionHandler() {
+    public InteractionHandler(GL3 gl, PMVMatrix pmvMatrix) {
+        this. gl = gl;
+        this.pmvMatrix = pmvMatrix;
     }
 
     public float getEyeZ() {
@@ -208,6 +218,49 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
 
         System.out.println("X: "+e.getX());
         System.out.println("Y: "+e.getY());
+
+        float mouseX = e.getX() / (800  * 0.5f) - 1.0f;
+        float mouseY = e.getY() / (600 * 0.5f) - 1.0f;
+
+        float[] proj = {45.0f, 800.0f/600.0f, 0.1f, 10000.0f};
+        float[] view = {0.0f, 0.0f, 800.0f, 600.0f};
+
+//        float[] invVP = {(proj[0]*view[0])+(proj[1]*view[2]), (proj[0]*view[1])+(proj[1]*view[3]),
+//                         (proj[2]*view[0])+(proj[3]*view[2]), (proj[2]*view[1])+(proj[3]*view[3])}
+
+        float a = (proj[0]*view[0])+(proj[1]*view[2]);
+        float b = (proj[0]*view[1])+(proj[1]*view[3]);
+        float c = (proj[2]*view[0])+(proj[3]*view[2]);
+        float d = (proj[2]*view[1])+(proj[3]*view[3]);
+
+        float bruch = a*d-b*c;
+        float[] invVP = {(d/bruch), -1*(b/bruch),
+                          -1*(c/bruch), (a/bruch)};
+
+        float[] screenPos = {mouseX, -mouseY, 1.0f, 1.0f};
+
+        float[] worldPos = {(invVP[0]*screenPos[0])+(invVP[1]*screenPos[2]), (invVP[0]*screenPos[1])+(invVP[1]*screenPos[3]),
+                            (invVP[2]*screenPos[0])+(invVP[3]*screenPos[2]), (invVP[2]*screenPos[1])+(invVP[3]*screenPos[3])};
+
+        worldPos[3] = 1.0f / worldPos[3];
+        worldPos[0] *= worldPos[3];
+        worldPos[1] *= worldPos[3];
+        worldPos[2] *= worldPos[3];
+        System.out.println(Arrays.toString(worldPos));
+
+
+
+//
+//        glm::mat4 proj = glm::perspective(FoV, AspectRatio, Near, Far);
+//        glm::mat4 view = glm::lookAt(glm::vec3(0.0f), CameraDirection, CameraUpVector);
+//
+//        glm::mat4 invVP = glm::inverse(proj * view);
+//        glm::vec4 screenPos = glm::vec4(mouseX, -mouseY, 1.0f, 1.0f);
+//        glm::vec4 worldPos = invVP * screenPos;
+//
+//        glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
+//
+//        return dir;
     }
 
     @Override
