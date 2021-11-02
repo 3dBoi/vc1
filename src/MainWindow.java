@@ -67,7 +67,6 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
 
-
         // Setup an OpenGL context for the Canvas
         // Setup OpenGL to use the programmable pipeline
         // Setting to OpenGL 3
