@@ -57,8 +57,11 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
     private static final long serialVersionUID = 1L;
 
-    InitObject[] objectArr = new InitObject[3];
-    DisplayObject[] displayArr = new DisplayObject[3];
+
+    int noOfObjects = 3;
+    InitObject[] objectArr = new InitObject[noOfObjects];
+    DisplayObject[] displayArr = new DisplayObject[noOfObjects];
+    OmegaLoader omegaLoader = new OmegaLoader();
 
     // Pointers (names) for data transfer and handling on GPU
     private int[] vaoName;  // Name of vertex array object
@@ -133,7 +136,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // BEGIN: Preparing scene
         // BEGIN: Allocating vertex array objects and buffers for each object
-        int noOfObjects = 3;
         // create vertex array objects for noOfObjects objects (VAO)
         vaoName = new int[noOfObjects];
         gl.glGenVertexArrays(noOfObjects, vaoName, 0);
@@ -147,14 +149,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
             System.err.println("Error allocating vertex buffer object (VBO).");
 
         // Initialize objects to be drawn (see respective sub-methods)
-        objectArr[0]= new InitObject();
-        objectArr[0].initObject(gl, "greencube.obj", "HSHLLogo2.jpg", "greencube.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 0);
-
-        objectArr[1]= new InitObject();
-        objectArr[1].initObject(gl, "redcube.obj", "HSHLLogo1.jpg", "redcube.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 1);
-
-        objectArr[2]= new InitObject();
-        objectArr[2].initObject(gl, "cube.obj", "GelbGruenPalette.png", "redcube.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 2);
+        omegaLoader.omegaInit(gl, objectArr, vaoName, vboName);
 
         // Specify light parameters
         float[] lightPosition = {0.0f, 3.0f, 3.0f, 1.0f};
@@ -212,15 +207,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         pmvMatrix.glPushMatrix();
 
-        displayArr[0] = new DisplayObject();
-        displayArr[0].displayObject(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture());
-
-        displayArr[1] = new DisplayObject();
-        displayArr[1].displayObject(gl, objectArr[1].getShaderProgram(), objectArr[1].getVertices(), vaoName, objectArr[1].getMaterial(), pmvMatrix, light0, 1, objectArr[1].getTexture());
-
-        displayArr[2] = new DisplayObject();
-        displayArr[2].displayObject(gl, objectArr[2].getShaderProgram(), objectArr[2].getVertices(), vaoName, objectArr[2].getMaterial(), pmvMatrix, light0, 2, objectArr[2].getTexture());
-
+        omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0);
 
         pmvMatrix.glPopMatrix();
     }
