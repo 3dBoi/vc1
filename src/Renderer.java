@@ -158,6 +158,10 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // Initialize objects to be drawn (see respective sub-methods)
         omegaLoader.omegaInit(gl, objectArr, vaoName, vboName);
 
+//        objectArr[0]= new InitObject();
+//        objectArr[0].loadVertex(gl, vaoName, vboName, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", interactionHandler.testVertices);
+
+
         // Specify light parameters
         float[] lightPosition = {0.0f, 3.0f, 3.0f, 1.0f};
         float[] lightAmbientColor = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -192,11 +196,15 @@ public class Renderer extends GLCanvas implements GLEventListener {
      */
     @Override
     public void display(GLAutoDrawable drawable) {
+
         GL3 gl = drawable.getGL().getGL3();
+
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 
         // Background color of the canvas
         gl.glClearColor(0.97f, 0.97f, 0.97f, 1.0f);
+
+//        objectArr[0].update(gl, interactionHandler.testVertices);
 
         // Using the PMV-Tool for geometric transforms
         pmvMatrix.glMatrixMode(PMVMatrix.GL_MODELVIEW);
@@ -215,6 +223,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
         pmvMatrix.glPushMatrix();
 
         omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0);
+//        displayArr[0] = new DisplayObject();
+//        displayArr[0].displayObject(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture());
+
 
         pmvMatrix.glPopMatrix();
     }
@@ -265,4 +276,5 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         System.exit(0);
     }
+
 }

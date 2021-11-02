@@ -44,6 +44,8 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
 
     GL3 gl;
     PMVMatrix pmvMatrix;
+    float[] testVertices;
+    int counter = 0;
 
     /**
      * Standard constructor for creation of the interaction handler.
@@ -51,6 +53,7 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
     public InteractionHandler(GL3 gl, PMVMatrix pmvMatrix) {
         this. gl = gl;
         this.pmvMatrix = pmvMatrix;
+        this.testVertices = new float[24];
     }
 
     public float getEyeZ() {
@@ -247,6 +250,21 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
         worldPos[1] *= worldPos[3];
         worldPos[2] *= worldPos[3];
         System.out.println(Arrays.toString(worldPos));
+
+        if(counter<25){
+            testVertices[counter]=worldPos[0];
+            testVertices[counter+1]=worldPos[1];
+            testVertices[counter+2]=worldPos[2];
+            testVertices[counter+3]=0.0f;
+            testVertices[counter+4]=0.0f;
+            testVertices[counter+5]=-1.0f;
+            testVertices[counter+6]=0.0f;
+            testVertices[counter+7]=0.0f;
+
+            System.out.println("Vertices: "+ Arrays.toString(testVertices));
+
+            counter=counter+8;
+        }
 
 
 

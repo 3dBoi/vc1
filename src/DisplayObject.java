@@ -3,6 +3,8 @@ import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.PMVMatrix;
 import com.jogamp.opengl.util.texture.Texture;
 
+import java.util.Arrays;
+
 import static com.jogamp.opengl.GL.*;
 
 public class DisplayObject {
@@ -38,7 +40,8 @@ public class DisplayObject {
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
 
-        gl.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.length);
+//        System.out.println("Vertices in display: "+ Arrays.toString(vertices));
 
+        gl.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.length);
     }
 }

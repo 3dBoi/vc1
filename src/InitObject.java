@@ -7,6 +7,7 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import static com.jogamp.opengl.GL.*;
 
@@ -114,5 +115,68 @@ public class InitObject {
 
     public Texture getTexture(){
         return texture;
+    }
+
+    public void loadVertex(GL3 gl, int[] vaoName, int[] vboName, String vertexShader, String fragmentShader, float[] vertices){
+
+        this.vertices = vertices;
+
+        gl.glBindVertexArray(vaoName[0]);
+        this.shaderProgram = new ShaderProgram(gl);
+        shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
+                vertexShader, fragmentShader);
+
+        // activate and initialize vertex buffer object (VBO)
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[0]);
+        // floats use 4 bytes in Java
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
+                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
+
+        // Activate and order vertex buffer object data for the vertex shader
+        // The vertex buffer contains: position (3), UV (2), normals (3)
+        // Defining input for vertex shader
+        // Pointer for the vertex shader to the position information per vertex
+        gl.glEnableVertexAttribArray(0);
+        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 8*4, 0);
+        // Pointer for the vertex shader to the texture coordinates information per vertex
+        gl.glEnableVertexAttribArray(1);
+        gl.glVertexAttribPointer(1, 2, GL.GL_FLOAT, false, 8*4, 3*4);
+        // Pointer for the vertex shader to the normal information per vertex
+        gl.glEnableVertexAttribArray(2);
+        gl.glVertexAttribPointer(2, 3, GL.GL_FLOAT, false, 8*4, 5*4);
+
+        // Metallic material
+        float[] matEmission = {0.0f, 0.0f, 0.0f, 1.0f};
+        float[] matAmbient =  {0.2f, 0.2f, 0.2f, 1.0f};
+        float[] matDiffuse =  {0.5f, 0.5f, 0.5f, 1.0f};
+        float[] matSpecular = {0.7f, 0.7f, 0.7f, 1.0f};
+        float matShininess = 200.0f;
+
+        this.material = new Material(matEmission, matAmbient, matDiffuse, matSpecular, matShininess);
+        System.out.println("Vertices in Init: "+ Arrays.toString(vertices));
+    }
+
+    public void update(GL3 gl, float[] vertices ){
+
+        this.vertices = vertices;
+
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
+                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
+
+        // Activate and order vertex buffer object data for the vertex shader
+        // The vertex buffer contains: position (3), UV (2), normals (3)
+        // Defining input for vertex shader
+        // Pointer for the vertex shader to the position information per vertex
+        gl.glEnableVertexAttribArray(0);
+        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 8*4, 0);
+        // Pointer for the vertex shader to the texture coordinates information per vertex
+        gl.glEnableVertexAttribArray(1);
+        gl.glVertexAttribPointer(1, 2, GL.GL_FLOAT, false, 8*4, 3*4);
+        // Pointer for the vertex shader to the normal information per vertex
+        gl.glEnableVertexAttribArray(2);
+        gl.glVertexAttribPointer(2, 3, GL.GL_FLOAT, false, 8*4, 5*4);
+
+//        System.out.println("Vertices after update: "+ Arrays.toString(vertices));
+
     }
 }
