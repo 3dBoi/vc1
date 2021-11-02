@@ -82,8 +82,9 @@ public class InitObject {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (texture != null)
-                System.out.println("Texture loaded successfully from: " + ".\\resources\\"+texturePath);
+            if (texture != null) {
+                   System.out.println("Texture loaded successfully from: " + ".\\resources\\"+texturePath);
+            }
             else
                 System.err.println("Error loading textue.");
             System.out.println("  Texture height: " + texture.getImageHeight());

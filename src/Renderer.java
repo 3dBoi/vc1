@@ -58,7 +58,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private static final long serialVersionUID = 1L;
 
 
-    int noOfObjects = 3;
+    int noOfObjects = 27;
     InitObject[] objectArr = new InitObject[noOfObjects];
     DisplayObject[] displayArr = new DisplayObject[noOfObjects];
     OmegaLoader omegaLoader = new OmegaLoader();
@@ -214,7 +214,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         pmvMatrix.glPushMatrix();
 
-        omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0);
+        omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0, noOfObjects);
 
         pmvMatrix.glPopMatrix();
     }

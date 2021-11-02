@@ -27,7 +27,7 @@ public class ModelLoader {
             objLoader.setLoadTextureCoordinates(true);
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
-            System.out.println(Arrays.toString(verticies));
+          //  System.out.println(Arrays.toString(verticies));
 
         }catch (IOException e) {
             throw new RuntimeException(e);
