@@ -160,7 +160,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // Specify light parameters
         float[] lightPosition = {0.0f, 3.0f, 3.0f, 1.0f};
-        float[] lightAmbientColor = {1.0f, 1.0f, 1.0f, 1.0f};
+        float[] lightAmbientColor = {0.5f, 0.5f, 0.5f, 0.5f};
         float[] lightDiffuseColor = {1.0f, 1.0f, 1.0f, 1.0f};
         float[] lightSpecularColor = {1.0f, 1.0f, 1.0f, 1.0f};
         light0 = new LightSource(lightPosition, lightAmbientColor,
