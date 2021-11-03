@@ -202,9 +202,13 @@ public class Renderer extends GLCanvas implements GLEventListener {
         pmvMatrix.glMatrixMode(PMVMatrix.GL_MODELVIEW);
         pmvMatrix.glLoadIdentity();
         // Setting the camera position, based on user input
-        pmvMatrix.gluLookAt(0f, 0f, interactionHandler.getEyeZ(),
-                0f, 0f, 0f,
-                0f, 1.0f, 0f);
+        //POSITION; TARGET; UP
+       // pmvMatrix.gluLookAt(1f, 0.1f, interactionHandler.getEyeZ(),
+       //         0f, 1f, 1f,
+       //         0f, 1.0f, 0f);
+         pmvMatrix.gluLookAt(5.5f, 7f, 0f,
+                 0f, 0f, 0f,
+                 0f, 1.0f, 0f);
         pmvMatrix.glTranslatef(interactionHandler.getxPosition(), interactionHandler.getyPosition(), 0f);
         pmvMatrix.glRotatef(interactionHandler.getAngleXaxis(), 1f, 0f, 0f);
         pmvMatrix.glRotatef(interactionHandler.getAngleYaxis(), 0f, 1f, 0f);

@@ -249,7 +249,7 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
         worldPos[0] *= worldPos[3];
         worldPos[1] *= worldPos[3];
         worldPos[2] *= worldPos[3];
-        System.out.println(Arrays.toString(worldPos));
+        //System.out.println(Arrays.toString(worldPos));
 
         if(counter<25){
             testVertices[counter]=worldPos[0];
@@ -261,7 +261,7 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
             testVertices[counter+6]=0.0f;
             testVertices[counter+7]=0.0f;
 
-            System.out.println("Vertices: "+ Arrays.toString(testVertices));
+            //System.out.println("Vertices: "+ Arrays.toString(testVertices));
 
             counter=counter+8;
         }
@@ -306,7 +306,7 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
                 default:
                     System.out.print("Unknown button pressed.");
             }
-            System.out.println(" At location: " + lastMouseLocation);
+           // System.out.println(" At location: " + lastMouseLocation);
         }
         switch (pressedButton) {
             case MouseEvent.BUTTON1:
