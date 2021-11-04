@@ -14,15 +14,15 @@
 // Version: 12.11.2017, 16.9.2019
 
 // Parameters of light source as uniform variables from application
-layout (location = 4) uniform vec4 lightSourceAmbient;
-layout (location = 5) uniform vec4 lightSourceDiffuse;
-layout (location = 6) uniform vec4 lightSourceSpecular;
+layout (location = 5) uniform vec4 lightSourceAmbient;
+layout (location = 6) uniform vec4 lightSourceDiffuse;
+layout (location = 7) uniform vec4 lightSourceSpecular;
 // Material parameters as uniform variables
-layout (location = 7) uniform vec4 materialEmission;
-layout (location = 8) uniform vec4 materialAmbient;
-layout (location = 9) uniform vec4 materialDiffuse;
-layout (location = 10) uniform vec4 materialSpecular;
-layout (location = 11) uniform float materialShininess;
+layout (location = 8) uniform vec4 materialEmission;
+layout (location = 9) uniform vec4 materialAmbient;
+layout (location = 10) uniform vec4 materialDiffuse;
+layout (location = 11) uniform vec4 materialSpecular;
+layout (location = 12) uniform float materialShininess;
 
 // predefined type for texture usage
 layout (binding = 0) uniform sampler2D tex;

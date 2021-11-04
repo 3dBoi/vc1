@@ -9,16 +9,8 @@ public class OmegaLoader {
 
     public void omegaInit(GL3 gl, InitObject[] objectArr, int [] vaoName, int[] vboName){
 
-//        objectArr[0]= new InitObject();
-//        objectArr[0].initObject(gl, "greencube.obj", "HSHLLogo2.jpg", "greencube.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 0);
-//
-//        objectArr[1]= new InitObject();
-//        objectArr[1].initObject(gl, "redcube.obj", "HSHLLogo1.jpg", "redcube.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 1);
-//
-//        objectArr[2]= new InitObject();
-//        objectArr[2].initObject(gl, "cube.obj", "GelbGruenPalette.png", "redcube.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 2);
 
-        //BigDrum
+        //Big Drum
         objectArr[0]= new InitObject();
         objectArr[0].initObject(gl, "Objs/drumsetV4_BigDrumBack.obj", "textures/drumsetV4_BigDrumBack_BaseColor.png", "Objs/drumsetV4_BigDrumBack.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 0);
 
@@ -67,6 +59,7 @@ public class OmegaLoader {
         objectArr[13].initObject(gl, "Objs/drumsetV4_RideSymbalRest.obj", "textures/drumsetV4_RideSymbalRest_BaseColor.png", "Objs/drumsetV4_RideSymbalRest.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 13);
 
         //SmollDrumm
+        //-->test für animation
         objectArr[14]= new InitObject();
         objectArr[14].initObject(gl, "Objs/drumsetV4_SmaolDrumBody.obj", "textures/drumsetV4_SmaolDrumBody_BaseColor.png", "Objs/drumsetV4_SmaolDrumBody.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 14);
 
@@ -112,18 +105,13 @@ public class OmegaLoader {
         objectArr[26]= new InitObject();
         objectArr[26].initObject(gl, "Objs/drumsetV4_CrashSymbalRest.obj", "textures/drumsetV4_CrashSymbalRest_BaseColor.png", "Objs/drumsetV4_CrashSymbalRest.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 26);
 
+
+//        objectArr[0]= new InitObject();
+//        objectArr[0].initAnimatedObject(gl, "TestCube.obj", "TestCubeKeyframe.obj", "HSHLLogo1.jpg", "TestCube.mtl", "BlinnPhongPointTexAnimation.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 0);
+
     }
 
     public void omegaDisplay(GL3 gl, InitObject[] objectArr, DisplayObject[] displayArr, int[] vaoName, PMVMatrix pmvMatrix, LightSource light, int noOfObjects){
-//
-//        displayArr[0] = new DisplayObject();
-//        displayArr[0].displayObject(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light, 0, objectArr[0].getTexture());
-//
-//        displayArr[1] = new DisplayObject();
-//        displayArr[1].displayObject(gl, objectArr[1].getShaderProgram(), objectArr[1].getVertices(), vaoName, objectArr[1].getMaterial(), pmvMatrix, light, 1, objectArr[1].getTexture());
-//
-//        displayArr[2] = new DisplayObject();
-//        displayArr[2].displayObject(gl, objectArr[2].getShaderProgram(), objectArr[2].getVertices(), vaoName, objectArr[2].getMaterial(), pmvMatrix, light, 2, objectArr[2].getTexture());
 
         for(int i= 0; i< noOfObjects; i++){
             displayArr[i] = new DisplayObject();
