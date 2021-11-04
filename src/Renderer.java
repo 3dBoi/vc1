@@ -58,7 +58,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private static final long serialVersionUID = 1L;
 
 
-    int noOfObjects = 27;
+    int noOfObjects = 1;
     InitObject[] objectArr = new InitObject[noOfObjects];
     DisplayObject[] displayArr = new DisplayObject[noOfObjects];
     OmegaLoader omegaLoader = new OmegaLoader();
@@ -221,24 +221,28 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         pmvMatrix.glPushMatrix();
 
+        // ANIMATION SHIZZLE
         // UMSTÄNDLICHER WEG DEN TWEENFACTOR ZU ERHÖHEN NUR ZUM TESTEN
-//        if(tweenF<1&&direction){
-//            tweenF=tweenF+0.1f;
-//        }else if(tweenF>=1){
-//            direction=false;
-//            tweenF=tweenF-0.1f;
-//        }else if(tweenF<=0.0f&&!direction){
-//            tweenF=tweenF+0.1f;
-//            direction=true;
-//        }else if(tweenF<1&&!direction){
-//            tweenF=tweenF-0.1f;
-//        }
-//        System.out.println("Tween: "+tweenF);
-//
-//        displayArr[0] = new DisplayObject();
-//        displayArr[0].displayObjectAnimation(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture(), tweenF);
+        if(tweenF<1&&direction){
+            tweenF=tweenF+0.01f;
+        }else if(tweenF>=1){
+            direction=false;
+            tweenF=tweenF-0.01f;
+        }else if(tweenF<=0.0f&&!direction){
+            tweenF=tweenF+0.01f;
+            direction=true;
+        }else if(tweenF<1&&!direction){
+            tweenF=tweenF-0.01f;
+        }
+        System.out.println("Tween: "+tweenF);
 
-        omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0, noOfObjects);
+        displayArr[0] = new DisplayObject();
+        displayArr[0].displayObjectAnimation(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture(), tweenF);
+        //ANIMATION BIS HIER
+        // FÜR SCHLAGZEUG BIS HIER COMMENT UND OMEGALOADER COMMENT ENTFERNEN
+
+
+//        omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0, noOfObjects);
 
         pmvMatrix.glPopMatrix();
     }

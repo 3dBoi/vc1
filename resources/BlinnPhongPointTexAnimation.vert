@@ -51,10 +51,10 @@ void main(void)
 
     newNormal = mix(vNormal, vNormal1, TweenFactor);
 
-    gl_Position = pMatrix * mvMatrix * newVertex;
-
     // Calculate view-space coordinate
-    vec3 P = vec3(mvMatrix * vec4(newNormal, 0.0));
+    vec4 P = mvMatrix * vec4(newVertex);
+
+    gl_Position = pMatrix * P;
 
     // Calculate normal in view-space
     vs_out.N = (mat4(nMatrix) * vec4(newNormal, 0)).xyz;
