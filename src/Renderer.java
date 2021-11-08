@@ -59,12 +59,8 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
 
     int noOfObjects = 1;
-    InitObject[] objectArr = new InitObject[noOfObjects];
-    DisplayObject[] displayArr = new DisplayObject[noOfObjects];
+    Entity[] entities = new Entity[noOfObjects];
     OmegaLoader omegaLoader = new OmegaLoader();
-
-    float tweenF = 0.0f;
-    boolean direction = true;
 
     int canvasWidth;
     int canvasHeigth;
@@ -80,6 +76,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private InteractionHandler interactionHandler;
     // Projection model view matrix tool
     private PMVMatrix pmvMatrix;
+
 
     /**
      * Standard constructor for object creation.
@@ -114,7 +111,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // The constructor call of the interaction handler generates meaningful default values
         // Nevertheless the start parameters can be set via setters
         // (see class definition of the interaction handler)
-        interactionHandler = new InteractionHandler(gl, pmvMatrix);
+        interactionHandler = new InteractionHandler(gl, pmvMatrix, entities);
         this.addKeyListener(interactionHandler);
         this.addMouseListener(interactionHandler);
         this.addMouseMotionListener(interactionHandler);
@@ -158,9 +155,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
         if (vboName[0] < 1)
             System.err.println("Error allocating vertex buffer object (VBO).");
 
-        // Initialize objects to be drawn (see respective sub-methods)
-        omegaLoader.omegaInit(gl, objectArr, vaoName, vboName);
-
         // Specify light parameters
         float[] lightPosition = {0.0f, 3.0f, 3.0f, 1.0f};
         float[] lightAmbientColor = {0.5f, 0.5f, 0.5f, 0.5f};
@@ -185,6 +179,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // Start parameter settings for the interaction handler might be called here
         interactionHandler.setEyeZ(4);
+
+        // Initialize objects to be drawn (see respective sub-methods)
+        omegaLoader.omegaInit(gl, entities, vaoName, vboName, pmvMatrix, light0);
         // END: Preparing scene
     }
 
@@ -223,26 +220,27 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // ANIMATION SHIZZLE
         // UMSTÄNDLICHER WEG DEN TWEENFACTOR ZU ERHÖHEN NUR ZUM TESTEN
-        if(tweenF<1&&direction){
-            tweenF=tweenF+0.01f;
-        }else if(tweenF>=1){
-            direction=false;
-            tweenF=tweenF-0.01f;
-        }else if(tweenF<=0.0f&&!direction){
-            tweenF=tweenF+0.01f;
-            direction=true;
-        }else if(tweenF<1&&!direction){
-            tweenF=tweenF-0.01f;
-        }
-        System.out.println("Tween: "+tweenF);
+//        if(tweenF<1&&direction){
+//            tweenF=tweenF+0.01f;
+//        }else if(tweenF>=1){
+//            direction=false;
+//            tweenF=tweenF-0.01f;
+//        }else if(tweenF<=0.0f&&!direction){
+//            tweenF=tweenF+0.01f;
+//            direction=true;
+//        }else if(tweenF<1&&!direction){
+//            tweenF=tweenF-0.01f;
+//        }
+//        System.out.println("Tween: "+tweenF);
 
-        displayArr[0] = new DisplayObject();
-        displayArr[0].displayObjectAnimation(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture(), tweenF);
+//        displayArr[0] = new DisplayObject();
+//        displayArr[0].displayObjectAnimation(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture(), tweenF);
         //ANIMATION BIS HIER
         // FÜR SCHLAGZEUG BIS HIER COMMENT UND OMEGALOADER COMMENT ENTFERNEN
 
 
-//        omegaLoader.omegaDisplay(gl, objectArr, displayArr, vaoName, pmvMatrix, light0, noOfObjects);
+
+        omegaLoader.omegaDisplay();
 
         pmvMatrix.glPopMatrix();
     }
@@ -279,8 +277,8 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // Detach and delete shader program
         gl.glUseProgram(0);
-        for(int i=0; i<objectArr.length; i++){
-            objectArr[i].getShaderProgram().deleteShaderProgram();
+        for(int i=0; i<entities.length; i++){
+            entities[i].getInitObject().getShaderProgram().deleteShaderProgram();
         }
 
         // deactivate VAO and VBO

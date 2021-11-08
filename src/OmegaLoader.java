@@ -3,12 +3,16 @@ import com.jogamp.opengl.util.PMVMatrix;
 
 public class OmegaLoader {
 
+    Entity[] entities;
+    String[] modelPath;
+
     public OmegaLoader(){
 
     }
 
-    public void omegaInit(GL3 gl, InitObject[] objectArr, int [] vaoName, int[] vboName){
+    public void omegaInit(GL3 gl, Entity[] entities, int [] vaoName, int[] vboName, PMVMatrix pmvMatrix, LightSource light){
 
+        this.entities = entities;
 
 //        //Big Drum
 //        objectArr[0]= new InitObject();
@@ -104,19 +108,20 @@ public class OmegaLoader {
 //
 //        objectArr[26]= new InitObject();
 //        objectArr[26].initObject(gl, "Objs/drumsetV4_CrashSymbalRest.obj", "textures/drumsetV4_CrashSymbalRest_BaseColor.png", "Objs/drumsetV4_CrashSymbalRest.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 26);
-
-
-        objectArr[0]= new InitObject();
-        objectArr[0].initAnimatedObject(gl, "TestCube.obj", "TestCubeKeyframe.obj", "HSHLLogo1.jpg", "TestCube.mtl", "BlinnPhongPointTexAnimation.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 0);
+        this.modelPath = new String[]{"TestCube.obj", "TestCubeKeyframe1.obj", "TestCubeKeyframe2.obj"};
+        entities[0] = new Entity(gl, modelPath, "HSHLLogo1.jpg", "TestCube.mtl", vaoName, vboName, 0, pmvMatrix, light);
+        entities[0].initEntity();
 
     }
 
-    public void omegaDisplay(GL3 gl, InitObject[] objectArr, DisplayObject[] displayArr, int[] vaoName, PMVMatrix pmvMatrix, LightSource light, int noOfObjects){
+    public void omegaDisplay(){
 
-        for(int i= 0; i< noOfObjects; i++){
-            displayArr[i] = new DisplayObject();
-            displayArr[i].displayObject(gl, objectArr[i].getShaderProgram(), objectArr[i].getVertices(), vaoName, objectArr[i].getMaterial(), pmvMatrix, light, i, objectArr[i].getTexture());
-
+        for(int i= 0; i< entities.length; i++){
+            if(entities[i].getAnimationHandler().getAnimationTrigger()){
+                entities[i].playAnimation();
+            }else{
+                entities[i].displayEntity();
+            }
         }
     }
 }

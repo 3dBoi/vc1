@@ -81,10 +81,10 @@ public class DisplayObject {
     }
 
 
-    public void displayObjectPoints(GL3 gl, ShaderProgram shaderProgram, float[] vertices, int[] vaoName, Material material, PMVMatrix pmvMatrix, LightSource light, int bufferIndex, Texture texture){
+    public void displayObjectPoints(GL3 gl, ShaderProgram shaderProgram, float[] vertices, int[] vaoName, Material material, PMVMatrix pmvMatrix, LightSource light, int bufferIndex, Texture texture) {
 
         // Bind Texture to correct object
-        if(texture!=null) {
+        if (texture != null) {
             gl.glBindTexture(GL_TEXTURE_2D, texture.getTextureObject(gl));
         }
         // BEGIN: Draw the second object (object 1)

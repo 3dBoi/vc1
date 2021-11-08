@@ -17,6 +17,7 @@ public class InitObject {
     private Material material;
     private float[] vertices;
     private Texture texture;
+    private ModelLoader modelLoader;
 
 
     public InitObject(){
@@ -24,18 +25,17 @@ public class InitObject {
     }
 
 
-    public void initObject(GL3 gl, String modelPath, String texturePath, String materialPath, String vertexShader, String fragmentShader, int[] vaoName, int[] vboName, int bufferIndex){
+    public void initObject(GL3 gl, String[] modelPath, String texturePath, String materialPath, String vertexShader, String fragmentShader, int[] vaoName, int[] vboName, int bufferIndex){
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
         this.shaderProgram = new ShaderProgram(gl);
         shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
                 vertexShader, fragmentShader);
 
-        //load Model as OBJ
-        ModelLoader modelLoader = new ModelLoader(modelPath);
-
-        //modelVertices
+        //load Model from OBJ
+        this.modelLoader = new ModelLoader(modelPath[0]);
         this.vertices = modelLoader.getVerticies();
+
 
 
         // activate and initialize vertex buffer object (VBO)
@@ -46,6 +46,7 @@ public class InitObject {
 
         // Activate and order vertex buffer object data for the vertex shader
         // The vertex buffer contains: position (3), UV (2), normals (3)
+        // FOR KEYFRAME: position(3), normals (3)
         // Defining input for vertex shader
         // Pointer for the vertex shader to the position information per vertex
         gl.glEnableVertexAttribArray(0);
@@ -57,14 +58,7 @@ public class InitObject {
         gl.glEnableVertexAttribArray(2);
         gl.glVertexAttribPointer(2, 3, GL.GL_FLOAT, false, 8*4, 5*4);
 
-
-        // Metallic material
-        float[] matEmission = {0.0f, 0.0f, 0.0f, 1.0f};
-        float[] matAmbient =  {0.2f, 0.2f, 0.2f, 1.0f};
-        float[] matDiffuse =  {0.5f, 0.5f, 0.5f, 1.0f};
-        float[] matSpecular = {0.7f, 0.7f, 0.7f, 1.0f};
-        float matShininess = 200.0f;
-
+        // Load the Material from mtl File
         this.material = new Material();
         this.material.loadMaterial(materialPath, 200.0f);
 
@@ -102,17 +96,15 @@ public class InitObject {
 
     }
 
-    public void initAnimatedObject(GL3 gl, String modelPath, String keyframePath, String texturePath, String materialPath, String vertexShader, String fragmentShader, int[] vaoName, int[] vboName, int bufferIndex){
+    public void initAnimatedObject(GL3 gl, String[] modelPath, String texturePath, String materialPath, String vertexShader, String fragmentShader, int[] vaoName, int[] vboName, int bufferIndex){
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
         this.shaderProgram = new ShaderProgram(gl);
         shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
                 vertexShader, fragmentShader);
 
-        //load Model as OBJ
-        ModelLoader modelLoader = new ModelLoader(modelPath, keyframePath);
-
-        //modelVertices
+        //load Model from OBJ
+        this.modelLoader = new ModelLoader(modelPath[0], modelPath[1]);
         this.vertices = modelLoader.getCombinedVerticies();
 
 
@@ -142,9 +134,12 @@ public class InitObject {
         gl.glEnableVertexAttribArray(4);
         gl.glVertexAttribPointer(4, 3, GL.GL_FLOAT, false, 14*4, 11*4);
 
-        //Load material
+
+        // Load the Material from mtl File
         this.material = new Material();
         this.material.loadMaterial(materialPath, 200.0f);
+
+
 
         // Load and prepare texture
         if(texturePath!=null){
@@ -175,6 +170,43 @@ public class InitObject {
             gl.glActiveTexture(GL_TEXTURE0);
         }
 
+
+    }
+
+    public void updateKeyframe(GL3 gl, String[] modelPath, int[] vboName, int bufferIndex, int keyframeIndex){
+
+
+        //load Model as OBJ
+        //Falls letztes Keyframe, springt zum ersten Keyframe zurück, ansonsten nächster Pfad als nächstes Keyframe
+        if(keyframeIndex>=modelPath.length-1){
+            this.modelLoader = new ModelLoader(modelPath[keyframeIndex], modelPath[0]);
+        }else{
+            this.modelLoader = new ModelLoader(modelPath[keyframeIndex], modelPath[keyframeIndex+1]);
+        }
+
+        //modelVertices
+        this.vertices = modelLoader.getCombinedVerticies();
+
+        // activate and initialize vertex buffer object (VBO)
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[bufferIndex]);
+        // floats use 4 bytes in Java
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
+                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
+
+        gl.glEnableVertexAttribArray(0);
+        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 14*4, 0);
+        // Pointer for the vertex shader to the texture coordinates information per vertex
+        gl.glEnableVertexAttribArray(1);
+        gl.glVertexAttribPointer(1, 2, GL.GL_FLOAT, false, 14*4, 3*4);
+        // Pointer for the vertex shader to the normal information per vertex
+        gl.glEnableVertexAttribArray(2);
+        gl.glVertexAttribPointer(2, 3, GL.GL_FLOAT, false, 14*4, 5*4);
+        // Pointer for Keyframe Position
+        gl.glEnableVertexAttribArray(3);
+        gl.glVertexAttribPointer(3, 3, GL.GL_FLOAT, false, 14*4, 8*4);
+        // Pointer for Keyframe normals
+        gl.glEnableVertexAttribArray(4);
+        gl.glVertexAttribPointer(4, 3, GL.GL_FLOAT, false, 14*4, 11*4);
 
     }
 

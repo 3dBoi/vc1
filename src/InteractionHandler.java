@@ -44,16 +44,15 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
 
     GL3 gl;
     PMVMatrix pmvMatrix;
-    float[] testVertices;
-    int counter = 0;
+    Entity[] entities;
 
     /**
      * Standard constructor for creation of the interaction handler.
      */
-    public InteractionHandler(GL3 gl, PMVMatrix pmvMatrix) {
+    public InteractionHandler(GL3 gl, PMVMatrix pmvMatrix, Entity[] entities) {
         this. gl = gl;
         this.pmvMatrix = pmvMatrix;
-        this.testVertices = new float[24];
+        this.entities = entities;
     }
 
     public float getEyeZ() {
@@ -154,46 +153,56 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
      * Handles all key input.
      */
     public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.VK_CONTROL:
-                ctrlKeyPressed = true;
-                break;
-            case KeyEvent.VK_LEFT:
-                if (ctrlKeyPressed) {
-                    xPosition += xPositionInc;
-                } else {
-                    angleYaxis += angleYaxisInc;
-                }
-                break;
-            case KeyEvent.VK_RIGHT:
-                if (ctrlKeyPressed) {
-                    xPosition -= xPositionInc;
-                } else {
-                    angleYaxis -= angleYaxisInc;
-                }
-                break;
-            case KeyEvent.VK_UP:
-                if (ctrlKeyPressed) {
-                    yPosition -= yPositionInc;
-                } else {
-                    angleXaxis += angleXaxisInc;
-                }
-                break;
-            case KeyEvent.VK_DOWN:
-                if (ctrlKeyPressed) {
-                    yPosition += yPositionInc;
-                } else {
-                    angleXaxis -= angleXaxisInc;
-                }
-                break;
-            case KeyEvent.VK_MINUS:
-                eyeZ = eyeZ - eyeZInc;
-                break;
-            case KeyEvent.VK_PLUS:
-                eyeZ = eyeZ + eyeZInc;
-                break;
+
+        // K to start stop animation
+        if(e.getKeyCode()==KeyEvent.VK_K){
+            if(entities[0].getAnimationHandler().getAnimationTrigger()){
+                entities[0].getAnimationHandler().setAnimationTrigger(false);
+            }else{
+                entities[0].getAnimationHandler().setAnimationTrigger(true);
+            }
+            System.out.println("K Pressed");
         }
+//        int keyCode = e.getKeyCode();
+//        switch (keyCode) {
+//            case KeyEvent.VK_CONTROL:
+//                ctrlKeyPressed = true;
+//                break;
+//            case KeyEvent.VK_LEFT:
+//                if (ctrlKeyPressed) {
+//                    xPosition += xPositionInc;
+//                } else {
+//                    angleYaxis += angleYaxisInc;
+//                }
+//                break;
+//            case KeyEvent.VK_RIGHT:
+//                if (ctrlKeyPressed) {
+//                    xPosition -= xPositionInc;
+//                } else {
+//                    angleYaxis -= angleYaxisInc;
+//                }
+//                break;
+//            case KeyEvent.VK_UP:
+//                if (ctrlKeyPressed) {
+//                    yPosition -= yPositionInc;
+//                } else {
+//                    angleXaxis += angleXaxisInc;
+//                }
+//                break;
+//            case KeyEvent.VK_DOWN:
+//                if (ctrlKeyPressed) {
+//                    yPosition += yPositionInc;
+//                } else {
+//                    angleXaxis -= angleXaxisInc;
+//                }
+//                break;
+//            case KeyEvent.VK_MINUS:
+//                eyeZ = eyeZ - eyeZInc;
+//                break;
+//            case KeyEvent.VK_PLUS:
+//                eyeZ = eyeZ + eyeZInc;
+//                break;
+//        }
     }
 
     @Override
@@ -210,7 +219,7 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
     /**
      * Implements one method of the interface KeyListener
      */
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {}
 
 
     @Override
@@ -225,45 +234,45 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
         float mouseX = e.getX() / (800  * 0.5f) - 1.0f;
         float mouseY = e.getY() / (600 * 0.5f) - 1.0f;
 
-        float[] proj = {45.0f, 800.0f/600.0f, 0.1f, 10000.0f};
-        float[] view = {0.0f, 0.0f, 800.0f, 600.0f};
+//        float[] proj = {45.0f, 800.0f/600.0f, 0.1f, 10000.0f};
+//        float[] view = {0.0f, 0.0f, 800.0f, 600.0f};
 
 //        float[] invVP = {(proj[0]*view[0])+(proj[1]*view[2]), (proj[0]*view[1])+(proj[1]*view[3]),
 //                         (proj[2]*view[0])+(proj[3]*view[2]), (proj[2]*view[1])+(proj[3]*view[3])}
 
-        float a = (proj[0]*view[0])+(proj[1]*view[2]);
-        float b = (proj[0]*view[1])+(proj[1]*view[3]);
-        float c = (proj[2]*view[0])+(proj[3]*view[2]);
-        float d = (proj[2]*view[1])+(proj[3]*view[3]);
-
-        float bruch = a*d-b*c;
-        float[] invVP = {(d/bruch), -1*(b/bruch),
-                          -1*(c/bruch), (a/bruch)};
-
-        float[] screenPos = {mouseX, -mouseY, 1.0f, 1.0f};
-
-        float[] worldPos = {(invVP[0]*screenPos[0])+(invVP[1]*screenPos[2]), (invVP[0]*screenPos[1])+(invVP[1]*screenPos[3]),
-                            (invVP[2]*screenPos[0])+(invVP[3]*screenPos[2]), (invVP[2]*screenPos[1])+(invVP[3]*screenPos[3])};
-
-        worldPos[3] = 1.0f / worldPos[3];
-        worldPos[0] *= worldPos[3];
-        worldPos[1] *= worldPos[3];
-        worldPos[2] *= worldPos[3];
-        //System.out.println(Arrays.toString(worldPos));
-
-        if(counter<25){
-            testVertices[counter]=worldPos[0];
-            testVertices[counter+1]=worldPos[1];
-            testVertices[counter+2]=worldPos[2];
-            testVertices[counter+3]=0.0f;
-            testVertices[counter+4]=0.0f;
-            testVertices[counter+5]=-1.0f;
-            testVertices[counter+6]=0.0f;
-            testVertices[counter+7]=0.0f;
-
-            //System.out.println("Vertices: "+ Arrays.toString(testVertices));
-
-            counter=counter+8;
+//        float a = (proj[0]*view[0])+(proj[1]*view[2]);
+//        float b = (proj[0]*view[1])+(proj[1]*view[3]);
+//        float c = (proj[2]*view[0])+(proj[3]*view[2]);
+//        float d = (proj[2]*view[1])+(proj[3]*view[3]);
+//
+//        float bruch = a*d-b*c;
+//        float[] invVP = {(d/bruch), -1*(b/bruch),
+//                          -1*(c/bruch), (a/bruch)};
+//
+//        float[] screenPos = {mouseX, -mouseY, 1.0f, 1.0f};
+//
+//        float[] worldPos = {(invVP[0]*screenPos[0])+(invVP[1]*screenPos[2]), (invVP[0]*screenPos[1])+(invVP[1]*screenPos[3]),
+//                            (invVP[2]*screenPos[0])+(invVP[3]*screenPos[2]), (invVP[2]*screenPos[1])+(invVP[3]*screenPos[3])};
+//
+//        worldPos[3] = 1.0f / worldPos[3];
+//        worldPos[0] *= worldPos[3];
+//        worldPos[1] *= worldPos[3];
+//        worldPos[2] *= worldPos[3];
+//        //System.out.println(Arrays.toString(worldPos));
+//
+//        if(counter<25){
+//            testVertices[counter]=worldPos[0];
+//            testVertices[counter+1]=worldPos[1];
+//            testVertices[counter+2]=worldPos[2];
+//            testVertices[counter+3]=0.0f;
+//            testVertices[counter+4]=0.0f;
+//            testVertices[counter+5]=-1.0f;
+//            testVertices[counter+6]=0.0f;
+//            testVertices[counter+7]=0.0f;
+//
+//            //System.out.println("Vertices: "+ Arrays.toString(testVertices));
+//
+//            counter=counter+8;
         }
 
 
@@ -279,7 +288,7 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
 //        glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
 //
 //        return dir;
-    }
+//    }
 
     @Override
     /**
