@@ -37,4 +37,8 @@ public class AnimationHandler {
     public boolean getDirection() {
         return direction;
     }
+
+    public void setTweenF(float tweenF) {
+        this.tweenF = tweenF;
+    }
 }

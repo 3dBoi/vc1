@@ -28,9 +28,10 @@ public class Entity {
 
     // Tween for Animation
     float tween;
+    float tweenNextFrame = 1.0f;
 
     // Keyframeindex
-    int keyframeIndex = 0;
+    int keyframeIndex = 1;
 
 
     public Entity(GL3 gl, String[] modelPath, String texturePath, String materialPath, int[] vaoName, int[] vboName, int bufferIndex, PMVMatrix pmvMatrix, LightSource light){
@@ -74,14 +75,22 @@ public class Entity {
 
     // Display actual Animation
     public void playAnimation(){
+
+
+
         // if the Animation is going forward display it and update tween
         if(animationHandler.getDirection()){
-            this.tween = animationHandler.animate();
+
             displayObject.displayObjectAnimation(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture(), tween);
+            this.tween = animationHandler.animate();
 
         // if Animation is finished update the Keyframe and start Animation again
         // IWO IST HIER WAS FALSCH
         }else{
+
+            displayObject.displayObjectAnimation(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture(), 1.0f);
+            animationHandler.setDirection(true);
+            this.tween = animationHandler.animate();
 
             initObject.updateKeyframe(gl, modelPath, vboName, index, keyframeIndex);
 
@@ -91,11 +100,6 @@ public class Entity {
             }else{
                 keyframeIndex++;
             }
-
-            // FEHLER IN DER REIHENFOLGE??
-            displayObject.displayObjectAnimation(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture(), tween);
-            animationHandler.setDirection(true);
-            this.tween = animationHandler.animate();
         }
     }
 
