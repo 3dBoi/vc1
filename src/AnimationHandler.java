@@ -8,9 +8,9 @@ public class AnimationHandler {
 
     }
 
+    // Tween gets increased until it reaches 1 then it gets reset
     public float animate(){
 
-        // VLLT HIER IWAS FALSCH??
         if(tweenF<1&&direction){
             tweenF=tweenF+0.01f;
         }else if(tweenF>=1) {

@@ -85,7 +85,6 @@ public class Entity {
             this.tween = animationHandler.animate();
 
         // if Animation is finished update the Keyframe and start Animation again
-        // IWO IST HIER WAS FALSCH
         }else{
 
             displayObject.displayObjectAnimation(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture(), 1.0f);

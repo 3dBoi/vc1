@@ -1,9 +1,12 @@
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.math.Matrix4;
+import com.jogamp.opengl.math.Ray;
 import com.jogamp.opengl.util.PMVMatrix;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 /**
@@ -45,14 +48,23 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
     GL3 gl;
     PMVMatrix pmvMatrix;
     Entity[] entities;
+    //Hier später löschen
+    InitObject[] objArr;
+    int[] vboName;
+    boolean clicked;
+    boolean fertig = false;
+    float[] verticies;
 
     /**
      * Standard constructor for creation of the interaction handler.
      */
-    public InteractionHandler(GL3 gl, PMVMatrix pmvMatrix, Entity[] entities) {
+    public InteractionHandler(GL3 gl, PMVMatrix pmvMatrix, Entity[] entities, InitObject[] onjArr, int[] vboName, boolean clicked) {
         this. gl = gl;
         this.pmvMatrix = pmvMatrix;
         this.entities = entities;
+        this.objArr = onjArr;
+        this.vboName = vboName;
+        this.clicked = clicked;
     }
 
     public float getEyeZ() {
@@ -231,8 +243,63 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
         System.out.println("X: "+e.getX());
         System.out.println("Y: "+e.getY());
 
-        float mouseX = e.getX() / (800  * 0.5f) - 1.0f;
-        float mouseY = e.getY() / (600 * 0.5f) - 1.0f;
+        float mouseX = e.getX();
+        float mouseY = e.getY();
+
+//        int[] viewport = new int[4];
+        int[] viewport = {0,0,800,600};
+        float winX, winY, winZ;
+        FloatBuffer WinZ = FloatBuffer.allocate(1);
+        float[] pos1 = new float[3];// posX, posY, posZ;
+
+        Ray ray = new Ray();
+
+        float[] pos2 = new float[3];
+
+        float[] posfinal = new float[3];
+//        gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+        System.out.println("Viewport: "+Arrays.toString(viewport));
+//        double objX, objY, objZ;//holder for world coordinates
+//        int view[4];//viewport dimensions+pos
+//        double  p[16];//projection matrix
+//        double  m[16];//modelview matrix
+//        double z;//Z-Buffer Value?
+
+
+//        gl.glGetDoublev( GL.GL_MODELVIEW_MATRIX, modelview, 0 );
+//        gl.glGetDoublev( GL.GL_PROJECTION_MATRIX, projection, 0 );
+//        gl.glGetIntegerv( GL.GL_VIEWPORT, viewport, 0 );
+
+        winX = mouseX;
+        winY = viewport[3] - mouseY;
+//        gl. glReadPixels((int) mouseX, (int) winY, 1, 1, gl.GL_DEPTH_COMPONENT, gl.GL_FLOAT, WinZ);
+//        winZ = WinZ.array()[0];
+//        pmvMatrix.gluUnProject(winX, winY, 0.0f, viewport, 0, pos1, 0);
+//        pmvMatrix.gluUnProject(winX, winY, 1.0f, viewport, 0, pos2, 0);
+
+        pmvMatrix.gluUnProjectRay(winX, winY, 0.0f, 1.0f, viewport, 0, ray);
+
+        pos1 = ray.orig;
+        pos2[0] = ray.orig[0]+ray.dir[0]*10;
+        pos2[1] = ray.orig[1]+ray.dir[1]*10;
+        pos2[2] = ray.orig[2]+ray.dir[2]*10;
+
+        posfinal[0] = pos2[0]-pos1[0];
+        posfinal[1] = pos2[1]-pos1[1];
+        posfinal[2] = pos2[2]-pos1[2];
+
+
+        this.verticies = new float[]{pos1[0], pos1[1], pos1[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                     pos2[0], pos2[1], pos2[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
+
+        System.out.println("pos:  " +Arrays.toString(pos2));
+
+
+        clicked = true;
+        fertig = true;
+
+
 
 //        float[] proj = {45.0f, 800.0f/600.0f, 0.1f, 10000.0f};
 //        float[] view = {0.0f, 0.0f, 800.0f, 600.0f};

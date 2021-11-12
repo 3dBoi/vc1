@@ -110,7 +110,7 @@ public class DisplayObject {
 
 //        System.out.println("Vertices in display: "+ Arrays.toString(vertices));
 
-        gl.glPointSize(1);
-        gl.glDrawArrays(GL_POINTS, 0, vertices.length);
+        gl.glPointSize(10);
+        gl.glDrawArrays(GL_LINES, 0, vertices.length);
     }
 }

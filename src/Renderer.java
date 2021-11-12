@@ -58,9 +58,12 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private static final long serialVersionUID = 1L;
 
 
-    int noOfObjects = 1;
-    Entity[] entities = new Entity[noOfObjects];
+    int noOfObjects = 3;
+    Entity[] entities = new Entity[1];
     OmegaLoader omegaLoader = new OmegaLoader();
+
+    InitObject[] objectArr = new InitObject[noOfObjects];
+    DisplayObject[] displayArr = new DisplayObject[noOfObjects];
 
     int canvasWidth;
     int canvasHeigth;
@@ -75,7 +78,10 @@ public class Renderer extends GLCanvas implements GLEventListener {
     // Object for handling keyboard and mouse interaction
     private InteractionHandler interactionHandler;
     // Projection model view matrix tool
-    private PMVMatrix pmvMatrix;
+    private PMVMatrix pmvMatrix = new PMVMatrix();
+
+    boolean clicked = false;
+    float[] testVertices;
 
 
     /**
@@ -111,7 +117,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // The constructor call of the interaction handler generates meaningful default values
         // Nevertheless the start parameters can be set via setters
         // (see class definition of the interaction handler)
-        interactionHandler = new InteractionHandler(gl, pmvMatrix, entities);
+        interactionHandler = new InteractionHandler(gl, pmvMatrix, entities, objectArr, vboName, clicked);
         this.addKeyListener(interactionHandler);
         this.addMouseListener(interactionHandler);
         this.addMouseMotionListener(interactionHandler);
@@ -175,13 +181,36 @@ public class Renderer extends GLCanvas implements GLEventListener {
         gl.glPolygonMode(GL.GL_FRONT_AND_BACK, gl.GL_FILL);
 
         // Create projection-model-view matrix
-        pmvMatrix = new PMVMatrix();
+//        pmvMatrix = new PMVMatrix();
 
         // Start parameter settings for the interaction handler might be called here
-        interactionHandler.setEyeZ(4);
+//        interactionHandler.setEyeZ(4);
 
         // Initialize objects to be drawn (see respective sub-methods)
         omegaLoader.omegaInit(gl, entities, vaoName, vboName, pmvMatrix, light0);
+
+        float[] verticies ={
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+        };
+
+        objectArr[1]= new InitObject();
+        objectArr[1].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 1, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies);
+
+
+
+        float[] verticies1 ={
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        };
+
+        objectArr[2]= new InitObject();
+        objectArr[2].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 2, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies1);
+
         // END: Preparing scene
     }
 
@@ -195,6 +224,10 @@ public class Renderer extends GLCanvas implements GLEventListener {
         GL3 gl = drawable.getGL().getGL3();
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 
+
+        if(interactionHandler.clicked)
+        objectArr[1].update(gl, interactionHandler.verticies, 1);
+
         // Background color of the canvas
         gl.glClearColor(0.97f, 0.97f, 0.97f, 1.0f);
 
@@ -203,12 +236,12 @@ public class Renderer extends GLCanvas implements GLEventListener {
         pmvMatrix.glLoadIdentity();
         // Setting the camera position, based on user input
         //POSITION; TARGET; UP
-       // pmvMatrix.gluLookAt(1f, 0.1f, interactionHandler.getEyeZ(),
-       //         0f, 1f, 1f,
-       //         0f, 1.0f, 0f);
-         pmvMatrix.gluLookAt(5.5f, 7f, 0f,
-                 0f, 0f, 0f,
-                 0f, 1.0f, 0f);
+        pmvMatrix.gluLookAt(0f, 0.0f, interactionHandler.getEyeZ(),
+                0f, 0f, 0f,
+                0f, 1.0f, 0f);
+//         pmvMatrix.gluLookAt(5.5f, 7f, 0f,
+//                 0f, 0f, 0f,
+//                 0f, 1.0f, 0f);
         pmvMatrix.glTranslatef(interactionHandler.getxPosition(), interactionHandler.getyPosition(), 0f);
         pmvMatrix.glRotatef(interactionHandler.getAngleXaxis(), 1f, 0f, 0f);
         pmvMatrix.glRotatef(interactionHandler.getAngleYaxis(), 0f, 1f, 0f);
@@ -218,20 +251,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         pmvMatrix.glPushMatrix();
 
-        // ANIMATION SHIZZLE
-        // UMSTÄNDLICHER WEG DEN TWEENFACTOR ZU ERHÖHEN NUR ZUM TESTEN
-//        if(tweenF<1&&direction){
-//            tweenF=tweenF+0.01f;
-//        }else if(tweenF>=1){
-//            direction=false;
-//            tweenF=tweenF-0.01f;
-//        }else if(tweenF<=0.0f&&!direction){
-//            tweenF=tweenF+0.01f;
-//            direction=true;
-//        }else if(tweenF<1&&!direction){
-//            tweenF=tweenF-0.01f;
-//        }
-//        System.out.println("Tween: "+tweenF);
 
 //        displayArr[0] = new DisplayObject();
 //        displayArr[0].displayObjectAnimation(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture(), tweenF);
@@ -241,6 +260,13 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
 
         omegaLoader.omegaDisplay();
+        displayArr[1] = new DisplayObject();
+        displayArr[1].displayObjectPoints(gl, objectArr[1].getShaderProgram(), objectArr[1].getVertices(), vaoName, objectArr[1].getMaterial(), pmvMatrix, light0, 1, objectArr[1].getTexture());
+
+        displayArr[2] = new DisplayObject();
+        displayArr[2].displayObjectPoints(gl, objectArr[2].getShaderProgram(), objectArr[2].getVertices(), vaoName, objectArr[2].getMaterial(), pmvMatrix, light0, 2, objectArr[2].getTexture());
+
+
 
         pmvMatrix.glPopMatrix();
     }
