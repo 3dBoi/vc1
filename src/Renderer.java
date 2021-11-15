@@ -59,7 +59,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
 
     int noOfObjects = 3;
-    Entity[] entities = new Entity[1];
+    Entity[] entities = new Entity[noOfObjects-1];
     OmegaLoader omegaLoader = new OmegaLoader();
 
     InitObject[] objectArr = new InitObject[noOfObjects];
@@ -81,7 +81,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private PMVMatrix pmvMatrix = new PMVMatrix();
 
     boolean clicked = false;
-    float[] testVertices;
 
 
     /**
@@ -188,19 +187,19 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // Initialize objects to be drawn (see respective sub-methods)
         omegaLoader.omegaInit(gl, entities, vaoName, vboName, pmvMatrix, light0);
-
-        float[] verticies ={
-                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
-        };
-
-        objectArr[1]= new InitObject();
-        objectArr[1].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 1, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies);
-
+//
+//        float[] verticies ={
+//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//                1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//                0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+//        };
+//
+//        objectArr[1]= new InitObject();
+//        objectArr[1].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 1, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies);
+//
 
 
         float[] verticies1 ={
@@ -208,8 +207,8 @@ public class Renderer extends GLCanvas implements GLEventListener {
                 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         };
 
-        objectArr[2]= new InitObject();
-        objectArr[2].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 2, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies1);
+        objectArr[0]= new InitObject();
+        objectArr[0].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 0, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies1);
 
         // END: Preparing scene
     }
@@ -226,7 +225,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
 
         if(interactionHandler.clicked)
-        objectArr[1].update(gl, interactionHandler.verticies, 1);
+        objectArr[0].update(gl, interactionHandler.verticies, 0);
 
         // Background color of the canvas
         gl.glClearColor(0.97f, 0.97f, 0.97f, 1.0f);
@@ -260,12 +259,8 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
 
         omegaLoader.omegaDisplay();
-        displayArr[1] = new DisplayObject();
-        displayArr[1].displayObjectPoints(gl, objectArr[1].getShaderProgram(), objectArr[1].getVertices(), vaoName, objectArr[1].getMaterial(), pmvMatrix, light0, 1, objectArr[1].getTexture());
-
-        displayArr[2] = new DisplayObject();
-        displayArr[2].displayObjectPoints(gl, objectArr[2].getShaderProgram(), objectArr[2].getVertices(), vaoName, objectArr[2].getMaterial(), pmvMatrix, light0, 2, objectArr[2].getTexture());
-
+        displayArr[0] = new DisplayObject();
+        displayArr[0].displayObjectPoints(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture());
 
 
         pmvMatrix.glPopMatrix();

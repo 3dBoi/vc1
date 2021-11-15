@@ -36,8 +36,8 @@ public class InitObject {
                 vertexShader, fragmentShader);
 
         //load Model from OBJ
-        this.modelLoader = new ModelLoader(modelPath[0]);
-        this.vertices = modelLoader.getVerticies();
+        this.modelLoader = new ModelLoader();
+        this.vertices = modelLoader.getVerticies(modelPath[0]);
 
 
 
@@ -107,8 +107,8 @@ public class InitObject {
                 vertexShader, fragmentShader);
 
         //load Model from OBJ
-        this.modelLoader = new ModelLoader(modelPath[0], modelPath[1]);
-        this.vertices = modelLoader.getCombinedVerticies();
+        this.modelLoader = new ModelLoader();
+        this.vertices = modelLoader.getCombinedVerticies(modelPath[0], modelPath[1]);
 
 
         // activate and initialize vertex buffer object (VBO)
@@ -181,14 +181,12 @@ public class InitObject {
 
         //load Model as OBJ
         //Falls letztes Keyframe, springt zum ersten Keyframe zurück, ansonsten nächster Pfad als nächstes Keyframe
+        this.modelLoader = new ModelLoader();
         if(keyframeIndex>=modelPath.length-1){
-            this.modelLoader = new ModelLoader(modelPath[keyframeIndex], modelPath[0]);
+            this.vertices = modelLoader.getCombinedVerticies(modelPath[keyframeIndex], modelPath[0]);
         }else{
-            this.modelLoader = new ModelLoader(modelPath[keyframeIndex], modelPath[keyframeIndex+1]);
+            this.vertices = modelLoader.getCombinedVerticies(modelPath[keyframeIndex], modelPath[keyframeIndex+1]);
         }
-
-        //modelVertices
-        this.vertices = modelLoader.getCombinedVerticies();
 
         // activate and initialize vertex buffer object (VBO)
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[bufferIndex]);
@@ -227,6 +225,39 @@ public class InitObject {
 
     public Texture getTexture(){
         return texture;
+    }
+
+
+    // Für Raycasting später Löschen
+
+    public void initHitbox(GL3 gl, String[] modelPath, int[] vaoName, int[] vboName, int bufferIndex, String vertexShader, String fragmentShader){
+
+        gl.glBindVertexArray(vaoName[bufferIndex]);
+        this.shaderProgram = new ShaderProgram(gl);
+        shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
+                vertexShader, fragmentShader);
+
+        //load Model from OBJ
+        this.modelLoader = new ModelLoader();
+        this.vertices = modelLoader.getHitboxVerticies(modelPath[0], modelPath[1]);
+
+
+        // activate and initialize vertex buffer object (VBO)
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[bufferIndex]);
+        // floats use 4 bytes in Java
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
+                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
+
+        // Activate and order vertex buffer object data for the vertex shader
+        // The vertex buffer contains: position (3), UV (2), normals (3)
+        // FOR KEYFRAME: position(3), normals (3)
+        // Defining input for vertex shader
+        // Pointer for the vertex shader to the position information per vertex
+        gl.glEnableVertexAttribArray(0);
+        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 3*4, 0);
+
+
+
     }
 
     public void initPoint(GL3 gl, int[] vaoName, int[] vboName, String texturePath, String materialPath, int bufferIndex, String vertexShader, String fragmentShader, float[] verticies ){

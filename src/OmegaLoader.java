@@ -13,6 +13,7 @@ public class OmegaLoader {
     public void omegaInit(GL3 gl, Entity[] entities, int [] vaoName, int[] vboName, PMVMatrix pmvMatrix, LightSource light){
 
         this.entities = entities;
+        int i=1;
 
 //        //Big Drum
 //        objectArr[0]= new InitObject();
@@ -110,10 +111,16 @@ public class OmegaLoader {
 //        objectArr[26].initObject(gl, "Objs/drumsetV4_CrashSymbalRest.obj", "textures/drumsetV4_CrashSymbalRest_BaseColor.png", "Objs/drumsetV4_CrashSymbalRest.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 26);
 //
         this.modelPath = new String[]{"TestCube.obj", "TestCubeKeyframe1.obj", "TestCubeKeyframe2.obj"};
-        entities[0] = new Entity(gl, modelPath, "HSHLLogo1.jpg", "TestCube.mtl", vaoName, vboName, 0, pmvMatrix, light);
+        entities[0] = new Entity(gl, modelPath, "HSHLLogo1.jpg", "TestCube.mtl", vaoName, vboName, 1, pmvMatrix, light);
         entities[0].initEntity();
+        i++;
 
-//
+
+        // Hitboxloader
+        this.modelPath = new String[]{"TestCube.obj", "TestCubeKeyframe1.obj", "TestCubeKeyframe2.obj"};
+        entities[1] = new Entity(gl, modelPath, vaoName, vboName, 2);
+        entities[1].initEntity();
+        i++;
     }
 
     public void omegaDisplay(){

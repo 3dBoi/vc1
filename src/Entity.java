@@ -1,4 +1,5 @@
 import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.math.Ray;
 import com.jogamp.opengl.util.PMVMatrix;
 
 public class Entity {
@@ -33,6 +34,10 @@ public class Entity {
     // Keyframeindex
     int keyframeIndex = 1;
 
+    // boolean for Hitbox Entity
+    boolean hitbox = false;
+    Collision collision;
+
 
     public Entity(GL3 gl, String[] modelPath, String texturePath, String materialPath, int[] vaoName, int[] vboName, int bufferIndex, PMVMatrix pmvMatrix, LightSource light){
 
@@ -52,9 +57,29 @@ public class Entity {
         this.light = light;
     }
 
+    public Entity(GL3 gl, String[] modelPath, int[] vaoName, int[] vboName, int bufferIndex){
+
+        this.gl = gl;
+
+        this.modelPath = modelPath;
+
+        this.fragmentShader = "BlinnPhongPointTex.frag";
+
+        this.vaoName = vaoName;
+        this.vboName = vboName;
+        this.index = bufferIndex;
+
+        this.hitbox = true;
+        this.collision = new Collision();
+    }
+
     // Standard Initialization without Keyframe
     public void initEntity(){
-        if(modelPath.length>1){
+
+        if(hitbox){
+            this.vertexShader = "BlinnPhongPointTex.vert";
+            initObject.initHitbox(gl, modelPath, vaoName, vboName, index, vertexShader, fragmentShader);
+        }else if(modelPath.length>1){
             this.vertexShader = "BlinnPhongPointTexAnimation.vert";
             initObject.initAnimatedObject(gl, modelPath, texturePath, materialPath, vertexShader, fragmentShader, vaoName, vboName, index);
         }else{
@@ -65,6 +90,7 @@ public class Entity {
 
     // Standard Display without Animation
     public void displayEntity(){
+        if(!hitbox)
         displayObject.displayObject(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture());
     }
 
@@ -81,12 +107,14 @@ public class Entity {
         // if the Animation is going forward display it and update tween
         if(animationHandler.getDirection()){
 
+            if(!hitbox)
             displayObject.displayObjectAnimation(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture(), tween);
             this.tween = animationHandler.animate();
 
         // if Animation is finished update the Keyframe and start Animation again
         }else{
 
+            if(!hitbox)
             displayObject.displayObjectAnimation(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture(), 1.0f);
             animationHandler.setDirection(true);
             this.tween = animationHandler.animate();
@@ -100,6 +128,10 @@ public class Entity {
                 keyframeIndex++;
             }
         }
+    }
+
+    public boolean rayCollision(Ray ray){
+        return collision.rayCollision(ray, initObject.getVertices());
     }
 
     public AnimationHandler getAnimationHandler(){
