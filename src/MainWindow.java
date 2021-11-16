@@ -31,7 +31,7 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
@@ -110,6 +110,8 @@ public class MainWindow extends JFrame {
 
         // OpenGL: request focus for canvas
         canvas.requestFocusInWindow();
+
+        //Hier Slider adden TEST BRANCH
     }
 
     /**
@@ -122,7 +124,6 @@ public class MainWindow extends JFrame {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
         //System.loadLibrary( "opencv_videoio_ffmpeg440_64" );
         new VideoProcessing();
-        //testhalo
     }
 
 }

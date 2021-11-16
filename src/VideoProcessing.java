@@ -5,6 +5,8 @@ import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -27,6 +29,7 @@ public class VideoProcessing extends JFrame {
     private BufferedImagePanel imgPanel1;
     private BufferedImagePanel imgPanel2;
     private static JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+	static int currentSigma;
 	
 	/**
 	 * Create object and perform the processing by calling private member functions.
@@ -88,7 +91,6 @@ public class VideoProcessing extends JFrame {
 	private void createFrame() {
 
 		setTitle("Original and processed video stream");
-		
 		JPanel contentPane = (JPanel) getContentPane();
 		contentPane.setLayout(new FlowLayout());
 		
@@ -96,6 +98,7 @@ public class VideoProcessing extends JFrame {
 		contentPane.add(imgPanel1);
 		imgPanel2 = new BufferedImagePanel();
 		contentPane.add(imgPanel2);
+		contentPane.add(initSlider(contentPane));
 				
 	       // place the frame at the center of the screen and show
 		pack();
@@ -137,8 +140,8 @@ public class VideoProcessing extends JFrame {
 
 	   //HSV threshold selection
 	   int i = 1;
-	   int hLow = 140; //Max 180
-	   int sLow = 130; //Max 255
+	   int hLow = 100; //Max 180
+	   int sLow = 100; //Max 255
 	   int vLow = 0; //Max 255
 	   int hHigh = 180; //Max 180
 	   int sHigh = 255; //Max 255
@@ -146,25 +149,20 @@ public class VideoProcessing extends JFrame {
 
 	   System.out.print("Frame count: (" + i + ")"); 
 	   // loop for grabbing frames
-	   while (cap.read(frame)) { 	   
-		   i++;
-    	   if ((i % 100) == 0)
-    		   System.out.println(".(" + i + ")");
-    	   else
-    		   System.out.print("."); 
+	   while (cap.read(frame)) {
 
-
-		   // Gaussian Blur for smoother detection,input and output set to "frame"
-		   Imgproc.GaussianBlur(frame, frame, new Size(13, 13), 0);
+		   // Gaussian Blur for smoother detection
+		   Imgproc.GaussianBlur(frame, frame, new Size(21, 21), 4);
 
     	   // convert the frame to HSV, output processedImage
     	   Imgproc.cvtColor(frame, processedImage, Imgproc.COLOR_BGR2HSV);
 
-    	   // apply HSV threshold and output binary image
-		   Core.inRange(processedImage, new Scalar(hLow,sLow,vLow), new Scalar(hHigh,sHigh,vHigh), processedImage);
+		   // apply HSV threshold and output binary image
+		   //Core.inRange(processedImage, new Scalar(hLow,sLow,vLow), new Scalar(hHigh,sHigh,vHigh), processedImage);
+		   Core.inRange(processedImage, new Scalar(getCurrentSigma(),hLow,sLow), new Scalar(getCurrentSigma()+10,sHigh,vHigh), processedImage);
 
 		   // apply medianBlur for noise reduction
-    	   Imgproc.medianBlur(processedImage, processedImage, 9);
+    	   Imgproc.medianBlur(processedImage, processedImage, 15);
 
 
 		   // display original frame from the video stream
@@ -174,10 +172,10 @@ public class VideoProcessing extends JFrame {
     	   imgPanel2.setImage(Mat2BufferedImage(processedImage));
     	   pack();
         
-    	   // Write unprocessed and processed frame successively to files
-    	   writeImage(frame, "unprocessedImage.png");
-    	   writeImage(processedImage, "processedImage.png");
-       } // END for loop
+		 //Write unprocessed and processed frame successively to files
+		   // writeImage(frame, "unprocessedImage.png");
+		   // writeImage(processedImage, "processedImage.png");
+	   } // END for loop
 	   System.out.println(".(" + i + ")");
 	   cap.release();
 	}
@@ -189,7 +187,7 @@ public class VideoProcessing extends JFrame {
  	 * http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
  	 * Fastest code
 	 * 
-	 * @param OpenCV Matrix to be converted must be a one channel (grayscale) or 
+	 * //@param OpenCV Matrix to be converted must be a one channel (grayscale) or
 	 * three channel (BGR) matrix, i.e. one or three byte(s) per pixel.
 	 * @return converted image as BufferedImage
 	 * 
@@ -211,4 +209,35 @@ public class VideoProcessing extends JFrame {
     	imgMat.get(0, 0, bufferedImageBuffer);
     	return bufferedImage;
     }
+
+	public JSlider initSlider(JPanel panel){
+		int min = 1;
+		int max = 255;
+		int init = 100;
+
+		//Erstellung Slider mit Position, Min, Max, Aktuell
+		JSlider sigmaSlider = new JSlider(JSlider.VERTICAL, min, max, init);
+		Dimension d = sigmaSlider.getPreferredSize();
+		sigmaSlider.setPreferredSize(new Dimension(d.width+100, d.height+100));
+		sigmaSlider.setMajorTickSpacing(50);
+		sigmaSlider.setMinorTickSpacing(25);
+		sigmaSlider.setPaintTicks(true);
+		sigmaSlider.setPaintLabels(true);
+		sigmaSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				setCurrentSigma(source.getValue());
+			}
+		});
+		return sigmaSlider;
+	}
+
+	public static int getCurrentSigma() {
+		return currentSigma;
+	}
+
+	public static void setCurrentSigma(int currentSigma) {
+		VideoProcessing.currentSigma = currentSigma;
+	}
 }
