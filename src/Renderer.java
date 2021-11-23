@@ -58,7 +58,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private static final long serialVersionUID = 1L;
 
 
-    int noOfObjects = 3;
+    int noOfObjects = 7;
     Entity[] entities = new Entity[noOfObjects-1];
     OmegaLoader omegaLoader = new OmegaLoader();
 

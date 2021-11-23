@@ -110,16 +110,52 @@ public class OmegaLoader {
 //        objectArr[26]= new InitObject();
 //        objectArr[26].initObject(gl, "Objs/drumsetV4_CrashSymbalRest.obj", "textures/drumsetV4_CrashSymbalRest_BaseColor.png", "Objs/drumsetV4_CrashSymbalRest.mtl", "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", vaoName, vboName, 26);
 //
-        this.modelPath = new String[]{"TestCube.obj", "TestCubeKeyframe1.obj", "TestCubeKeyframe2.obj"};
-        entities[0] = new Entity(gl, modelPath, "HSHLLogo1.jpg", "TestCube.mtl", vaoName, vboName, 1, pmvMatrix, light);
+//        this.modelPath = new String[]{"TestCube.obj", "TestCubeKeyframe1.obj", "TestCubeKeyframe2.obj"};
+//        entities[0] = new Entity(gl, modelPath, "HSHLLogo1.jpg", "TestCube.mtl", vaoName, vboName, 1, pmvMatrix, light);
+//        entities[0].initEntity();
+//        i++;
+//
+//
+//        // Hitboxloader
+//        this.modelPath = new String[]{"TestCube.obj"};
+//        entities[1] = new Entity(gl, modelPath, vaoName, vboName, 2);
+//        entities[1].initEntity();
+//        i++;
+
+        // Cube Left
+        this.modelPath = new String[]{"CubeLeft.obj", "CubeLeftKeyframe1.obj"};
+        entities[0] = new Entity(gl, modelPath, "HSHLLogo1.jpg", "CubeLeft.mtl", vaoName, vboName, 1, pmvMatrix, light);
         entities[0].initEntity();
         i++;
 
-
-        // Hitboxloader
-        this.modelPath = new String[]{"TestCube.obj", "TestCubeKeyframe1.obj", "TestCubeKeyframe2.obj"};
+        // Hitboxloader Cube Left
+        this.modelPath = new String[]{"CubeLeft.obj"};
         entities[1] = new Entity(gl, modelPath, vaoName, vboName, 2);
         entities[1].initEntity();
+        i++;
+
+        // Cube Right
+        this.modelPath = new String[]{"CubeRight.obj", "CubeRightKeyframe1.obj"};
+        entities[2] = new Entity(gl, modelPath, "HSHLLogo2.jpg", "CubeRight.mtl", vaoName, vboName, 3, pmvMatrix, light);
+        entities[2].initEntity();
+        i++;
+
+        // Hitboxloader Cube Right
+        this.modelPath = new String[]{"CubeRight.obj"};
+        entities[3] = new Entity(gl, modelPath, vaoName, vboName, 4);
+        entities[3].initEntity();
+        i++;
+
+        // Cube Center
+        this.modelPath = new String[]{"CubeCenter.obj", "CubeCenterKeyframe1.obj"};
+        entities[4] = new Entity(gl, modelPath, "GelbGruenPalette.png", "CubeCenter.mtl", vaoName, vboName, 5, pmvMatrix, light);
+        entities[4].initEntity();
+        i++;
+
+        // Hitboxloader Cube Center
+        this.modelPath = new String[]{"CubeCenter.obj"};
+        entities[5] = new Entity(gl, modelPath, vaoName, vboName, 6);
+        entities[5].initEntity();
         i++;
     }
 

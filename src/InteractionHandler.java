@@ -276,6 +276,69 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
 
         System.out.println("pos:  " + Arrays.toString(pos2));
 
+        float raylength = 99999;
+        int i = 0;
+
+        System.out.println("Cube Left");
+        if(entities[1].rayCollision(ray)){
+            if(entities[1].getCollision().getRayLength()<raylength){
+                raylength=entities[1].getCollision().getRayLength();
+                i=1;
+            }
+            entities[1].getCollision().resetRayLength();
+            entities[1].getCollision().resetCollision();
+        }
+
+        System.out.println("Cube Right");
+        if(entities[3].rayCollision(ray)){
+            if(entities[3].getCollision().getRayLength()<raylength){
+                raylength=entities[3].getCollision().getRayLength();
+                i=2;
+            }
+            entities[3].getCollision().resetRayLength();
+            entities[3].getCollision().resetCollision();
+        }
+
+        System.out.println("Cube Center");
+        if(entities[5].rayCollision(ray)){
+            if(entities[5].getCollision().getRayLength()<raylength){
+                raylength=entities[5].getCollision().getRayLength();
+                i=3;
+            }
+            entities[5].getCollision().resetRayLength();
+            entities[5].getCollision().resetCollision();
+        }
+
+        switch (i){
+            case 1:
+                if(entities[0].getAnimationHandler().getAnimationTrigger()){
+                    entities[0].getAnimationHandler().setAnimationTrigger(false);
+                }else{
+                    entities[0].getAnimationHandler().setAnimationTrigger(true);
+                }
+                break;
+            case 2:
+                if(entities[2].getAnimationHandler().getAnimationTrigger()){
+                    entities[2].getAnimationHandler().setAnimationTrigger(false);
+                }else{
+                    entities[2].getAnimationHandler().setAnimationTrigger(true);
+                }
+                break;
+            case 3:
+                if(entities[4].getAnimationHandler().getAnimationTrigger()){
+                    entities[4].getAnimationHandler().setAnimationTrigger(false);
+                }else{
+                    entities[4].getAnimationHandler().setAnimationTrigger(true);
+                }
+                break;
+            default:
+                break;
+        }
+
+        i=0;
+
+
+
 
         clicked = true;
         fertig = true;

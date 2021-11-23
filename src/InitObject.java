@@ -227,10 +227,7 @@ public class InitObject {
         return texture;
     }
 
-
-    // Für Raycasting später Löschen
-
-    public void initHitbox(GL3 gl, String[] modelPath, int[] vaoName, int[] vboName, int bufferIndex, String vertexShader, String fragmentShader){
+    public void initHitbox(GL3 gl,String[] modelPath, String vertexShader, String fragmentShader, int[] vaoName, int bufferIndex){
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
         this.shaderProgram = new ShaderProgram(gl);
@@ -239,26 +236,28 @@ public class InitObject {
 
         //load Model from OBJ
         this.modelLoader = new ModelLoader();
-        this.vertices = modelLoader.getHitboxVerticies(modelPath[0], modelPath[1]);
+        this.vertices = modelLoader.getHitboxVerticies(modelPath[0]);
 
 
         // activate and initialize vertex buffer object (VBO)
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[bufferIndex]);
-        // floats use 4 bytes in Java
-        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
-                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
-
-        // Activate and order vertex buffer object data for the vertex shader
-        // The vertex buffer contains: position (3), UV (2), normals (3)
-        // FOR KEYFRAME: position(3), normals (3)
-        // Defining input for vertex shader
-        // Pointer for the vertex shader to the position information per vertex
-        gl.glEnableVertexAttribArray(0);
-        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 3*4, 0);
+//        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[bufferIndex]);
+//        // floats use 4 bytes in Java
+//        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
+//                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
+//
+//        // Activate and order vertex buffer object data for the vertex shader
+//        // The vertex buffer contains: position (3), UV (2), normals (3)
+//        // FOR KEYFRAME: position(3), normals (3)
+//        // Defining input for vertex shader
+//        // Pointer for the vertex shader to the position information per vertex
+//        gl.glEnableVertexAttribArray(0);
+//        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 3*4, 0);
 
 
 
     }
+
+    // Kann später raus
 
     public void initPoint(GL3 gl, int[] vaoName, int[] vboName, String texturePath, String materialPath, int bufferIndex, String vertexShader, String fragmentShader, float[] verticies ){
 

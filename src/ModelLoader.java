@@ -213,6 +213,22 @@ public class ModelLoader {
         return combinedVertices;
     }
 
+    public float[] getHitboxVerticies(String path){
+
+        Path objFile = Paths.get("./resources/"+path);
+
+        try{
+
+            mesh = objLoader.loadMesh(Resource.file(objFile));
+            verticies = mesh.getVertices();
+
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return verticies;
+    }
+
+
 }
 
 

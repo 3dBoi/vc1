@@ -78,7 +78,7 @@ public class Entity {
 
         if(hitbox){
             this.vertexShader = "BlinnPhongPointTex.vert";
-            initObject.initHitbox(gl, modelPath, vaoName, vboName, index, vertexShader, fragmentShader);
+            initObject.initHitbox(gl, modelPath, vertexShader, fragmentShader, vaoName, index);
         }else if(modelPath.length>1){
             this.vertexShader = "BlinnPhongPointTexAnimation.vert";
             initObject.initAnimatedObject(gl, modelPath, texturePath, materialPath, vertexShader, fragmentShader, vaoName, vboName, index);
@@ -144,5 +144,9 @@ public class Entity {
 
     public InitObject getInitObject(){
         return initObject;
+    }
+
+    public Collision getCollision(){
+        return collision;
     }
 }
