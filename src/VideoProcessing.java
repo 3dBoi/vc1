@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import org.opencv.core.Point;
 
 /**
  * Simple application, that opens a video stream
@@ -27,12 +28,15 @@ import java.io.File;
  * 
  */
 public class VideoProcessing extends JFrame {
-	
+
+	private JButton confirmButton;
     private BufferedImagePanel imgPanel1;
     private BufferedImagePanel imgPanel2;
     private static JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
 	static int currentSigma;
-	
+	//Hier werden die Hues gesaved für die detection!
+	private int firstHue;
+	private int secondHue;
 	/**
 	 * Create object and perform the processing by calling private member functions.
 	 */
@@ -176,6 +180,24 @@ public class VideoProcessing extends JFrame {
 		   // apply medianBlur for noise reduction
     	   Imgproc.medianBlur(processedImage, processedImage, 15);
 
+		   //Circle detection
+		   Imgproc.HoughCircles(processedImage, processedImage, Imgproc.HOUGH_GRADIENT, 1,  (double)processedImage.rows()/16,
+				   100.0, 30.0, 1, 30);
+
+		   System.out.println(processedImage.cols());
+
+
+		   //Circle einzeichnen
+		   for (int x = 0; x < processedImage.cols()+1; x++) {
+			   double[] c = processedImage.get(0, x);
+			   Point center = new Point(Math.round(c[0]), Math.round(c[1]));
+			   // circle center
+			   Imgproc.circle(processedImage, center, 1, new Scalar(0,100,100), 3, 8, 0 );
+			   // circle outline
+			   int radius = (int) Math.round(c[2]);
+			   Imgproc.circle(processedImage, center, radius, new Scalar(255,0,255), 3, 8, 0 );
+		   }
+
 
 		   // display original frame from the video stream
 		   imgPanel1.setImage(Mat2BufferedImage(frame));
@@ -222,6 +244,32 @@ public class VideoProcessing extends JFrame {
     	return bufferedImage;
     }
 
+	public void initButton(){
+
+		confirmButton = new JButton();
+		confirmButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionConfirm(
+
+				);
+			}
+		});
+		confirmButton.setText("Confirm");
+	}
+
+
+
+	public void actionConfirm(){
+		if(firstHue==0) {
+			firstHue = getCurrentSigma();
+			System.out.println("First Hue: "+ firstHue);
+		}
+		else{
+			secondHue = getCurrentSigma();
+			System.out.println("Second Hue: "+ secondHue);
+		}
+	}
+
 	public JSlider initSlider(JPanel panel){
 		int min = 1;
 		int max = 165; //war mal 255
@@ -245,6 +293,10 @@ public class VideoProcessing extends JFrame {
 			}
 		});
 		return sigmaSlider;
+	}
+
+	public JButton getConfirmButton() {
+		return confirmButton;
 	}
 
 	public static int getCurrentSigma() {
