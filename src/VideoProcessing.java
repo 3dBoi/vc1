@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -99,7 +101,8 @@ public class VideoProcessing extends JFrame {
 		imgPanel2 = new BufferedImagePanel();
 		contentPane.add(imgPanel2);
 		contentPane.add(initSlider(contentPane));
-				
+		initButton();
+		contentPane.add(confirmButton);
 	       // place the frame at the center of the screen and show
 		pack();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -139,10 +142,19 @@ public class VideoProcessing extends JFrame {
 	   System.out.println("  Matrix channels: " + frame.channels());
 
 	   //HSV threshold selection
-	   int i = 1;
-	   int hLow = 100; //Max 180
-	   int sLow = 100; //Max 255
-	   int vLow = 0; //Max 255
+//	   int i = 1;
+//	   int hLow = 100; //Max 180
+//	   int sLow = 100; //Max 255
+//	   int vLow = 0; //Max 255
+//	   int hHigh = 180; //Max 180
+//	   int sHigh = 255; //Max 255
+//	   int vHigh = 255; //Max 255
+
+
+		int i = 1;
+	   int hLow = 0; //Max 180
+	   int sLow = 40; //Max 255
+	   int vLow = 20; //Max 255
 	   int hHigh = 180; //Max 180
 	   int sHigh = 255; //Max 255
 	   int vHigh = 255; //Max 255
@@ -152,14 +164,14 @@ public class VideoProcessing extends JFrame {
 	   while (cap.read(frame)) {
 
 		   // Gaussian Blur for smoother detection
-		   Imgproc.GaussianBlur(frame, frame, new Size(21, 21), 4);
+		   Imgproc.GaussianBlur(frame, frame, new Size(11, 11), 4);
 
     	   // convert the frame to HSV, output processedImage
     	   Imgproc.cvtColor(frame, processedImage, Imgproc.COLOR_BGR2HSV);
 
 		   // apply HSV threshold and output binary image
 		   //Core.inRange(processedImage, new Scalar(hLow,sLow,vLow), new Scalar(hHigh,sHigh,vHigh), processedImage);
-		   Core.inRange(processedImage, new Scalar(getCurrentSigma(),hLow,sLow), new Scalar(getCurrentSigma()+10,sHigh,vHigh), processedImage);
+		   Core.inRange(processedImage, new Scalar(getCurrentSigma(),sLow,vLow), new Scalar(getCurrentSigma()+15,sHigh,vHigh), processedImage);
 
 		   // apply medianBlur for noise reduction
     	   Imgproc.medianBlur(processedImage, processedImage, 15);
@@ -212,8 +224,8 @@ public class VideoProcessing extends JFrame {
 
 	public JSlider initSlider(JPanel panel){
 		int min = 1;
-		int max = 255;
-		int init = 100;
+		int max = 165; //war mal 255
+		int init = 10;
 
 		//Erstellung Slider mit Position, Min, Max, Aktuell
 		JSlider sigmaSlider = new JSlider(JSlider.VERTICAL, min, max, init);
@@ -228,6 +240,8 @@ public class VideoProcessing extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider) e.getSource();
 				setCurrentSigma(source.getValue());
+				Color c = new Color(Color.HSBtoRGB(sigmaSlider.getValue()/165f, 1,1));
+				confirmButton.setBackground(c);
 			}
 		});
 		return sigmaSlider;
