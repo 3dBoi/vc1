@@ -228,6 +228,38 @@ public class ModelLoader {
         return verticies;
     }
 
+    public float[] getTexCoordinates(String path){
+
+        Path objFile = Paths.get("./resources/"+path);
+
+        try{
+
+            objLoader.setLoadTextureCoordinates(true);
+
+            mesh = objLoader.loadMesh(Resource.file(objFile));
+            verticies = mesh.getVertices();
+
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        float[] texCoord = new float[(verticies.length/5)*2];
+        int j = 0;
+
+        for(int i = 3; i<verticies.length; i=i+3){
+
+            texCoord[j]=verticies[i];
+            j++;
+            i++;
+            texCoord[j]=verticies[i];
+            j++;
+            i++;
+        }
+
+        return texCoord;
+
+    }
+
 
 }
 

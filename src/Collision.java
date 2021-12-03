@@ -106,7 +106,7 @@ public class Collision {
                 if(raylengthTemp<raylength){
                     raylength=raylengthTemp;
                 }
-                System.out.println("Raylength: "+raylength);
+//                System.out.println("Raylength: "+raylength);
 
                 sx = rayx-rayvxtemp;
                 sy = rayy-rayvytemp;

@@ -1,6 +1,5 @@
-# Blender v2.93.5 OBJ File: 'drumsetV2Export.blend'
+# Blender v2.90.1 OBJ File: 'drumsetV2Export.blend'
 # www.blender.org
-mtllib drumsetV4_SmaolDrumBody.mtl
 o drumsetV4_SmaolDrumBody_Cylinder
 v 1.121707 2.281984 0.760188
 v 1.188262 2.509536 0.760188
@@ -931,7 +930,6 @@ vn 0.7419 -0.2170 -0.6344
 vn -0.9413 0.2753 0.1951
 vn 0.7980 -0.2334 -0.5556
 vn -0.2807 -0.9598 -0.0000
-usemtl SmaolDrumBody
 s 1
 f 27/1/1 339/2/2 212/3/1
 f 155/4/2 211/5/3 339/2/2

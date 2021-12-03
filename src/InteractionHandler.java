@@ -274,70 +274,152 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
         this.verticies = new float[]{pos1[0], pos1[1], pos1[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
                 pos2[0], pos2[1], pos2[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
 
-        System.out.println("pos:  " + Arrays.toString(pos2));
+//        System.out.println("pos:  " + Arrays.toString(pos2));
 
         float raylength = 99999;
         int i = 0;
 
-        System.out.println("Cube Left");
-        if(entities[1].rayCollision(ray)){
-            if(entities[1].getCollision().getRayLength()<raylength){
-                raylength=entities[1].getCollision().getRayLength();
+        System.out.println("BigDrum");
+        if(entities[6].rayCollision(ray)){
+            if(entities[6].getCollision().getRayLength()<raylength){
+                raylength=entities[6].getCollision().getRayLength();
                 i=1;
             }
-            entities[1].getCollision().resetRayLength();
-            entities[1].getCollision().resetCollision();
+            entities[6].getCollision().resetRayLength();
+            entities[6].getCollision().resetCollision();
         }
 
-        System.out.println("Cube Right");
-        if(entities[3].rayCollision(ray)){
-            if(entities[3].getCollision().getRayLength()<raylength){
-                raylength=entities[3].getCollision().getRayLength();
+        System.out.println("CrashSymbal");
+        if(entities[8].rayCollision(ray)){
+            if(entities[8].getCollision().getRayLength()<raylength){
+                raylength=entities[8].getCollision().getRayLength();
                 i=2;
             }
-            entities[3].getCollision().resetRayLength();
-            entities[3].getCollision().resetCollision();
+            entities[8].getCollision().resetRayLength();
+            entities[8].getCollision().resetCollision();
         }
 
-        System.out.println("Cube Center");
-        if(entities[5].rayCollision(ray)){
-            if(entities[5].getCollision().getRayLength()<raylength){
-                raylength=entities[5].getCollision().getRayLength();
+        System.out.println("SmallDrum");
+        if(entities[13].rayCollision(ray)){
+            if(entities[13].getCollision().getRayLength()<raylength){
+                raylength=entities[13].getCollision().getRayLength();
                 i=3;
             }
-            entities[5].getCollision().resetRayLength();
-            entities[5].getCollision().resetCollision();
+            entities[13].getCollision().resetRayLength();
+            entities[13].getCollision().resetCollision();
+        }
+
+        System.out.println("SmollDrum");
+        if(entities[18].rayCollision(ray)){
+            if(entities[18].getCollision().getRayLength()<raylength){
+                raylength=entities[18].getCollision().getRayLength();
+                i=4;
+            }
+            entities[18].getCollision().resetRayLength();
+            entities[18].getCollision().resetCollision();
+        }
+
+        System.out.println("MidDrum");
+        if(entities[23].rayCollision(ray)){
+            if(entities[23].getCollision().getRayLength()<raylength){
+                raylength=entities[23].getCollision().getRayLength();
+                i=5;
+            }
+            entities[23].getCollision().resetRayLength();
+            entities[23].getCollision().resetCollision();
+        }
+
+        System.out.println("RideSymbal");
+        if(entities[25].rayCollision(ray)){
+            if(entities[25].getCollision().getRayLength()<raylength){
+                raylength=entities[25].getCollision().getRayLength();
+                i=6;
+            }
+            entities[25].getCollision().resetRayLength();
+            entities[25].getCollision().resetCollision();
+        }
+
+        System.out.println("Hi-Hat");
+        if(entities[28].rayCollision(ray)){
+            if(entities[28].getCollision().getRayLength()<raylength){
+                raylength=entities[28].getCollision().getRayLength();
+                i=7;
+            }
+            entities[28].getCollision().resetRayLength();
+            entities[28].getCollision().resetCollision();
         }
 
         switch (i){
             case 1:
-                if(entities[0].getAnimationHandler().getAnimationTrigger()){
-                    entities[0].getAnimationHandler().setAnimationTrigger(false);
-                }else{
-                    entities[0].getAnimationHandler().setAnimationTrigger(true);
-                }
+
+                entities[0].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[1].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[2].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[3].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[4].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[5].getAnimationHandler().setAnimationTrigger(true);
+
                 break;
             case 2:
-                if(entities[2].getAnimationHandler().getAnimationTrigger()){
-                    entities[2].getAnimationHandler().setAnimationTrigger(false);
-                }else{
-                    entities[2].getAnimationHandler().setAnimationTrigger(true);
-                }
+
+                entities[7].getAnimationHandler().setAnimationTrigger(true);
+
                 break;
             case 3:
-                if(entities[4].getAnimationHandler().getAnimationTrigger()){
-                    entities[4].getAnimationHandler().setAnimationTrigger(false);
-                }else{
-                    entities[4].getAnimationHandler().setAnimationTrigger(true);
-                }
+
+                entities[9].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[10].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[11].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[12].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+            case 4:
+
+                entities[14].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[15].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[16].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[17].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+            case 5:
+
+                entities[19].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[20].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[21].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[22].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+            case 6:
+
+                entities[24].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+            case 7:
+
+                entities[26].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[27].getAnimationHandler().setAnimationTrigger(true);
+
                 break;
             default:
                 break;
         }
 
         i=0;
-
-
 
 
         clicked = true;

@@ -211,6 +211,35 @@ public class InitObject {
 
     }
 
+    public void updateRotation(GL3 gl, float[] vertices, int[] vboName, int bufferIndex){
+
+        this.vertices = vertices;
+
+        // activate and initialize vertex buffer object (VBO)
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboName[bufferIndex]);
+        // floats use 4 bytes in Java
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
+                FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
+
+        System.out.println(Arrays.toString(vertices));
+
+        // Activate and order vertex buffer object data for the vertex shader
+        // The vertex buffer contains: position (3), UV (2), normals (3)
+        // FOR KEYFRAME: position(3), normals (3)
+        // Defining input for vertex shader
+        // Pointer for the vertex shader to the position information per vertex
+        gl.glEnableVertexAttribArray(0);
+        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 8*4, 0);
+        // Pointer for the vertex shader to the texture coordinates information per vertex
+        gl.glEnableVertexAttribArray(1);
+        gl.glVertexAttribPointer(1, 2, GL.GL_FLOAT, false, 8*4, 3*4);
+        // Pointer for the vertex shader to the normal information per vertex
+        gl.glEnableVertexAttribArray(2);
+        gl.glVertexAttribPointer(2, 3, GL.GL_FLOAT, false, 8*4, 5*4);
+
+
+    }
+
     public ShaderProgram getShaderProgram(){
         return shaderProgram;
     }
