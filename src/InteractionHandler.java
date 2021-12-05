@@ -279,15 +279,15 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
         float raylength = 99999;
         int i = 0;
 
-        System.out.println("BigDrum");
-        if(entities[6].rayCollision(ray)){
-            if(entities[6].getCollision().getRayLength()<raylength){
-                raylength=entities[6].getCollision().getRayLength();
-                i=1;
-            }
-            entities[6].getCollision().resetRayLength();
-            entities[6].getCollision().resetCollision();
-        }
+//        System.out.println("BigDrum");
+//        if(entities[6].rayCollision(ray)){
+//            if(entities[6].getCollision().getRayLength()<raylength){
+//                raylength=entities[6].getCollision().getRayLength();
+//                i=1;
+//            }
+//            entities[6].getCollision().resetRayLength();
+//            entities[6].getCollision().resetCollision();
+//        }
 
         System.out.println("CrashSymbal");
         if(entities[8].rayCollision(ray)){
@@ -347,6 +347,16 @@ public class InteractionHandler implements KeyListener, MouseListener, MouseMoti
             }
             entities[28].getCollision().resetRayLength();
             entities[28].getCollision().resetCollision();
+        }
+
+        System.out.println("BigDrum");
+        if(entities[6].rayCollision(ray)){
+            if(entities[6].getCollision().getRayLength()<raylength){
+                raylength=entities[6].getCollision().getRayLength();
+                i=1;
+            }
+            entities[6].getCollision().resetRayLength();
+            entities[6].getCollision().resetCollision();
         }
 
         switch (i){
