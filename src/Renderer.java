@@ -117,10 +117,10 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // Nevertheless the start parameters can be set via setters
         // (see class definition of the interaction handler)
         interactionHandler = new InteractionHandler(gl, pmvMatrix, entities, objectArr, vboName, clicked);
-        this.addKeyListener(interactionHandler);
+//        this.addKeyListener(interactionHandler);
         this.addMouseListener(interactionHandler);
-        this.addMouseMotionListener(interactionHandler);
-        this.addMouseWheelListener(interactionHandler);
+//        this.addMouseMotionListener(interactionHandler);
+//        this.addMouseWheelListener(interactionHandler);
     }
 
 
