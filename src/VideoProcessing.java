@@ -42,188 +42,175 @@ import org.opencv.core.Size;
  */
 public class VideoProcessing extends JFrame {
 
-	static int currentSigma;
-	private static JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
-	List<MatOfPoint> contours = new ArrayList<>();
-	private JButton confirmButton;
-	private BufferedImagePanel imgPanel1;
-	private BufferedImagePanel imgPanel2;
-	//Hier werden die Hues gesaved für die detection!
-	private int firstHue;
-	private int secondHue;
-	private Point[] firstHuePoints = new Point[36];
-	private Point[] secondHuePoints = new Point[36];
-	private int iterator = 0;
+    private static JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+    List<MatOfPoint> contours = new ArrayList<>();
+    private JButton confirmButton;
+    private BufferedImagePanel imgPanel1;
+    private BufferedImagePanel imgPanel2;
+    //Hier werden die Hues gesaved für die detection!
+    private int firstHue;
+    private int secondHue;
+    private int firstSlow;
+    private int secondSlow;
+    private int firstSHigh;
+    private int secondSHigh;
+    private Point[] firstHuePoints = new Point[36];
+    private Point[] secondHuePoints = new Point[36];
+    private int iterator = 0;
+    private int hLow = 0; //Max 180
+    private int sLow = 1; //Max 255
+    private int vLow = 20; //Max 255
+    private int hHigh = 180; //Max 180
+    private int sHigh = 255; //Max 255
+    private int vHigh = 255; //Max 255
 
-	/**
-	 * Create object and perform the processing by calling private member functions.
-	 */
+    /**
+     * Create object and perform the processing by calling private member functions.
+     */
 
-	public VideoProcessing() {
-		imgPanel1 = null;
-		imgPanel2 = null;
+    public VideoProcessing() {
+        imgPanel1 = null;
+        imgPanel2 = null;
 
-		createFrame();
-		processShowVideo();
-	}
+        createFrame();
+        processShowVideo();
+    }
 
-	public static int getCurrentSigma() {
-		return currentSigma;
-	}
 
-	public static void setCurrentSigma(int currentSigma) {
-		VideoProcessing.currentSigma = currentSigma;
-	}
-
-	/**
-	 * Returns the path and file of the video to be processed.
-	 *
-	 * @return path and file name in one string
-	 */
-	private String getFilePathName() {
-		// Begin: Get file path and name from "getRessource"
-		// File name determination using getResource (seems to be buggy)
+    /**
+     * Returns the path and file of the video to be processed.
+     *
+     * @return path and file name in one string
+     */
+    private String getFilePathName() {
+        // Begin: Get file path and name from "getRessource"
+        // File name determination using getResource (seems to be buggy)
 /*		String filePathName = getClass().getResource("./Landscape.avi").getPath();
 		filePathName = filePathName.substring(1);  // remove the bug
 */        // End: Get file path and name from "getRessource"
 
 
-		// Begin: Set relative path and file name
+        // Begin: Set relative path and file name
 //		String filePathName = "videos\\Landscape.avi";
-		// End: Set relative path and file name
+        // End: Set relative path and file name
 
-		// Choose file path and file name via a file selector box
-		int returnVal = fileChooser.showOpenDialog(this);
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			return null;  // cancelled
-		}
-		File selectedFile = fileChooser.getSelectedFile();
-		String filePathName = selectedFile.getPath();
-		// End: Choose file path and file name via a file selector box
+        // Choose file path and file name via a file selector box
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal != JFileChooser.APPROVE_OPTION) {
+            return null;  // cancelled
+        }
+        File selectedFile = fileChooser.getSelectedFile();
+        String filePathName = selectedFile.getPath();
+        // End: Choose file path and file name via a file selector box
 
-		System.out.println("Video file name: " + filePathName);
-		return filePathName;
-	}
+        System.out.println("Video file name: " + filePathName);
+        return filePathName;
+    }
 
-	/**
-	 * @param imgMat   image matrix to be written to a file
-	 * @param filename name of the file to be created
-	 */
-	private void writeImage(Mat imgMat, String filename) {
-		String filePathName = "videos/" + filename;
-		Imgcodecs.imwrite(filePathName, imgMat,
-				new MatOfInt(Imgcodecs.IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY,
-						Imgcodecs.IMWRITE_PNG_STRATEGY_FIXED));
-	}
+    /**
+     * @param imgMat   image matrix to be written to a file
+     * @param filename name of the file to be created
+     */
+    private void writeImage(Mat imgMat, String filename) {
+        String filePathName = "videos/" + filename;
+        Imgcodecs.imwrite(filePathName, imgMat,
+                new MatOfInt(Imgcodecs.IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY,
+                        Imgcodecs.IMWRITE_PNG_STRATEGY_FIXED));
+    }
 
-	/**
-	 * Create the JFrame to be displayed, displaying two images.
-	 */
-	private void createFrame() {
+    /**
+     * Create the JFrame to be displayed, displaying two images.
+     */
+    private void createFrame() {
 
-		setTitle("Original and processed video stream");
-		JPanel contentPane = (JPanel) getContentPane();
-		contentPane.setLayout(new FlowLayout());
+        setTitle("Original and processed video stream");
+        JPanel contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(new FlowLayout());
+        //add webcam footage
+        imgPanel1 = new BufferedImagePanel();
+        contentPane.add(imgPanel1);
+        imgPanel2 = new BufferedImagePanel();
+        contentPane.add(imgPanel2);
+        //add Sliders
+        contentPane.add(initHueSlider(contentPane));
+        contentPane.add(initSaturationSliderLow((contentPane)));
+        contentPane.add(initSaturationSliderHigh((contentPane)));
+        initButton();
+        contentPane.add(confirmButton);
+        // place the frame at the center of the screen and show
+        pack();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width / 2 - getWidth() / 2, dim.height / 2 - getHeight() / 2);
 
-		imgPanel1 = new BufferedImagePanel();
-		contentPane.add(imgPanel1);
-		imgPanel2 = new BufferedImagePanel();
-		contentPane.add(imgPanel2);
-		contentPane.add(initSlider(contentPane));
-		initButton();
-		contentPane.add(confirmButton);
-		// place the frame at the center of the screen and show
-		pack();
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation(dim.width / 2 - getWidth() / 2, dim.height / 2 - getHeight() / 2);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+    }
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
-	}
+    /**
+     * Reades a video stream from a file or camera, displays the original frames,
+     * processes the frames and displays the result.
+     */
+    private void processShowVideo() {
 
-	/**
-	 * Reades a video stream from a file or camera, displays the original frames,
-	 * processes the frames and displays the result.
-	 */
-	private void processShowVideo() {
+        // BEGIN: Prepare streaming from internal web cam
+        //NOTE: "To open default camera using default backend just pass 0."
+        //https://docs.opencv.org/3.4/d8/dfe/classcv_1_1VideoCapture.html#a57c0e81e83e60f36c83027dc2a188e80
+        VideoCapture cap = new VideoCapture(0, Videoio.CAP_ANY);
+        // END: Prepare streaming from internal web cam
 
-		// BEGIN: Prepare streaming from internal web cam
-		//NOTE: "To open default camera using default backend just pass 0."
-		//https://docs.opencv.org/3.4/d8/dfe/classcv_1_1VideoCapture.html#a57c0e81e83e60f36c83027dc2a188e80
-		VideoCapture cap = new VideoCapture(0, Videoio.CAP_ANY);
-		// END: Prepare streaming from internal web cam
+        // BEGIN: Prepare streaming from video file
+        //String filePathName = getFilePathName();
+        //VideoCapture cap = new VideoCapture(filePathName);
+        // END: Prepare streaming from video file
 
-		// BEGIN: Prepare streaming from video file
-		//String filePathName = getFilePathName();
-		//VideoCapture cap = new VideoCapture(filePathName);
-		// END: Prepare streaming from video file
+        Mat frame = new Mat();
+        Mat grey = new Mat();
+        Mat circles = new Mat();
+        // Check of file or camera can be opened
+        if (!cap.isOpened())
+            throw new CvException("The Video File or the Camera could not be opened!");
 
-		Mat frame = new Mat();
-		Mat grey = new Mat();
-		Mat circles = new Mat();
-		// Check of file or camera can be opened
-		if (!cap.isOpened())
-			throw new CvException("The Video File or the Camera could not be opened!");
+        Mat processedImage = new Mat();
+        Mat processedImage1 = new Mat();
+        Mat processedImage2 = new Mat();
+        cap.read(frame);
+        System.out.println("  First grabbed frame: " + frame);
+        System.out.println("  Matrix columns: " + frame.cols());
+        System.out.println("  Matrix rows: " + frame.rows());
+        System.out.println("  Matrix channels: " + frame.channels());
 
-		Mat processedImage = new Mat();
-		Mat processedImage1 = new Mat();
-		Mat processedImage2 = new Mat();
-		cap.read(frame);
-		System.out.println("  First grabbed frame: " + frame);
-		System.out.println("  Matrix columns: " + frame.cols());
-		System.out.println("  Matrix rows: " + frame.rows());
-		System.out.println("  Matrix channels: " + frame.channels());
+        //Count Frames
+        int i = 1;
+        System.out.print("Frame count: (" + i + ")");
 
-		//HSV threshold selection
-//	   int i = 1;
-//	   int hLow = 100; //Max 180
-//	   int sLow = 100; //Max 255
-//	   int vLow = 0; //Max 255
-//	   int hHigh = 180; //Max 180
-//	   int sHigh = 255; //Max 255
-//	   int vHigh = 255; //Max 255
+        // loop for grabbing frames
+        while (cap.read(frame)) {
 
+            // Gaussian Blur for smoother detection
+            Imgproc.GaussianBlur(frame, frame, new Size(11, 11), 4);
+            Imgproc.cvtColor(frame, grey, Imgproc.COLOR_BGR2GRAY);
 
-		int i = 1;
-		int hLow = 0; //Max 180
-		int sLow = 40; //Max 255
-		int vLow = 20; //Max 255
-		int hHigh = 180; //Max 180
-		int sHigh = 255; //Max 255
-		int vHigh = 255; //Max 255
+            // convert the frame to HSV, output processedImage
+            Imgproc.cvtColor(frame, processedImage, Imgproc.COLOR_BGR2HSV);
 
-		System.out.print("Frame count: (" + i + ")");
-		// loop for grabbing frames
-		while (cap.read(frame)) {
+            // apply HSV threshold and output binary image
+            //Core.inRange(processedImage, new Scalar(hLow,sLow,vLow), new Scalar(hHigh,sHigh,vHigh), processedImage);
+            if (firstHue == 0) {
+                Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 15, sHigh, vHigh), processedImage1);
+            } else {
+                Core.inRange(processedImage, new Scalar(firstHue, sLow, vLow), new Scalar(firstHue + 15, sHigh, vHigh), processedImage1);
+            }
 
-			// Gaussian Blur for smoother detection
-			Imgproc.GaussianBlur(frame, frame, new Size(11, 11), 4);
-			Imgproc.cvtColor(frame, grey, Imgproc.COLOR_BGR2GRAY);
+            //Median Blur for filtering out additional noise
+            Imgproc.medianBlur(processedImage1, processedImage1, 15);
+            if (secondHue != 0) {
+                Core.inRange(processedImage, new Scalar(secondHue, sLow, vLow), new Scalar(secondHue + 15, sHigh, vHigh), processedImage2);
+            }else {
+                Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 15, sHigh, vHigh), processedImage2);
+            }
+            Imgproc.medianBlur(processedImage2, processedImage2, 15);
 
-			// convert the frame to HSV, output processedImage
-
-
-			Imgproc.cvtColor(frame, processedImage, Imgproc.COLOR_BGR2HSV);
-
-			// apply HSV threshold and output binary image
-			//Core.inRange(processedImage, new Scalar(hLow,sLow,vLow), new Scalar(hHigh,sHigh,vHigh), processedImage);
-
-			if (firstHue == 0) {
-				Core.inRange(processedImage, new Scalar(getCurrentSigma(), sLow, vLow), new Scalar(getCurrentSigma() + 15, sHigh, vHigh), processedImage1);
-			} else {
-				Core.inRange(processedImage, new Scalar(firstHue, sLow, vLow), new Scalar(firstHue + 15, sHigh, vHigh), processedImage1);
-			}
-
-			Imgproc.medianBlur(processedImage1, processedImage1, 15);
-
-			if (secondHue != 0) {
-				Core.inRange(processedImage, new Scalar(secondHue, sLow, vLow), new Scalar(secondHue + 15, sHigh, vHigh), processedImage2);
-			}else {
-				Core.inRange(processedImage, new Scalar(getCurrentSigma(), sLow, vLow), new Scalar(getCurrentSigma() + 15, sHigh, vHigh), processedImage2);
-			}
-			Imgproc.medianBlur(processedImage2, processedImage2, 15);
-
-			//Circle detection
+            //Circle detection
 //			Imgproc.HoughCircles(processedImage, circles, Imgproc.HOUGH_GRADIENT, 1.0,
 //					(double)grey.rows()/16, // change this value to detect circles with different distances to each other
 //					100.0, 30.0, 0, 0); // change the last two parameters
@@ -238,42 +225,39 @@ public class VideoProcessing extends JFrame {
 //				Imgproc.circle(processedImage, center, radius, new Scalar(255,0,255), 3, 8, 0 );
 //			}
 
-			//Find Contours
-			Imgproc.findContours(processedImage1, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
-			double maxArea = 100;
-			float[] radius = new float[1];
-			Point center = new Point();
-			for (MatOfPoint c : contours) {
-				if (Imgproc.contourArea(c) > maxArea) {
-					MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
-					Imgproc.minEnclosingCircle(c2f, center, radius);
-				}
-			}
+            //Find Contours
+            Imgproc.findContours(processedImage1, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+            double maxArea = 100;
+            float[] radius = new float[1];
+            Point center = new Point();
+            for (MatOfPoint c : contours) {
+                if (Imgproc.contourArea(c) > maxArea) {
+                    MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
+                    Imgproc.minEnclosingCircle(c2f, center, radius);
+                }
+            }
+            //move cursor
+            MainWindow.moveBLUE(center.x,center.y);
 
-			firstHuePoints[iterator] = center;
+            //draw circle
+            firstHuePoints[iterator] = center;
+            Imgproc.circle(frame, center, (int) radius[0], new Scalar(255, 0, 0), 2);
 
+            if (secondHue != 0) {
+                Imgproc.findContours(processedImage2, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+                center = new Point();
+                for (MatOfPoint c : contours) {
+                    if (Imgproc.contourArea(c) > maxArea) {
+                        MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
+                        Imgproc.minEnclosingCircle(c2f, center, radius);
+                    }
+                }
+                secondHuePoints[iterator] = center;
+            }
 
-			Imgproc.circle(frame, center, (int) radius[0], new Scalar(255, 0, 0), 2);
-
-
-			//cursor.moveCursor(MainWindow.mainWindow.getjLabelRED());
-
-			if (secondHue != 0) {
-				Imgproc.findContours(processedImage2, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
-
-				center = new Point();
-				for (MatOfPoint c : contours) {
-					if (Imgproc.contourArea(c) > maxArea) {
-						MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
-						Imgproc.minEnclosingCircle(c2f, center, radius);
-					}
-				}
-				secondHuePoints[iterator] = center;
-			}
-
-			MainWindow.moveGREEN(center.x,center.y);
-
-			Imgproc.circle(frame, center, (int) radius[0], new Scalar(0, 255, 0), 2);
+            MainWindow.moveGREEN(center.x,center.y);
+            //Draw circle
+            Imgproc.circle(frame, center, (int) radius[0], new Scalar(0, 255, 0), 2);
 
 
 //			//Close Hue Contures
@@ -297,157 +281,169 @@ public class VideoProcessing extends JFrame {
 //
 //			}
 
-			//Close Contours rework
-			for(int arr = 0; arr< Objects.requireNonNull(firstHuePoints).length-1; arr++){
-				if(firstHuePoints[arr]!=null){
-					for(int arr2=0; arr2<secondHuePoints.length-1; arr2++){
-						if(firstHuePoints[arr]!=null&& secondHuePoints[arr2]!=null&& Math.abs(firstHuePoints[arr].x-secondHuePoints[arr2].x)<=60 && Math.abs(firstHuePoints[arr].y-secondHuePoints[arr2].y)<=60){
+            //Close Contours rework
+            for(int arr = 0; arr< Objects.requireNonNull(firstHuePoints).length-1; arr++){
+                if(firstHuePoints[arr]!=null){
+                    for(int arr2=0; arr2<secondHuePoints.length-1; arr2++){
+                        if(firstHuePoints[arr]!=null&& secondHuePoints[arr2]!=null&& Math.abs(firstHuePoints[arr].x-secondHuePoints[arr2].x)<=60 && Math.abs(firstHuePoints[arr].y-secondHuePoints[arr2].y)<=60){
 
-							MainWindow.moveRED(center.x,center.y);
-							Imgproc.circle(frame, firstHuePoints[arr], (int) radius[0], new Scalar(0, 0, 255), 5);
+                            MainWindow.moveRED(center.x,center.y);
+                            Imgproc.circle(frame, firstHuePoints[arr], (int) radius[0], new Scalar(0, 0, 255), 5);
 
-							Renderer.interactionHandler.imageProcessResult((float)center.x,(float) center.y);
+                            Renderer.interactionHandler.imageProcessResult((float)center.x,(float) center.y);
 
-							firstHuePoints[arr]=null;
-							secondHuePoints[arr2]=null;
-						}
-					}
-				}
+                            firstHuePoints[arr]=null;
+                            secondHuePoints[arr2]=null;
+                        }
+                    }
+                }
+            }
 
-			}
+            // display original frame from the video stream
+            imgPanel1.setImage(Mat2BufferedImage(frame));
+
+            // Show processed image
+            if (firstHue == 0) {
+                imgPanel2.setImage(Mat2BufferedImage(processedImage1));
+            } else {
+                imgPanel2.setImage(Mat2BufferedImage(processedImage2));
+            }
+            pack();
+
+            iterator++;
+            if (iterator == 36) {
+                iterator = 0;
+            }
+            contours.clear();
+
+            //Write unprocessed and processed frame successively to files
+            // writeImage(frame, "unprocessedImage.png");
+            // writeImage(processedImage, "processedImage.png");
+        } // END for loop
+        System.out.println(".(" + i + ")");
+
+        cap.release();
+    }
+
+    /**
+     * Converts an OpenCV matrix into a BufferedImage.
+     * <p>
+     * Inspired by
+     * http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
+     * Fastest code
+     * <p>
+     * //@param OpenCV Matrix to be converted must be a one channel (grayscale) or
+     * three channel (BGR) matrix, i.e. one or three byte(s) per pixel.
+     *
+     * @return converted image as BufferedImage
+     */
+    public BufferedImage Mat2BufferedImage(Mat imgMat) {
+        int bufferedImageType = 0;
+        switch (imgMat.channels()) {
+            case 1:
+                bufferedImageType = BufferedImage.TYPE_BYTE_GRAY;
+                break;
+            case 3:
+                bufferedImageType = BufferedImage.TYPE_3BYTE_BGR;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown matrix type. Only one byte per pixel (one channel) or three bytes pre pixel (three channels) are allowed.");
+        }
+        BufferedImage bufferedImage = new BufferedImage(imgMat.cols(), imgMat.rows(), bufferedImageType);
+        final byte[] bufferedImageBuffer = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
+        imgMat.get(0, 0, bufferedImageBuffer);
+        return bufferedImage;
+    }
+
+    public void initButton() {
+
+        confirmButton = new JButton();
+        confirmButton.addActionListener(e -> actionConfirm(
+        ));
+        confirmButton.setText("Confirm");
+    }
+
+    public void actionConfirm() {
+        if (firstHue == 0) {
+            firstHue = hLow;
+            firstSlow = sLow;
+            firstSHigh = sHigh;
+            System.out.println("First Hue: " + firstHue);
+            System.out.println("First SatL: " + firstSlow);
+            System.out.println("First SatH: " + firstSHigh);
+        } else {
+            secondHue = hLow;
+            secondSlow = sLow;
+            secondSHigh = sHigh;
+            System.out.println("Second Hue: " + secondHue);
+            System.out.println("Second SatL: " + secondSlow);
+            System.out.println("Second SatH: " + secondSHigh);
+        }
+    }
+
+    public JSlider initHueSlider(JPanel panel) {
+        int min = 1;
+        int max = 165; //war mal 255
+        int init = 10;
+
+        //Erstellung Slider mit Position, Min, Max, Aktuell
+        JSlider slider = new JSlider(JSlider.VERTICAL, min, max, init);
+        Dimension d = slider.getPreferredSize();
+        slider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
+        slider.setMajorTickSpacing(50);
+        slider.setMinorTickSpacing(25);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.addChangeListener(e -> {
+            JSlider source = (JSlider) e.getSource();
+            hLow = (source.getValue());
+            Color c = new Color(Color.HSBtoRGB(slider.getValue() / 165f, 1, 1));
+            confirmButton.setBackground(c);
+        });
+        return slider;
+    }
+
+    public JSlider initSaturationSliderLow(JPanel panel) {
+        int min = 1;
+        int max = 255;
+        int init = 1;
+        //Erstellung Slider mit Position, Min, Max, Aktuell
+        JSlider slider = new JSlider(JSlider.VERTICAL, min, max, init);
+        Dimension d = slider.getPreferredSize();
+        slider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
+        slider.setMajorTickSpacing(50);
+        slider.setMinorTickSpacing(25);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.addChangeListener(e -> {
+            JSlider source = (JSlider) e.getSource();
+            sLow = (source.getValue());
+        });
+        return slider;
+    }
+
+    public JSlider initSaturationSliderHigh(JPanel panel) {
+        int min = 1;
+        int max = 255;
+        int init = 255;
+        //Erstellung Slider mit Position, Min, Max, Aktuell
+        JSlider slider = new JSlider(JSlider.VERTICAL, min, max, init);
+        Dimension d = slider.getPreferredSize();
+        slider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
+        slider.setMajorTickSpacing(50);
+        slider.setMinorTickSpacing(25);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.addChangeListener(e -> {
+            JSlider source = (JSlider) e.getSource();
+            sHigh = (source.getValue());
+        });
+        return slider;
+    }
 
 
 
-			// display original frame from the video stream
-			imgPanel1.setImage(Mat2BufferedImage(frame));
-
-
-			// Show processed image
-			if (firstHue == 0) {
-				imgPanel2.setImage(Mat2BufferedImage(processedImage1));
-			} else {
-				imgPanel2.setImage(Mat2BufferedImage(processedImage2));
-			}
-			pack();
-
-
-			iterator++;
-			if (iterator == 36) {
-				iterator = 0;
-			}
-			contours.clear();
-
-
-
-//            System.out.println("f   "+ Arrays.toString(firstHuePoints));
-//            System.out.println("s   "+Arrays.toString(secondHuePoints));
-
-
-			//Write unprocessed and processed frame successively to files
-			// writeImage(frame, "unprocessedImage.png");
-			// writeImage(processedImage, "processedImage.png");
-		} // END for loop
-		System.out.println(".(" + i + ")");
-
-
-
-		cap.release();
-	}
-
-	/**
-	 * Converts an OpenCV matrix into a BufferedImage.
-	 * <p>
-	 * Inspired by
-	 * http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
-	 * Fastest code
-	 * <p>
-	 * //@param OpenCV Matrix to be converted must be a one channel (grayscale) or
-	 * three channel (BGR) matrix, i.e. one or three byte(s) per pixel.
-	 *
-	 * @return converted image as BufferedImage
-	 */
-	public BufferedImage Mat2BufferedImage(Mat imgMat) {
-		int bufferedImageType = 0;
-		switch (imgMat.channels()) {
-			case 1:
-				bufferedImageType = BufferedImage.TYPE_BYTE_GRAY;
-				break;
-			case 3:
-				bufferedImageType = BufferedImage.TYPE_3BYTE_BGR;
-				break;
-			default:
-				throw new IllegalArgumentException("Unknown matrix type. Only one byte per pixel (one channel) or three bytes pre pixel (three channels) are allowed.");
-		}
-		BufferedImage bufferedImage = new BufferedImage(imgMat.cols(), imgMat.rows(), bufferedImageType);
-		final byte[] bufferedImageBuffer = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-		imgMat.get(0, 0, bufferedImageBuffer);
-		return bufferedImage;
-	}
-
-	public void initButton() {
-
-		confirmButton = new JButton();
-		confirmButton.addActionListener(e -> actionConfirm(
-		));
-		confirmButton.setText("Confirm");
-	}
-
-	public void actionConfirm() {
-		if (firstHue == 0) {
-			firstHue = getCurrentSigma();
-			System.out.println("First Hue: " + firstHue);
-		} else {
-			secondHue = getCurrentSigma();
-			System.out.println("Second Hue: " + secondHue);
-		}
-	}
-
-	public JSlider initSlider(JPanel panel) {
-		int min = 1;
-		int max = 165; //war mal 255
-		int init = 140;
-
-		//Erstellung Slider mit Position, Min, Max, Aktuell
-		JSlider sigmaSlider = new JSlider(JSlider.VERTICAL, min, max, init);
-		Dimension d = sigmaSlider.getPreferredSize();
-		sigmaSlider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
-		sigmaSlider.setMajorTickSpacing(50);
-		sigmaSlider.setMinorTickSpacing(25);
-		sigmaSlider.setPaintTicks(true);
-		sigmaSlider.setPaintLabels(true);
-		sigmaSlider.addChangeListener(e -> {
-			JSlider source = (JSlider) e.getSource();
-			setCurrentSigma(source.getValue());
-			Color c = new Color(Color.HSBtoRGB(sigmaSlider.getValue() / 165f, 1, 1));
-			confirmButton.setBackground(c);
-		});
-		return sigmaSlider;
-	}
-
-	// wird mal Saturation Slider
-//    public JSlider satSlider(JPanel panel) {
-//        int min = 1;
-//        int max = 200; //war mal 255
-//        int init = 10;
-//
-//        //Erstellung Slider mit Position, Min, Max, Aktuell
-//        JSlider sigmaSlider = new JSlider(JSlider.VERTICAL, min, max, init);
-//        Dimension d = sigmaSlider.getPreferredSize();
-//        sigmaSlider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
-//        sigmaSlider.setMajorTickSpacing(50);
-//        sigmaSlider.setMinorTickSpacing(25);
-//        sigmaSlider.setPaintTicks(true);
-//        sigmaSlider.setPaintLabels(true);
-//        sigmaSlider.addChangeListener(e -> {
-//            JSlider source = (JSlider) e.getSource();
-//            setCurrentSigma(source.getValue());
-//            Color c = new Color(Color.HSBtoRGB(sigmaSlider.getValue() / 200f, 1, 1));
-//            confirmButton.setBackground(c);
-//        });
-//        return sigmaSlider;
-//    }
-
-	public JButton getConfirmButton() {
-		return confirmButton;
-	}
+    public JButton getConfirmButton() {
+        return confirmButton;
+    }
 }
