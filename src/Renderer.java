@@ -76,7 +76,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
     private LightSource light0;
 
     // Object for handling keyboard and mouse interaction
-    private InteractionHandler interactionHandler;
+    public static InteractionHandler interactionHandler;
     // Projection model view matrix tool
     private PMVMatrix pmvMatrix = new PMVMatrix();
 

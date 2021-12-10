@@ -456,6 +456,216 @@ public class InteractionHandler implements MouseListener{
         fertig = true;
     }
 
+    public void imageProcessResult(float x, float y) {
+
+        System.out.println("X: " + x);
+        System.out.println("Y: " + x);
+
+        int[] viewport = {0, 0, 800, 600};
+        float winX, winY;
+        float[] pos1 = new float[3];// posX, posY, posZ;
+
+        Ray ray = new Ray();
+
+        float[] pos2 = new float[3];
+
+        winX = x;
+        winY = viewport[3] - y;
+
+
+        pmvMatrix.gluUnProjectRay(winX, winY, 0.0f, 1.0f, viewport, 0, ray);
+
+        pos1 = ray.orig;
+        pos2[0] = ray.orig[0] + ray.dir[0] * 10;
+        pos2[1] = ray.orig[1] + ray.dir[1] * 10;
+        pos2[2] = ray.orig[2] + ray.dir[2] * 10;
+
+        this.verticies = new float[]{pos1[0], pos1[1], pos1[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                pos2[0], pos2[1], pos2[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
+
+//        System.out.println("pos:  " + Arrays.toString(pos2));
+
+        float raylength = 99999;
+        int i = 0;
+
+        System.out.println("BigDrum");
+        if(entities[6].rayCollision(ray)){
+            if(entities[6].getCollision().getRayLength()<raylength){
+                raylength=entities[6].getCollision().getRayLength();
+                i=1;
+            }
+            entities[6].getCollision().resetRayLength();
+            entities[6].getCollision().resetCollision();
+        }
+
+        System.out.println("CrashSymbal");
+        if(entities[8].rayCollision(ray)){
+            if(entities[8].getCollision().getRayLength()<raylength){
+                raylength=entities[8].getCollision().getRayLength();
+                i=2;
+            }
+            entities[8].getCollision().resetRayLength();
+            entities[8].getCollision().resetCollision();
+        }
+
+        System.out.println("SmallDrum");
+        if(entities[13].rayCollision(ray)){
+            if(entities[13].getCollision().getRayLength()<raylength){
+                raylength=entities[13].getCollision().getRayLength();
+                i=3;
+            }
+            entities[13].getCollision().resetRayLength();
+            entities[13].getCollision().resetCollision();
+        }
+
+        System.out.println("SmollDrum");
+        if(entities[18].rayCollision(ray)){
+            if(entities[18].getCollision().getRayLength()<raylength){
+                raylength=entities[18].getCollision().getRayLength();
+                i=4;
+            }
+            entities[18].getCollision().resetRayLength();
+            entities[18].getCollision().resetCollision();
+        }
+
+        System.out.println("MidDrum");
+        if(entities[23].rayCollision(ray)){
+            if(entities[23].getCollision().getRayLength()<raylength){
+                raylength=entities[23].getCollision().getRayLength();
+                i=5;
+            }
+            entities[23].getCollision().resetRayLength();
+            entities[23].getCollision().resetCollision();
+        }
+
+        System.out.println("RideSymbal");
+        if(entities[25].rayCollision(ray)){
+            if(entities[25].getCollision().getRayLength()<raylength){
+                raylength=entities[25].getCollision().getRayLength();
+                i=6;
+            }
+            entities[25].getCollision().resetRayLength();
+            entities[25].getCollision().resetCollision();
+        }
+
+        System.out.println("Hi-Hat");
+        if(entities[28].rayCollision(ray)){
+            if(entities[28].getCollision().getRayLength()<raylength){
+                raylength=entities[28].getCollision().getRayLength();
+                i=7;
+            }
+            entities[28].getCollision().resetRayLength();
+            entities[28].getCollision().resetCollision();
+        }
+
+
+        switch (i){
+
+            // BigDrum
+            case 1:
+
+                audio.playAudio("BassDrum.wav");
+
+                entities[0].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[1].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[2].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[3].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[4].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[5].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+            // Crash Symbal
+            case 2:
+
+                audio.playAudio("Crash.wav");
+
+                entities[7].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+
+            // SmallDrum
+            case 3:
+
+                audio.playAudio("Snare.wav");
+
+                entities[9].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[10].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[11].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[12].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+
+            // SmollDrum
+            case 4:
+
+                audio.playAudio("TomTom.wav");
+
+                entities[14].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[15].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[16].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[17].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+
+            // MidDrum
+            case 5:
+
+                audio.playAudio("StandTom.wav");
+
+                entities[19].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[20].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[21].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[22].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+
+            // Ride Symbal
+            case 6:
+
+                audio.playAudio("Ride.wav");
+
+                entities[24].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+
+            // Hi-Hat
+            case 7:
+
+                audio.playAudio("Hi-Hat.wav");
+
+                entities[26].getAnimationHandler().setAnimationTrigger(true);
+
+                entities[27].getAnimationHandler().setAnimationTrigger(true);
+
+                break;
+            default:
+                break;
+        }
+
+        i=0;
+
+
+        clicked = true;
+        fertig = true;
+    }
+
+
+
+
     @Override
 //    /**
 //     * Implements one method of the interface MouseListener

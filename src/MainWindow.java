@@ -27,7 +27,7 @@
  */
 
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -64,8 +64,29 @@ public class MainWindow extends JFrame {
     private static final int CANVAS_WIDTH = 800;  // width of the drawable
     private static final int CANVAS_HEIGHT = 600; // height of the drawable
     private static final int FPS = 60; // animator's target frames per second
+    public static MainWindow mainWindow;
+    public static JLabel jLabelRED = new JLabel();
+    public static JLabel jLabelGREEN = new JLabel();
+    public static JLabel jLabelBLUE = new JLabel();
+
+
+    public JLabel getjLabelRED() {
+        return jLabelRED;
+    }
 
     public MainWindow() {
+        jLabelRED.setOpaque(true);
+        jLabelRED.setBackground(new Color(0,0,0,0));
+        jLabelRED.setBounds(-50,-50,15,15);
+
+        jLabelBLUE.setOpaque(true);
+        jLabelBLUE.setBackground(Color.BLUE);
+        jLabelBLUE.setBounds(-50,-50,15,15);
+
+        jLabelGREEN.setOpaque(true);
+        jLabelGREEN.setBackground(Color.GREEN);
+        jLabelGREEN.setBounds(-50,-50,15,15);
+
 
         // Setup an OpenGL context for the Canvas
         // Setup OpenGL to use the programmable pipeline
@@ -111,6 +132,25 @@ public class MainWindow extends JFrame {
         // OpenGL: request focus for canvas
         canvas.requestFocusInWindow();
     }
+
+
+    public static void moveBLUE(double x, double y){
+        jLabelBLUE.setBackground(Color.BLUE);
+        jLabelBLUE.setLocation((int) x,(int) y);
+    }
+
+    public static void moveGREEN(double x, double y){
+        jLabelGREEN.setBackground(Color.GREEN);
+        jLabelGREEN.setLocation((int) x,(int) y);
+    }
+
+    public static void moveRED(double x, double y){
+        jLabelRED.setBackground(Color.RED);
+        jLabelRED.setLocation((int) x,(int) y);
+    }
+
+
+
 
     /**
      * Creates the main window and starts the program

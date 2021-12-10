@@ -22,6 +22,7 @@ import org.opencv.core.MatOfPoint;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.opencv.core.Core;
 
@@ -254,6 +255,9 @@ public class VideoProcessing extends JFrame {
 
 			Imgproc.circle(frame, center, (int) radius[0], new Scalar(255, 0, 0), 2);
 
+
+			//cursor.moveCursor(MainWindow.mainWindow.getjLabelRED());
+
 			if (secondHue != 0) {
 				Imgproc.findContours(processedImage2, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
 
@@ -267,23 +271,45 @@ public class VideoProcessing extends JFrame {
 				secondHuePoints[iterator] = center;
 			}
 
+			MainWindow.moveGREEN(center.x,center.y);
 
 			Imgproc.circle(frame, center, (int) radius[0], new Scalar(0, 255, 0), 2);
 
 
-			//Close Hue Contures
-			for(Point fCenter : firstHuePoints){
-				if (fCenter!=null){
-					for(Point sCenter :secondHuePoints){
-						if(sCenter != null) {
-							assert fCenter != null;
-							if (Math.abs(fCenter.x - sCenter.x )<=80 && Math.abs(fCenter.y - sCenter.y) <= 80) {
+//			//Close Hue Contures
+//			for(Point fCenter : firstHuePoints){
+//				if (fCenter!=null){
+//					for(Point sCenter :secondHuePoints){
+//						if(sCenter != null) {
+//
+//							if (fCenter!=null && sCenter!=null && Math.abs(fCenter.x - sCenter.x )<=80 && Math.abs(fCenter.y - sCenter.y) <= 80) {
+//
+//								Imgproc.circle(frame, fCenter, (int) radius[0], new Scalar(0, 0, 255), 5);
+//
+//								firstHuePoints = null;
+//								fCenter = null;
+//
+//							}
+//
+//						}
+//					}
+//				}
+//
+//			}
 
-								Imgproc.circle(frame, sCenter, (int) radius[0], new Scalar(0, 0, 255), 5);
+			//Close Contours rework
+			for(int arr = 0; arr< Objects.requireNonNull(firstHuePoints).length-1; arr++){
+				if(firstHuePoints[arr]!=null){
+					for(int arr2=0; arr2<secondHuePoints.length-1; arr2++){
+						if(firstHuePoints[arr]!=null&& secondHuePoints[arr2]!=null&& Math.abs(firstHuePoints[arr].x-secondHuePoints[arr2].x)<=60 && Math.abs(firstHuePoints[arr].y-secondHuePoints[arr2].y)<=60){
 
-								sCenter = null;
-								fCenter = null;
-							}
+							MainWindow.moveRED(center.x,center.y);
+							Imgproc.circle(frame, firstHuePoints[arr], (int) radius[0], new Scalar(0, 0, 255), 5);
+
+							Renderer.interactionHandler.imageProcessResult((float)center.x,(float) center.y);
+
+							firstHuePoints[arr]=null;
+							secondHuePoints[arr2]=null;
 						}
 					}
 				}
@@ -379,7 +405,7 @@ public class VideoProcessing extends JFrame {
 	public JSlider initSlider(JPanel panel) {
 		int min = 1;
 		int max = 165; //war mal 255
-		int init = 10;
+		int init = 140;
 
 		//Erstellung Slider mit Position, Min, Max, Aktuell
 		JSlider sigmaSlider = new JSlider(JSlider.VERTICAL, min, max, init);
