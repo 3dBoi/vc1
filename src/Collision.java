@@ -106,7 +106,6 @@ public class Collision {
                 if(raylengthTemp<raylength){
                     raylength=raylengthTemp;
                 }
-//                System.out.println("Raylength: "+raylength);
 
                 sx = rayx-rayvxtemp;
                 sy = rayy-rayvytemp;
@@ -128,6 +127,7 @@ public class Collision {
         // checks if angles of triangles adds up to 1
 
 
+        // vectors
         float abx = x2-x1;
         float aby = y2-y1;
         float abz = z2-z1;

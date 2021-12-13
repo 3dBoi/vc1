@@ -62,6 +62,7 @@ public class Entity {
         this.light = light;
     }
 
+    // Initialization for rotatable Object
     public Entity(GL3 gl, String[] modelPath, String texturePath, String materialPath, int[] vaoName, int[] vboName, int bufferIndex, PMVMatrix pmvMatrix, LightSource light, float[] origin){
 
         this.gl = gl;
@@ -158,6 +159,7 @@ public class Entity {
                 System.out.println("PAUSE");
             }
 
+            // if Object has more than 1 Keyframe
 //            initObject.updateKeyframe(gl, modelPath, vboName, index, keyframeIndex);
 //
 //            // If it is the last Keyframe, reset the Keyframindex, if not, add 1 to it
@@ -169,7 +171,7 @@ public class Entity {
         }
     }
 
-    // TODO: LINEARE INTERPOLATION FÜR BUGFIXING
+    // Play rotationanimation
     public void playRotation(){
 
         if(animationHandler.getDirection()){

@@ -12,6 +12,7 @@ public class Audio {
 
     }
 
+    // plays Audio from selected path
     public void playAudio(String path){
 
         try {
@@ -20,7 +21,6 @@ public class Audio {
             clip.open(audioInputStream);
             clip.start();
         } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
             ex.printStackTrace();
         }
     }

@@ -40,15 +40,14 @@ out VS_OUT
 
 void main(void)
 {
-//    vec3 eyeVertex;
-//    vec3 lightVector, eyeVector;
-//    float mysqrtdistance;
+
     vec4 newVertex;
     vec3 newNormal;
-    //Animation
+    // interpolates between 2 verticies
     newVertex.xyz = mix(vPosition, vPosition1, TweenFactor);
-    newVertex.w = 1.0; // Make sure w is exactly 1.0
+    newVertex.w = 1.0;
 
+    // interpolates normals of verticies
     newNormal = mix(vNormal, vNormal1, TweenFactor);
 
     // Calculate view-space coordinate
