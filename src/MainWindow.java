@@ -98,14 +98,34 @@ public class MainWindow extends JFrame {
         capabilities.setNumSamples(8);
         // Create the OpenGL rendering canvas
         GLCanvas canvas = new Renderer(CANVAS_WIDTH, CANVAS_HEIGHT, capabilities);
-        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+        canvas.setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        //redoing lost code
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+
+
+        layeredPane.add(jLabelRED);
+        layeredPane.add(jLabelGREEN);
+        layeredPane.add(jLabelBLUE);
+
+        layeredPane.add(canvas);
+
+
+
 
         // Create an animator that drives the canvas display() at the specified
         // frame rate.
         final FPSAnimator animator = new FPSAnimator(canvas, FPS, true);
 
         // Create the top-level container frame
-        this.getContentPane().add(canvas);
+        //this.getContentPane().setSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+//        this.getContentPane().setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
+//        this.getContentPane().setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.getContentPane().add(layeredPane);
+        this.getContentPane().setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -157,6 +177,11 @@ public class MainWindow extends JFrame {
      * @param args Arguments are not used
      */
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Runtime.getRuntime().runFinalization();
+            System.out.println("Give time to settle");
+            Runtime.getRuntime().exit(1);
+        }));
         new MainWindow();
         // Load OpenCV libraries and start program
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
