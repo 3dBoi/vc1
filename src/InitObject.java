@@ -220,7 +220,6 @@ public class InitObject {
         gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * 4,
                 FloatBuffer.wrap(vertices), GL.GL_STATIC_DRAW);
 
-        System.out.println(Arrays.toString(vertices));
 
         // Activate and order vertex buffer object data for the vertex shader
         // The vertex buffer contains: position (3), UV (2), normals (3)

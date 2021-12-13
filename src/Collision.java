@@ -34,8 +34,6 @@ public class Collision {
         rayvy = ray.dir[1];
         rayvz = ray.dir[2];
 
-        System.out.println(Arrays.toString(verticies));
-        System.out.println("Length: "+verticies.length);
 
         for(int counter=0; counter< verticies.length; counter++){
             // Ebene
@@ -175,7 +173,6 @@ public class Collision {
         float ges = alpha+beta+gamma;
 
         if((ges)>=0.99&&(ges)<=1.01){
-            System.out.println("HIT");
             return true;
         }
 

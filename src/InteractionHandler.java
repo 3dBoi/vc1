@@ -74,8 +74,6 @@ public class InteractionHandler implements MouseListener{
      */
     public void mouseClicked(MouseEvent e) {
 
-        System.out.println("X: " + e.getX());
-        System.out.println("Y: " + e.getY());
 
         float mouseX = e.getX();
         float mouseY = e.getY();
@@ -286,8 +284,6 @@ public class InteractionHandler implements MouseListener{
 
     public void imageProcessResult(float x, float y) {
 
-        System.out.println("X: " + x);
-        System.out.println("Y: " + x);
 
         int[] viewport = {0, 0, 800, 600};
         float winX, winY;

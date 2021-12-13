@@ -59,7 +59,6 @@ public class ModelLoader {
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
 
-            //  System.out.println(Arrays.toString(verticies));
 
         }catch (IOException e) {
             throw new RuntimeException(e);
@@ -111,7 +110,6 @@ public class ModelLoader {
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
 
-            //  System.out.println(Arrays.toString(verticies));
 
         }catch (IOException e) {
             throw new RuntimeException(e);

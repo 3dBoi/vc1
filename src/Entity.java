@@ -156,7 +156,6 @@ public class Entity {
             if(this.tween<=0){
                 animationHandler.setDirection(true);
                 animationHandler.setAnimationTrigger(false);
-                System.out.println("PAUSE");
             }
 
             // if Object has more than 1 Keyframe

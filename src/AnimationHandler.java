@@ -19,7 +19,6 @@ public class AnimationHandler {
             direction = false;
             tweenF=tweenF-0.3f;
         }
-        System.out.println("Tween: "+tweenF);
 
         return tweenF;
     }
