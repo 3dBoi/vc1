@@ -29,6 +29,14 @@ public class InteractionHandler implements MouseListener{
     private float yPosition = 0f;
     private float yPositionInc= 0.1f;
 
+    private long elapseNanos1;
+    private long elapseNanos2;
+    private long elapseNanos3;
+    private long elapseNanos4;
+    private long elapseNanos5;
+    private long elapseNanos6;
+    private long elapseNanos7;
+
 
     PMVMatrix pmvMatrix;
     Entity[] entities;
@@ -386,92 +394,120 @@ public class InteractionHandler implements MouseListener{
             // BigDrum
             case 1:
 
-                audio.playAudio("BassDrum.wav");
+                if(elapseNanos1+ 1500000000 < System.nanoTime()){
 
-                entities[0].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("BassDrum.wav");
 
-                entities[1].getAnimationHandler().setAnimationTrigger(true);
+                    entities[0].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[2].getAnimationHandler().setAnimationTrigger(true);
+                    entities[1].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[3].getAnimationHandler().setAnimationTrigger(true);
+                    entities[2].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[4].getAnimationHandler().setAnimationTrigger(true);
+                    entities[3].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[5].getAnimationHandler().setAnimationTrigger(true);
+                    entities[4].getAnimationHandler().setAnimationTrigger(true);
+
+                    entities[5].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos1 = System.nanoTime();}
 
                 break;
             // Crash Symbal
             case 2:
 
-                audio.playAudio("Crash.wav");
+                if(elapseNanos2+ 1500000000 < System.nanoTime()){
 
-                entities[7].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("Crash.wav");
+
+                    entities[7].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos2 = System.nanoTime();}
 
                 break;
 
             // SmallDrum
             case 3:
 
-                audio.playAudio("Snare.wav");
+                if(elapseNanos3+ 1500000000 < System.nanoTime()){
 
-                entities[9].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("Snare.wav");
 
-                entities[10].getAnimationHandler().setAnimationTrigger(true);
+                    entities[9].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[11].getAnimationHandler().setAnimationTrigger(true);
+                    entities[10].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[12].getAnimationHandler().setAnimationTrigger(true);
+                    entities[11].getAnimationHandler().setAnimationTrigger(true);
+
+                    entities[12].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos3 = System.nanoTime();}
 
                 break;
 
             // SmollDrum
             case 4:
 
-                audio.playAudio("TomTom.wav");
+                if(elapseNanos4+ 1500000000 < System.nanoTime()){
 
-                entities[14].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("TomTom.wav");
 
-                entities[15].getAnimationHandler().setAnimationTrigger(true);
+                    entities[14].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[16].getAnimationHandler().setAnimationTrigger(true);
+                    entities[15].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[17].getAnimationHandler().setAnimationTrigger(true);
+                    entities[16].getAnimationHandler().setAnimationTrigger(true);
+
+                    entities[17].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos4 = System.nanoTime();}
 
                 break;
 
             // MidDrum
             case 5:
 
-                audio.playAudio("StandTom.wav");
+                if(elapseNanos5+ 1500000000 < System.nanoTime()){
 
-                entities[19].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("StandTom.wav");
 
-                entities[20].getAnimationHandler().setAnimationTrigger(true);
+                    entities[19].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[21].getAnimationHandler().setAnimationTrigger(true);
+                    entities[20].getAnimationHandler().setAnimationTrigger(true);
 
-                entities[22].getAnimationHandler().setAnimationTrigger(true);
+                    entities[21].getAnimationHandler().setAnimationTrigger(true);
+
+                    entities[22].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos5 = System.nanoTime();}
 
                 break;
 
             // Ride Symbal
             case 6:
 
-                audio.playAudio("Ride.wav");
+                if(elapseNanos6+ 1500000000 < System.nanoTime()){
 
-                entities[24].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("Ride.wav");
+
+                    entities[24].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos6 = System.nanoTime();}
 
                 break;
 
             // Hi-Hat
             case 7:
 
-                audio.playAudio("Hi-Hat.wav");
+                if(elapseNanos7+ 1500000000 < System.nanoTime()){
 
-                entities[26].getAnimationHandler().setAnimationTrigger(true);
+                    audio.playAudio("Hi-Hat.wav");
 
-                entities[27].getAnimationHandler().setAnimationTrigger(true);
+                    entities[26].getAnimationHandler().setAnimationTrigger(true);
+
+                    entities[27].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos7 = System.nanoTime();}
 
                 break;
             default:
