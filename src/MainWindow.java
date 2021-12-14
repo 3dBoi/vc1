@@ -77,15 +77,15 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         jLabelRED.setOpaque(true);
         jLabelRED.setBackground(new Color(0,0,0,0));
-        jLabelRED.setBounds(-50,-50,15,15);
+        jLabelRED.setBounds(0,0,15,15);
 
         jLabelBLUE.setOpaque(true);
         jLabelBLUE.setBackground(Color.BLUE);
-        jLabelBLUE.setBounds(-50,-50,15,15);
+        jLabelBLUE.setBounds(0,15,15,15);
 
         jLabelGREEN.setOpaque(true);
         jLabelGREEN.setBackground(Color.GREEN);
-        jLabelGREEN.setBounds(-50,-50,15,15);
+        jLabelGREEN.setBounds(0,30,15,15);
 
 
         // Setup an OpenGL context for the Canvas
@@ -125,6 +125,8 @@ public class MainWindow extends JFrame {
 //        this.getContentPane().setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
         this.getContentPane().add(layeredPane);
         this.getContentPane().setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+
+        setResizable(false);
 
         this.addWindowListener(new WindowAdapter() {
             @Override

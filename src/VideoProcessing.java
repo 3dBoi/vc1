@@ -44,6 +44,8 @@ public class VideoProcessing extends JFrame {
 
     private static JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
     List<MatOfPoint> contours = new ArrayList<>();
+    List<MatOfPoint> contours1 = new ArrayList<>();
+
     private JButton confirmButton;
     private BufferedImagePanel imgPanel1;
     private BufferedImagePanel imgPanel2;
@@ -198,17 +200,18 @@ public class VideoProcessing extends JFrame {
             if (firstHue == 0) {
                 Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 15, sHigh, vHigh), processedImage1);
             } else {
-                Core.inRange(processedImage, new Scalar(firstHue, sLow, vLow), new Scalar(firstHue + 15, sHigh, vHigh), processedImage1);
+                Core.inRange(processedImage, new Scalar(firstHue, sLow, vLow), new Scalar(firstHue + 20, sHigh, vHigh), processedImage1);
             }
 
             //Median Blur for filtering out additional noise
             Imgproc.medianBlur(processedImage1, processedImage1, 15);
             if (secondHue != 0) {
-                Core.inRange(processedImage, new Scalar(secondHue, sLow, vLow), new Scalar(secondHue + 15, sHigh, vHigh), processedImage2);
+                Core.inRange(processedImage, new Scalar(secondHue, sLow, vLow), new Scalar(secondHue + 20, sHigh, vHigh), processedImage2);
             }else {
                 Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 15, sHigh, vHigh), processedImage2);
             }
             Imgproc.medianBlur(processedImage2, processedImage2, 15);
+
 
             //Circle detection
 //			Imgproc.HoughCircles(processedImage, circles, Imgproc.HOUGH_GRADIENT, 1.0,
@@ -226,6 +229,9 @@ public class VideoProcessing extends JFrame {
 //			}
 
             //Find Contours
+
+
+
             Imgproc.findContours(processedImage1, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
             double maxArea = 100;
             float[] radius = new float[1];
@@ -236,28 +242,38 @@ public class VideoProcessing extends JFrame {
                     Imgproc.minEnclosingCircle(c2f, center, radius);
                 }
             }
+
+
             //move cursor
+
             MainWindow.moveBLUE(center.x,center.y);
 
             //draw circle
             firstHuePoints[iterator] = center;
-            Imgproc.circle(frame, center, (int) radius[0], new Scalar(255, 0, 0), 2);
+            Imgproc.circle(frame, center, (int) radius[0], new Scalar(255, 0, 0), 4);
+
+
 
             if (secondHue != 0) {
-                Imgproc.findContours(processedImage2, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
-                center = new Point();
-                for (MatOfPoint c : contours) {
+                Imgproc.findContours(processedImage2, contours1, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+                Point center1 = new Point();
+                for (MatOfPoint c : contours1) {
                     if (Imgproc.contourArea(c) > maxArea) {
                         MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
-                        Imgproc.minEnclosingCircle(c2f, center, radius);
+                        Imgproc.minEnclosingCircle(c2f, center1, radius);
                     }
                 }
-                secondHuePoints[iterator] = center;
+
+
+                secondHuePoints[iterator] = center1;
+                System.out.println("GREEN SECOND HUE: " +center1);
+                MainWindow.moveGREEN(center1.x,center1.y);
+                //Draw circle
+                Imgproc.circle(frame, center1, (int) radius[0], new Scalar(0, 255, 0), 3);
+                center1=null;
+
             }
 
-            MainWindow.moveGREEN(center.x,center.y);
-            //Draw circle
-            Imgproc.circle(frame, center, (int) radius[0], new Scalar(0, 255, 0), 2);
 
 
 //			//Close Hue Contures
@@ -285,15 +301,22 @@ public class VideoProcessing extends JFrame {
             for(int arr = 0; arr< Objects.requireNonNull(firstHuePoints).length-1; arr++){
                 if(firstHuePoints[arr]!=null){
                     for(int arr2=0; arr2<secondHuePoints.length-1; arr2++){
-                        if(firstHuePoints[arr]!=null&& secondHuePoints[arr2]!=null&& Math.abs(firstHuePoints[arr].x-secondHuePoints[arr2].x)<=60 && Math.abs(firstHuePoints[arr].y-secondHuePoints[arr2].y)<=60){
+                        if(firstHuePoints[arr]!=null&& secondHuePoints[arr2]!=null&&
+                                firstHuePoints[arr].x!=0.0 && secondHuePoints[arr2].x!=0.0 &&
+//                                firstHuePoints[arr].x!=secondHuePoints[arr2].x &&
+//                                firstHuePoints[arr].y!=secondHuePoints[arr2].y &&
+                                Math.abs(firstHuePoints[arr].x-secondHuePoints[arr2].x)<=60 &&
+                                Math.abs(firstHuePoints[arr].y-secondHuePoints[arr2].y)<=60){
 
+                            assert center != null;
                             MainWindow.moveRED(center.x,center.y);
-                            Imgproc.circle(frame, firstHuePoints[arr], (int) radius[0], new Scalar(0, 0, 255), 5);
+                            Imgproc.circle(frame, firstHuePoints[arr], (int) radius[0], new Scalar(0, 0, 255), 2);
 
                             Renderer.interactionHandler.imageProcessResult((float)center.x,(float) center.y);
 
                             firstHuePoints[arr]=null;
                             secondHuePoints[arr2]=null;
+                            center=null;
                         }
                     }
                 }
@@ -383,7 +406,7 @@ public class VideoProcessing extends JFrame {
 
     public JSlider initHueSlider(JPanel panel) {
         int min = 1;
-        int max = 165; //war mal 255
+        int max = 160; //war mal 255
         int init = 10;
 
         //Erstellung Slider mit Position, Min, Max, Aktuell

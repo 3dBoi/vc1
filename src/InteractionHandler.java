@@ -45,6 +45,15 @@ public class InteractionHandler implements MouseListener{
     private final float mouseTranslationFactor = 0.1f;
     private final float mouseWheelScrollFactor = 10f;
 
+    private long elapseNanos1;
+    private long elapseNanos2;
+    private long elapseNanos3;
+    private long elapseNanos4;
+    private long elapseNanos5;
+    private long elapseNanos6;
+    private long elapseNanos7;
+
+
     GL3 gl;
     PMVMatrix pmvMatrix;
     Entity[] entities;
@@ -564,6 +573,8 @@ public class InteractionHandler implements MouseListener{
             // BigDrum
             case 1:
 
+                if(elapseNanos1+ 1500000000 < System.nanoTime()){
+
                 audio.playAudio("BassDrum.wav");
 
                 entities[0].getAnimationHandler().setAnimationTrigger(true);
@@ -578,18 +589,26 @@ public class InteractionHandler implements MouseListener{
 
                 entities[5].getAnimationHandler().setAnimationTrigger(true);
 
+                elapseNanos1 = System.nanoTime();}
+
                 break;
             // Crash Symbal
             case 2:
+
+                if(elapseNanos2+ 1500000000 < System.nanoTime()){
 
                 audio.playAudio("Crash.wav");
 
                 entities[7].getAnimationHandler().setAnimationTrigger(true);
 
+                elapseNanos2 = System.nanoTime();}
+
                 break;
 
             // SmallDrum
             case 3:
+
+                if(elapseNanos3+ 1500000000 < System.nanoTime()){
 
                 audio.playAudio("Snare.wav");
 
@@ -601,10 +620,14 @@ public class InteractionHandler implements MouseListener{
 
                 entities[12].getAnimationHandler().setAnimationTrigger(true);
 
+                elapseNanos3 = System.nanoTime();}
+
                 break;
 
             // SmollDrum
             case 4:
+
+                if(elapseNanos4+ 1500000000 < System.nanoTime()){
 
                 audio.playAudio("TomTom.wav");
 
@@ -616,10 +639,14 @@ public class InteractionHandler implements MouseListener{
 
                 entities[17].getAnimationHandler().setAnimationTrigger(true);
 
+                    elapseNanos4 = System.nanoTime();}
+
                 break;
 
             // MidDrum
             case 5:
+
+                if(elapseNanos5+ 1500000000 < System.nanoTime()){
 
                 audio.playAudio("StandTom.wav");
 
@@ -631,25 +658,35 @@ public class InteractionHandler implements MouseListener{
 
                 entities[22].getAnimationHandler().setAnimationTrigger(true);
 
+                    elapseNanos5 = System.nanoTime();}
+
                 break;
 
             // Ride Symbal
             case 6:
 
+                if(elapseNanos6+ 1500000000 < System.nanoTime()){
+
                 audio.playAudio("Ride.wav");
 
                 entities[24].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos6 = System.nanoTime();}
 
                 break;
 
             // Hi-Hat
             case 7:
 
+                if(elapseNanos7+ 1500000000 < System.nanoTime()){
+
                 audio.playAudio("Hi-Hat.wav");
 
                 entities[26].getAnimationHandler().setAnimationTrigger(true);
 
                 entities[27].getAnimationHandler().setAnimationTrigger(true);
+
+                    elapseNanos7 = System.nanoTime();}
 
                 break;
             default:
