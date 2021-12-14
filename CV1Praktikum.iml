@@ -36,6 +36,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="opencv-451" level="application" />
+    <orderEntry type="library" exported="" name="opencv-440" level="application" />
   </component>
 </module>

@@ -13,6 +13,7 @@ public class DisplayObject {
 
     }
 
+
     public void displayObject(GL3 gl, ShaderProgram shaderProgram, float[] vertices, int[] vaoName, Material material, PMVMatrix pmvMatrix, LightSource light, int bufferIndex, Texture texture){
 
         // Bind Texture to correct object
@@ -40,13 +41,11 @@ public class DisplayObject {
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
 
-//        System.out.println("Vertices in display: "+ Arrays.toString(vertices));
-
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.length);
     }
 
+    // uses Animationshader
     public void displayObjectAnimation(GL3 gl, ShaderProgram shaderProgram, float[] vertices, int[] vaoName, Material material, PMVMatrix pmvMatrix, LightSource light, int bufferIndex, Texture texture, float tweenF){
-
 
         // Bind Texture to correct object
         if(texture!=null) {
@@ -107,8 +106,6 @@ public class DisplayObject {
         gl.glUniform1f(12, material.getShininess());
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
-
-//        System.out.println("Vertices in display: "+ Arrays.toString(vertices));
 
         gl.glPointSize(10);
         gl.glDrawArrays(GL_LINES, 0, vertices.length);

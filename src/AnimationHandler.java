@@ -10,7 +10,7 @@ public class AnimationHandler {
 
     }
 
-    // Tween gets increased until it reaches 1 then it gets reset
+    // Tween gets increased until it reaches 1 then it goes back to 0
     public float animate(){
 
         if(tweenF<1&&direction){
@@ -19,11 +19,11 @@ public class AnimationHandler {
             direction = false;
             tweenF=tweenF-0.3f;
         }
-        System.out.println("Tween: "+tweenF);
 
         return tweenF;
     }
 
+    // builds rotationquaternions from Vertexquaternion and interpolates for every vertex
     public float[] rotate(String modelPath, String keyFramePath, float[] origin, float tween){
 
         ModelLoader modelLoader = new ModelLoader();
@@ -50,6 +50,7 @@ public class AnimationHandler {
 
 
 
+        // builds quaternions from vertexquaternions
         for(int i = 0; i<verticies1.length; i++){
 
             Quaternion quatA = new Quaternion(verticies1[i], verticies1[i+1], verticies1[i+2], 0);
@@ -57,6 +58,7 @@ public class AnimationHandler {
 
             Quaternion quat = new Quaternion().setSlerp(quatA, quatB, tween);
 
+            // interpolates rotation
             verticiesInterpolated[i] = quat.getX()+origin[0];
             verticiesInterpolated[i+1] = quat.getY()+origin[1];
             verticiesInterpolated[i+2] = quat.getZ()+origin[2];
@@ -68,9 +70,9 @@ public class AnimationHandler {
 
         return combineVerticies(verticiesInterpolated, texCoordinates, normals);
 
-        //TODO: an animationsframework anschließen
     }
 
+    // calc new normals for interpolated Vertex
     public float[] calcNormals(float[] verticies){
 
         float[] normals = new float[verticies.length];
@@ -87,6 +89,7 @@ public class AnimationHandler {
 
         int counter = 0;
 
+        // facevectors
         for(int i = 0; i<verticies.length; i++){
 
             a[0] = verticies[i];
@@ -117,6 +120,7 @@ public class AnimationHandler {
             vCA[1] = c[1]-a[1];
             vCA[2] = c[2]-a[2];
 
+            // normal direction and length
             dir = crossProduct(vAB, vCA);
             vectorLength = vectorLength(dir);
 
@@ -146,6 +150,7 @@ public class AnimationHandler {
         return normals;
     }
 
+    // combines new verticies with normals and texturecooridnates to make them shadercompatible
     public float[] combineVerticies(float[] a, float[] b, float[] c){
 
         float[] combined = new float[a.length+b.length+c.length];

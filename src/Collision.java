@@ -34,8 +34,6 @@ public class Collision {
         rayvy = ray.dir[1];
         rayvz = ray.dir[2];
 
-        System.out.println(Arrays.toString(verticies));
-        System.out.println("Length: "+verticies.length);
 
         for(int counter=0; counter< verticies.length; counter++){
             // Ebene
@@ -103,10 +101,10 @@ public class Collision {
 
                 raylengthTemp = (float) Math.sqrt( Math.pow(rayvxtemp, 2)+Math.pow(rayvytemp, 2)+Math.pow(rayvztemp, 2));
 
+                // is new ray shorter than shortest?
                 if(raylengthTemp<raylength){
                     raylength=raylengthTemp;
                 }
-//                System.out.println("Raylength: "+raylength);
 
                 sx = rayx-rayvxtemp;
                 sy = rayy-rayvytemp;
@@ -128,6 +126,7 @@ public class Collision {
         // checks if angles of triangles adds up to 1
 
 
+        // vectors
         float abx = x2-x1;
         float aby = y2-y1;
         float abz = z2-z1;
@@ -136,12 +135,14 @@ public class Collision {
         float acy = y3-y1;
         float acz = z3-z1;
 
+        // area of triangle
         float[] crossABC = crossProduct(abx, aby, abz, acx, acy, acz);
 
-        float lengthABC = (float) Math.sqrt(Math.pow(crossABC[0],2)+Math.pow(crossABC[1],2)+Math.pow(crossABC[2],2));
+        float absABC = (float) Math.sqrt(Math.pow(crossABC[0],2)+Math.pow(crossABC[1],2)+Math.pow(crossABC[2],2));
 
-        float areaABC = lengthABC/2;
+        float areaABC = absABC/2;
 
+        // points
         float pax = x1-x4;
         float pay = y1-y4;
         float paz = z1-z4;
@@ -154,22 +155,24 @@ public class Collision {
         float pcy = y3-y4;
         float pcz = z3-z4;
 
+
         float crossPAB[] = crossProduct(pax, pay, paz, pbx, pby, pbz);
         float crossPBC[] = crossProduct(pbx, pby, pbz, pcx, pcy, pcz);
         float crossPAC[] = crossProduct(pax, pay, paz, pcx, pcy, pcz);
 
-        float lengthPAB = (float) Math.sqrt(Math.pow(crossPAB[0],2)+Math.pow(crossPAB[1],2)+Math.pow(crossPAB[2],2));
-        float lengthPBC = (float) Math.sqrt(Math.pow(crossPBC[0],2)+Math.pow(crossPBC[1],2)+Math.pow(crossPBC[2],2));
-        float lengthPAC = (float) Math.sqrt(Math.pow(crossPAC[0],2)+Math.pow(crossPAC[1],2)+Math.pow(crossPAC[2],2));
+        float absPAB = (float) Math.sqrt(Math.pow(crossPAB[0],2)+Math.pow(crossPAB[1],2)+Math.pow(crossPAB[2],2));
+        float absPBC = (float) Math.sqrt(Math.pow(crossPBC[0],2)+Math.pow(crossPBC[1],2)+Math.pow(crossPBC[2],2));
+        float absPAC = (float) Math.sqrt(Math.pow(crossPAC[0],2)+Math.pow(crossPAC[1],2)+Math.pow(crossPAC[2],2));
 
-        float alpha = lengthPBC/(2*areaABC);
-        float beta = lengthPAB/(2*areaABC);
-        float gamma = lengthPAC/(2*areaABC);
+        // angles of triangle
+        float alpha = absPBC/(2*areaABC);
+        float beta = absPAB/(2*areaABC);
+        float gamma = absPAC/(2*areaABC);
 
+        // add all angles
         float ges = alpha+beta+gamma;
 
         if((ges)>=0.99&&(ges)<=1.01){
-            System.out.println("HIT");
             return true;
         }
 

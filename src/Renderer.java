@@ -62,9 +62,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
     Entity[] entities = new Entity[noOfObjects];
     OmegaLoader omegaLoader = new OmegaLoader();
 
-    InitObject[] objectArr = new InitObject[noOfObjects];
-    DisplayObject[] displayArr = new DisplayObject[noOfObjects];
-
     int canvasWidth;
     int canvasHeigth;
 
@@ -91,7 +88,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
         super();
         // Add this object as OpenGL event listener
         this.addGLEventListener(this);
-//        createAndRegisterInteractionHandler();
     }
 
     /**
@@ -105,7 +101,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
         this.canvasHeigth = canvasHeigth;
         // Add this object as an OpenGL event listener
         this.addGLEventListener(this);
-//        createAndRegisterInteractionHandler();
+
     }
 
     /**
@@ -116,11 +112,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // The constructor call of the interaction handler generates meaningful default values
         // Nevertheless the start parameters can be set via setters
         // (see class definition of the interaction handler)
-        interactionHandler = new InteractionHandler(gl, pmvMatrix, entities, objectArr, vboName, clicked);
-//        this.addKeyListener(interactionHandler);
+        interactionHandler = new InteractionHandler(entities, clicked);
         this.addMouseListener(interactionHandler);
-//        this.addMouseMotionListener(interactionHandler);
-//        this.addMouseWheelListener(interactionHandler);
+
     }
 
 
@@ -167,7 +161,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
         float[] lightSpecularColor = {1.0f, 1.0f, 1.0f, 1.0f};
         light0 = new LightSource(lightPosition, lightAmbientColor,
                 lightDiffuseColor, lightSpecularColor);
-        // END: Preparing scene
 
         // Switch on back face culling
         gl.glEnable(GL.GL_CULL_FACE);
@@ -179,38 +172,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // defining polygon drawing mode
         gl.glPolygonMode(GL.GL_FRONT_AND_BACK, gl.GL_FILL);
 
-        // Create projection-model-view matrix
-//        pmvMatrix = new PMVMatrix();
-
-        // Start parameter settings for the interaction handler might be called here
-//        interactionHandler.setEyeZ(4);
-
         // Initialize objects to be drawn (see respective sub-methods)
         omegaLoader.omegaInit(gl, entities, vaoName, vboName, pmvMatrix, light0);
-//
-//        float[] verticies ={
-//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
-//        };
-//
-//        objectArr[1]= new InitObject();
-//        objectArr[1].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 1, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies);
-//
 
-
-//        float[] verticies1 ={
-//                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-//        };
-//
-//        objectArr[0]= new InitObject();
-//        objectArr[0].initPoint(gl, vaoName, vboName, "GelbGruenPalette.png", "Objs/drumsetV4_CrashSymbalRest.mtl", 0, "BlinnPhongPointTex.vert", "BlinnPhongPointTex.frag", verticies1);
-
-        // END: Preparing scene
     }
 
     /**
@@ -224,9 +188,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 
 
-//        if(interactionHandler.clicked)
-//        objectArr[0].update(gl, interactionHandler.verticies, 0);
-
         // Background color of the canvas
         gl.glClearColor(0.97f, 0.97f, 0.97f, 1.0f);
 
@@ -235,9 +196,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
         pmvMatrix.glLoadIdentity();
         // Setting the camera position, based on user input
         //POSITION; TARGET; UP
-//        pmvMatrix.gluLookAt(0f, 0.0f, interactionHandler.getEyeZ(),
-//                0f, 0f, 0f,
-//                0f, 1.0f, 0f);
+
          pmvMatrix.gluLookAt(5.5f, 7f, 0f,
                  0f, 0f, 0f,
                  0f, 1.0f, 0f);
@@ -251,17 +210,9 @@ public class Renderer extends GLCanvas implements GLEventListener {
         pmvMatrix.glPushMatrix();
 
 
-//        displayArr[0] = new DisplayObject();
-//        displayArr[0].displayObjectAnimation(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture(), tweenF);
-        //ANIMATION BIS HIER
-        // FÜR SCHLAGZEUG BIS HIER COMMENT UND OMEGALOADER COMMENT ENTFERNEN
 
-
-
+        // displays scene
         omegaLoader.omegaDisplay();
-//        displayArr[0] = new DisplayObject();
-//        displayArr[0].displayObjectPoints(gl, objectArr[0].getShaderProgram(), objectArr[0].getVertices(), vaoName, objectArr[0].getMaterial(), pmvMatrix, light0, 0, objectArr[0].getTexture());
-
 
         pmvMatrix.glPopMatrix();
     }
