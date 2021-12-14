@@ -41,10 +41,11 @@ public class InteractionHandler implements MouseListener{
     /**
      * Standard constructor for creation of the interaction handler.
      */
-    public InteractionHandler(Entity[] entities, boolean clicked) {
+    public InteractionHandler(Entity[] entities, boolean clicked, PMVMatrix pmvMatrix) {
 
         this.entities = entities;
         this.clicked = clicked;
+        this.pmvMatrix = pmvMatrix;
     }
 
     public float getAngleXaxis() {

@@ -112,7 +112,7 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // The constructor call of the interaction handler generates meaningful default values
         // Nevertheless the start parameters can be set via setters
         // (see class definition of the interaction handler)
-        interactionHandler = new InteractionHandler(entities, clicked);
+        interactionHandler = new InteractionHandler(entities, clicked, pmvMatrix);
         this.addMouseListener(interactionHandler);
 
     }
