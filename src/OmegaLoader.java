@@ -222,6 +222,12 @@ public class OmegaLoader {
         entities[i].initEntity();
         i++;
 
+
+        this.modelPath = new String[]{"Objs/Stage.obj"};
+        entities[i] = new Entity(gl, modelPath, "textures/StageAlebodo.png", "Objs/Stage.mtl", vaoName, vboName, i, pmvMatrix, light);
+        entities[i].initEntity();
+        i++;
+
     }
 
     public void omegaDisplay(){

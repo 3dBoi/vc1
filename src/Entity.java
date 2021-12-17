@@ -34,7 +34,7 @@ public class Entity {
     // Keyframeindex
     int keyframeIndex = 1;
 
-    // Modelorigin
+    // Modelorigin (not used)
     float[] origin;
     boolean rotation = false;
     float[] texCoordinates;
@@ -62,7 +62,7 @@ public class Entity {
         this.light = light;
     }
 
-    // Initialization for rotatable Object
+    // Initialization for rotatable Object (not used)
     public Entity(GL3 gl, String[] modelPath, String texturePath, String materialPath, int[] vaoName, int[] vboName, int bufferIndex, PMVMatrix pmvMatrix, LightSource light, float[] origin){
 
         this.gl = gl;
@@ -127,7 +127,7 @@ public class Entity {
         displayObject.displayObject(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture());
     }
 
-    // Update Entity for Animation
+    // Update Entity for Animation (not used)
     public void updateEntity(int keyframeIndex){
         initObject.updateKeyframe(gl, modelPath, vboName, index, keyframeIndex);
     }
@@ -158,7 +158,7 @@ public class Entity {
                 animationHandler.setAnimationTrigger(false);
             }
 
-            // if Object has more than 1 Keyframe
+            // if Object has more than 1 Keyframe (not used)
 //            initObject.updateKeyframe(gl, modelPath, vboName, index, keyframeIndex);
 //
 //            // If it is the last Keyframe, reset the Keyframindex, if not, add 1 to it
@@ -170,7 +170,7 @@ public class Entity {
         }
     }
 
-    // Play rotationanimation
+    // Play rotationanimation (not used)
     public void playRotation(){
 
         if(animationHandler.getDirection()){
