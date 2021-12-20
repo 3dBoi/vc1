@@ -133,17 +133,17 @@ public class VideoProcessing extends JFrame {
         contentPane.setLayout(new FlowLayout());
 
         JPanel organizer = new JPanel();//new BoxLayout  );//(organizer, BoxLayout.Y_AXIS ));
+        organizer.setLayout((new BoxLayout(organizer, BoxLayout.X_AXIS)));
+        organizer.setPreferredSize(new Dimension(640,480));
 
         JPanel boxPanel = new JPanel();
         JPanel boxPanel2 = new JPanel();
         JPanel boxPanel3 = new JPanel();
 
-//        boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+
         boxPanel.setLayout(new BorderLayout());
-
-
-        boxPanel2.setLayout(new BoxLayout(boxPanel2, BoxLayout.Y_AXIS));
-        boxPanel3.setLayout(new BoxLayout(boxPanel3, BoxLayout.Y_AXIS));
+        boxPanel2.setLayout(new BorderLayout());
+        boxPanel3.setLayout(new BorderLayout());
 
 //        contentPane.setLayout(new BoxLayout(contentPane,BoxLayout.PAGE_AXIS));
         //add webcam footage
@@ -153,26 +153,34 @@ public class VideoProcessing extends JFrame {
 
 
         //add Sliders
-        Label hueLabel = new Label("Hue", SwingConstants.CENTER);
-//        hueLabel.setAlignment();
-//        hueLabel.setAlignment(initHueSlider(contentPane));
-//        hueLabel.setAlignment(initHueSlider);
+        Label hueLabel = new Label("        Hue   ", SwingConstants.CENTER);
+        hueLabel.setFont(new Font("Serif", Font.BOLD, 14));
 
-//        contentPane.add(hueLabel);
+        boxPanel.add(hueLabel, BorderLayout.PAGE_START);
+        boxPanel.add(initHueSlider(contentPane), BorderLayout.CENTER);
 
-////        contentPane.add(initHueSlider(contentPane));
-        boxPanel.add(hueLabel);
-        boxPanel.add(initHueSlider(contentPane));
-        contentPane.add(boxPanel);
 
-//        Label satLowLabel = new Label("SaturationBottom");
-        contentPane.add(initSaturationSliderLow((contentPane)));
-//        Label satHighLabel = new Label("SaturationHigh");
-        contentPane.add(initSaturationSliderHigh((contentPane)));
+
+
+        Label satLowLabel = new Label("SaturationLow", SwingConstants.CENTER);
+        satLowLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        boxPanel2.add(satLowLabel, BorderLayout.PAGE_START);
+        boxPanel2.add(initSaturationSliderLow(contentPane), BorderLayout.CENTER);
+
+
+        Label satHighLabel = new Label("SaturationHigh", SwingConstants.CENTER);
+        satHighLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        boxPanel3.add(satHighLabel, BorderLayout.PAGE_START);
+        boxPanel3.add(initSaturationSliderHigh((contentPane)));
+
         initButton();
-        contentPane.add(confirmButton);
 
+        organizer.add(boxPanel);
+        organizer.add(boxPanel2);
+        organizer.add(boxPanel3);
+        organizer.add(confirmButton);
 
+        contentPane.add(organizer);
 
         imgPanel2 = new BufferedImagePanel();
         contentPane.add(imgPanel2);
@@ -458,6 +466,7 @@ public class VideoProcessing extends JFrame {
     public void initButton() {
 
         confirmButton = new JButton();
+        confirmButton.setBackground(Color.RED);
         confirmButton.addActionListener(e -> actionConfirm(
         ));
         confirmButton.setText("Confirm");
