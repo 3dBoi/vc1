@@ -61,14 +61,14 @@ public class MainWindow extends JFrame {
     private static final long serialVersionUID = 1L;
     // Define constants for the top-level container
     private static String TITLE = "Box with texture - Main Window - Programmable Pipeline";
-    private static final int CANVAS_WIDTH = 800;  // width of the drawable
-    private static final int CANVAS_HEIGHT = 600; // height of the drawable
+    private static final int CANVAS_WIDTH = 1400;  // width of the drawable
+    private static final int CANVAS_HEIGHT = 1050; // height of the drawable
     private static final int FPS = 60; // animator's target frames per second
     public static MainWindow mainWindow;
     public static JLabel jLabelRED = new JLabel();
     public static JLabel jLabelGREEN = new JLabel();
     public static JLabel jLabelBLUE = new JLabel();
-
+    public static JTabbedPane jTabbedPane = new JTabbedPane();
 
     public JLabel getjLabelRED() {
         return jLabelRED;
@@ -76,7 +76,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         jLabelRED.setOpaque(true);
-        jLabelRED.setBackground(new Color(0,0,0,0));
+        jLabelRED.setBackground(new Color(255,0,0));
         jLabelRED.setBounds(0,0,15,15);
 
         jLabelBLUE.setOpaque(true);
@@ -86,6 +86,8 @@ public class MainWindow extends JFrame {
         jLabelGREEN.setOpaque(true);
         jLabelGREEN.setBackground(Color.GREEN);
         jLabelGREEN.setBounds(0,30,15,15);
+
+
 
 
         // Setup an OpenGL context for the Canvas
@@ -123,9 +125,13 @@ public class MainWindow extends JFrame {
         //this.getContentPane().setSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 //        this.getContentPane().setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
 //        this.getContentPane().setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
-        this.getContentPane().add(layeredPane);
-        this.getContentPane().setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+//        this.getContentPane().add(layeredPane);
+//        this.getContentPane().setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 
+        jTabbedPane.add("Comutergrafik", layeredPane);
+
+        add(jTabbedPane);
+        setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
         setResizable(false);
 
         this.addWindowListener(new WindowAdapter() {

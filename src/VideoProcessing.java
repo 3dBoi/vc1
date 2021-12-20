@@ -49,6 +49,7 @@ public class VideoProcessing extends JFrame {
     private JButton confirmButton;
     private BufferedImagePanel imgPanel1;
     private BufferedImagePanel imgPanel2;
+    private BufferedImagePanel imgPanel3;
     //Hier werden die Hues gesaved für die detection!
     private int firstHue;
     private int secondHue;
@@ -73,6 +74,7 @@ public class VideoProcessing extends JFrame {
     public VideoProcessing() {
         imgPanel1 = null;
         imgPanel2 = null;
+        imgPanel3 = null;
 
         createFrame();
         processShowVideo();
@@ -127,25 +129,72 @@ public class VideoProcessing extends JFrame {
 
         setTitle("Original and processed video stream");
         JPanel contentPane = (JPanel) getContentPane();
+
         contentPane.setLayout(new FlowLayout());
+
+        JPanel organizer = new JPanel();//new BoxLayout  );//(organizer, BoxLayout.Y_AXIS ));
+
+        JPanel boxPanel = new JPanel();
+        JPanel boxPanel2 = new JPanel();
+        JPanel boxPanel3 = new JPanel();
+
+//        boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+        boxPanel.setLayout(new BorderLayout());
+
+
+        boxPanel2.setLayout(new BoxLayout(boxPanel2, BoxLayout.Y_AXIS));
+        boxPanel3.setLayout(new BoxLayout(boxPanel3, BoxLayout.Y_AXIS));
+
+//        contentPane.setLayout(new BoxLayout(contentPane,BoxLayout.PAGE_AXIS));
         //add webcam footage
         imgPanel1 = new BufferedImagePanel();
         contentPane.add(imgPanel1);
-        imgPanel2 = new BufferedImagePanel();
-        contentPane.add(imgPanel2);
+
+
+
         //add Sliders
-        contentPane.add(initHueSlider(contentPane));
+        Label hueLabel = new Label("Hue", SwingConstants.CENTER);
+//        hueLabel.setAlignment();
+//        hueLabel.setAlignment(initHueSlider(contentPane));
+//        hueLabel.setAlignment(initHueSlider);
+
+//        contentPane.add(hueLabel);
+
+////        contentPane.add(initHueSlider(contentPane));
+        boxPanel.add(hueLabel);
+        boxPanel.add(initHueSlider(contentPane));
+        contentPane.add(boxPanel);
+
+//        Label satLowLabel = new Label("SaturationBottom");
         contentPane.add(initSaturationSliderLow((contentPane)));
+//        Label satHighLabel = new Label("SaturationHigh");
         contentPane.add(initSaturationSliderHigh((contentPane)));
         initButton();
         contentPane.add(confirmButton);
+
+
+
+        imgPanel2 = new BufferedImagePanel();
+        contentPane.add(imgPanel2);
+
+        //debugging 3.d pane
+        imgPanel3=new BufferedImagePanel();
+        contentPane.add(imgPanel3);
+
+
+
+
         // place the frame at the center of the screen and show
         pack();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dim.width / 2 - getWidth() / 2, dim.height / 2 - getHeight() / 2);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
+
+        MainWindow.jTabbedPane.add("Bildverarbeitung", contentPane);
+
+//        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+//        setLocation(dim.width / 2 - getWidth() / 2, dim.height / 2 - getHeight() / 2);
+//
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setVisible(true);
     }
 
     /**
@@ -200,15 +249,15 @@ public class VideoProcessing extends JFrame {
             if (firstHue == 0) {
                 Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 15, sHigh, vHigh), processedImage1);
             } else {
-                Core.inRange(processedImage, new Scalar(firstHue, sLow, vLow), new Scalar(firstHue + 20, sHigh, vHigh), processedImage1);
+                Core.inRange(processedImage, new Scalar(firstHue, firstSlow, vLow), new Scalar(firstHue + 20, firstSHigh, vHigh), processedImage1);
             }
 
             //Median Blur for filtering out additional noise
             Imgproc.medianBlur(processedImage1, processedImage1, 15);
             if (secondHue != 0) {
-                Core.inRange(processedImage, new Scalar(secondHue, sLow, vLow), new Scalar(secondHue + 20, sHigh, vHigh), processedImage2);
+                Core.inRange(processedImage, new Scalar(secondHue, secondSlow, vLow), new Scalar(secondHue + 20, secondSHigh, vHigh), processedImage2);
             }else {
-                Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 15, sHigh, vHigh), processedImage2);
+                Core.inRange(processedImage, new Scalar(hLow, sLow, vLow), new Scalar(hLow + 20, sHigh, vHigh), processedImage2);
             }
             Imgproc.medianBlur(processedImage2, processedImage2, 15);
 
@@ -231,6 +280,29 @@ public class VideoProcessing extends JFrame {
             //Find Contours
 
 
+            if (secondHue != 0) {
+
+
+                Imgproc.findContours(processedImage2, contours1, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+                double maxArea2 = 100;
+                float[] radius2 = new float[1];
+                Point center1 = new Point();
+                for (MatOfPoint c : contours1) {
+                    if (Imgproc.contourArea(c) > maxArea2) {
+                        MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
+                        Imgproc.minEnclosingCircle(c2f, center1, radius2);
+                    }
+                }
+
+                MainWindow.moveGREEN(center1.x,center1.y);
+                secondHuePoints[iterator] = center1;
+                System.out.println("GREEN SECOND HUE: " +center1);
+
+                //Draw circle
+                Imgproc.circle(frame, center1, (int) radius2[0], new Scalar(0, 255, 0), 3);
+
+
+            }
 
             Imgproc.findContours(processedImage1, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
             double maxArea = 100;
@@ -243,7 +315,6 @@ public class VideoProcessing extends JFrame {
                 }
             }
 
-
             //move cursor
 
             MainWindow.moveBLUE(center.x,center.y);
@@ -254,25 +325,29 @@ public class VideoProcessing extends JFrame {
 
 
 
-            if (secondHue != 0) {
-                Imgproc.findContours(processedImage2, contours1, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
-                Point center1 = new Point();
-                for (MatOfPoint c : contours1) {
-                    if (Imgproc.contourArea(c) > maxArea) {
-                        MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
-                        Imgproc.minEnclosingCircle(c2f, center1, radius);
-                    }
-                }
-
-
-                secondHuePoints[iterator] = center1;
-                System.out.println("GREEN SECOND HUE: " +center1);
-                MainWindow.moveGREEN(center1.x,center1.y);
-                //Draw circle
-                Imgproc.circle(frame, center1, (int) radius[0], new Scalar(0, 255, 0), 3);
-                center1=null;
-
-            }
+//            if (secondHue != 0) {
+//                Imgproc.findContours(processedImage2, contours1, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+//                double maxArea2 = 100;
+//                float[] radius2 = new float[1];
+//                Point center1 = new Point();
+//                for (MatOfPoint c : contours1) {
+//                    if (Imgproc.contourArea(c) > maxArea2) {
+//                        MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
+//                        Imgproc.minEnclosingCircle(c2f, center1, radius2);
+//                    }
+//                }
+//
+//                MainWindow.moveGREEN(center1.x,center1.y);
+//                secondHuePoints[iterator] = center1;
+//                System.out.println("GREEN SECOND HUE: " +center1);
+//
+//                //Draw circle
+//                Imgproc.circle(frame, center1, (int) radius2[0], new Scalar(0, 255, 0), 3);
+//                center1=null;
+//
+//                System.out.println(center1);
+//
+//            }
 
 
 
@@ -317,6 +392,7 @@ public class VideoProcessing extends JFrame {
                             firstHuePoints[arr]=null;
                             secondHuePoints[arr2]=null;
                             center=null;
+
                         }
                     }
                 }
@@ -329,7 +405,8 @@ public class VideoProcessing extends JFrame {
             if (firstHue == 0) {
                 imgPanel2.setImage(Mat2BufferedImage(processedImage1));
             } else {
-                imgPanel2.setImage(Mat2BufferedImage(processedImage2));
+                imgPanel2.setImage(Mat2BufferedImage(processedImage1));
+                imgPanel3.setImage(Mat2BufferedImage(processedImage2));
             }
             pack();
 
@@ -412,6 +489,7 @@ public class VideoProcessing extends JFrame {
         //Erstellung Slider mit Position, Min, Max, Aktuell
         JSlider slider = new JSlider(JSlider.VERTICAL, min, max, init);
         Dimension d = slider.getPreferredSize();
+
         slider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
         slider.setMajorTickSpacing(50);
         slider.setMinorTickSpacing(25);
@@ -440,7 +518,12 @@ public class VideoProcessing extends JFrame {
         slider.setPaintLabels(true);
         slider.addChangeListener(e -> {
             JSlider source = (JSlider) e.getSource();
-            sLow = (source.getValue());
+            if(firstHue==0){
+            sLow = (source.getValue());}
+            else{
+                secondSlow = source.getValue();
+                sLow = (source.getValue());
+            }
         });
         return slider;
     }
@@ -460,6 +543,14 @@ public class VideoProcessing extends JFrame {
         slider.addChangeListener(e -> {
             JSlider source = (JSlider) e.getSource();
             sHigh = (source.getValue());
+
+            if(firstHue==0){
+                sHigh = (source.getValue());}
+            else{
+                secondSHigh = source.getValue();
+                sHigh = (source.getValue());
+            }
+
         });
         return slider;
     }
