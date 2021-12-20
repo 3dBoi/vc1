@@ -47,6 +47,8 @@ public class VideoProcessing extends JFrame {
     List<MatOfPoint> contours1 = new ArrayList<>();
 
     private JButton confirmButton;
+    private JButton flipButton;
+    private JButton resetButton;
     private BufferedImagePanel imgPanel1;
     private BufferedImagePanel imgPanel2;
     private BufferedImagePanel imgPanel3;
