@@ -59,7 +59,6 @@ public class BufferedImagePanel extends JComponent {
 		repaint();
 	}
 	    
-	    
 	/**
 	 * Tell the layout manager how big we would like to be.
 	 * (This method gets called by layout managers for placing

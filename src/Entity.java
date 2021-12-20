@@ -90,15 +90,11 @@ public class Entity {
     public Entity(GL3 gl, String[] modelPath, int[] vaoName, int[] vboName, int bufferIndex){
 
         this.gl = gl;
-
         this.modelPath = modelPath;
-
         this.fragmentShader = "BlinnPhongPointTex.frag";
-
         this.vaoName = vaoName;
         this.vboName = vboName;
         this.index = bufferIndex;
-
         this.hitbox = true;
         this.collision = new Collision();
     }
@@ -176,7 +172,6 @@ public class Entity {
         if(animationHandler.getDirection()){
 
             if(!hitbox){
-
                 initObject.updateRotation(gl, animationHandler.rotate(modelPath[keyframeIndex-1], modelPath[keyframeIndex], origin, tween), vboName, index);
                 displayObject.displayObject(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture());
             }
@@ -187,10 +182,8 @@ public class Entity {
                 initObject.updateRotation(gl, animationHandler.rotate(modelPath[keyframeIndex-1], modelPath[keyframeIndex], origin, 1.0f), vboName, index);
                 displayObject.displayObject(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture());
             }
-
             animationHandler.setDirection(true);
             this.tween = animationHandler.animate();
-
             // If it is the last Keyframe, reset the Keyframindex, if not, add 1 to it
             if(keyframeIndex>=modelPath.length-1){
                 keyframeIndex=1;
@@ -198,7 +191,6 @@ public class Entity {
                 keyframeIndex++;
             }
         }
-
     }
 
     public boolean rayCollision(Ray ray){

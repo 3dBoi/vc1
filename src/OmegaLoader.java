@@ -7,15 +7,12 @@ public class OmegaLoader {
     String[] modelPath;
 
     public OmegaLoader(){
-
     }
 
     public void omegaInit(GL3 gl, Entity[] entities, int [] vaoName, int[] vboName, PMVMatrix pmvMatrix, LightSource light){
 
         this.entities = entities;
         int i=0;
-
-
 
         // Animated Objects
 

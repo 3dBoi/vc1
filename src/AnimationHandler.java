@@ -48,8 +48,6 @@ public class AnimationHandler {
             verticies2[i] = verticies1[i]-origin[2];
         }
 
-
-
         // builds quaternions from vertexquaternions
         for(int i = 0; i<verticies1.length; i++){
 
@@ -146,7 +144,6 @@ public class AnimationHandler {
             normals[counter] = dir[2]/vectorLength;
             counter++;
         }
-
         return normals;
     }
 

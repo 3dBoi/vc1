@@ -22,9 +22,7 @@ public class ModelLoader {
     Mesh meshKeyframe;
 
     public ModelLoader(){
-
     }
-
 
     public float[] getVerticies(String path){
         Path objFile = Paths.get("./resources/"+path);
@@ -34,7 +32,6 @@ public class ModelLoader {
             objLoader.setLoadTextureCoordinates(true);
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
-
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,14 +49,10 @@ public class ModelLoader {
             //Load Vertices of Keyframe
             meshKeyframe = objLoader.loadMesh(Resource.file(keyframeObjFile));
             verticiesKeyframe = meshKeyframe.getVertices();
-
             objLoader.setLoadTextureCoordinates(true);
-
             //Load Vertices of Mesh
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
-
-
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +68,6 @@ public class ModelLoader {
 
         //Temporary Array to sort in right order
         float[] tempVertecies = new float[14];
-
         for(int i=0; i<verticies.length/8; i++){
             for(int j=0; j<14;j++){
                 if(j<8) {
@@ -101,7 +93,6 @@ public class ModelLoader {
         Path keyframeObjFile = Paths.get("./resources/"+keyframe);
 
         try{
-
             //Load Vertices of Keyframe
             meshKeyframe = objLoader.loadMesh(Resource.file(keyframeObjFile));
             verticiesKeyframe = meshKeyframe.getVertices();
@@ -109,8 +100,6 @@ public class ModelLoader {
             //Load Vertices of Mesh
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
-
-
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -151,7 +140,6 @@ public class ModelLoader {
         Path objFile = Paths.get("./resources/"+path);
 
         try{
-
             mesh = objLoader.loadMesh(Resource.file(objFile));
             verticies = mesh.getVertices();
 
@@ -167,7 +155,6 @@ public class ModelLoader {
         Path objFile = Paths.get("./resources/"+path);
 
         try{
-
             objLoader.setLoadTextureCoordinates(true);
 
             mesh = objLoader.loadMesh(Resource.file(objFile));
@@ -189,12 +176,8 @@ public class ModelLoader {
             j++;
             i++;
         }
-
         return texCoord;
-
     }
-
-
 }
 
 

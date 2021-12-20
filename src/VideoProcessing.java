@@ -50,7 +50,7 @@ public class VideoProcessing extends JFrame {
     private BufferedImagePanel imgPanel1;
     private BufferedImagePanel imgPanel2;
     private BufferedImagePanel imgPanel3;
-    //Hier werden die Hues gesaved für die detection!
+    //Saving hues for later detection
     private int firstHue;
     private int secondHue;
     private int firstSlow;
@@ -79,7 +79,6 @@ public class VideoProcessing extends JFrame {
         imgPanel1 = null;
         imgPanel2 = null;
         imgPanel3 = null;
-
         createFrame();
         processShowVideo();
     }
@@ -133,7 +132,6 @@ public class VideoProcessing extends JFrame {
 
         setTitle("Original and processed video stream");
         JPanel contentPane = (JPanel) getContentPane();
-
         contentPane.setLayout(new FlowLayout());
 
         //Organizer for Sliders and Button
@@ -151,7 +149,6 @@ public class VideoProcessing extends JFrame {
         boxPanel3.setLayout(new BorderLayout());
         boxPanel4.setLayout(new BoxLayout(boxPanel4, BoxLayout.Y_AXIS));
 
-//        contentPane.setLayout(new BoxLayout(contentPane,BoxLayout.PAGE_AXIS));
         //add webcam footage
         imgPanel1 = new BufferedImagePanel();
         contentPane.add(imgPanel1);
@@ -197,8 +194,6 @@ public class VideoProcessing extends JFrame {
 
         // place the frame at the center of the screen and show
         pack();
-
-
         MainWindow.jTabbedPane.add("Bildverarbeitung", contentPane);
 
 //        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -225,11 +220,15 @@ public class VideoProcessing extends JFrame {
         //VideoCapture cap = new VideoCapture(filePathName);
         // END: Prepare streaming from video file
 
+        //Initialisierung Matrizen
         Mat frame = new Mat();
         Mat grey = new Mat();
         Mat circles = new Mat();
-        // Check of file or camera can be opened
+        Mat processedImage = new Mat();
+        Mat processedImage1 = new Mat();
+        Mat processedImage2 = new Mat();
         if (!cap.isOpened())
+            // Check of file or camera can be opened
             throw new CvException("The Video File or the Camera could not be opened!");
         cap.read(frame);
 
@@ -284,11 +283,7 @@ public class VideoProcessing extends JFrame {
 //			}
 
             //Find Contours
-
-
             if (secondHue != 0) {
-
-
                 Imgproc.findContours(processedImage2, contours1, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
                 double maxArea2 = 100;
                 float[] radius2 = new float[1];
@@ -305,8 +300,6 @@ public class VideoProcessing extends JFrame {
 
                 //Draw circle
                 Imgproc.circle(frame, center1, (int) radius2[0], new Scalar(0, 255, 0), 3);
-
-
             }
 
             Imgproc.findContours(processedImage1, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
@@ -327,7 +320,6 @@ public class VideoProcessing extends JFrame {
             firstHuePoints[iterator] = center;
             Imgproc.circle(frame, center, (int) radius[0], new Scalar(255, 0, 0), 4);
 
-
 //            if (secondHue != 0) {
 //                Imgproc.findContours(processedImage2, contours1, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
 //                double maxArea2 = 100;
@@ -339,17 +331,13 @@ public class VideoProcessing extends JFrame {
 //                        Imgproc.minEnclosingCircle(c2f, center1, radius2);
 //                    }
 //                }
-//
 //                MainWindow.moveGREEN(center1.x,center1.y);
 //                secondHuePoints[iterator] = center1;
 //                System.out.println("GREEN SECOND HUE: " +center1);
-//
 //                //Draw circle
 //                Imgproc.circle(frame, center1, (int) radius2[0], new Scalar(0, 255, 0), 3);
 //                center1=null;
-//
 //                System.out.println(center1);
-//
 //            }
 
 //			//Close Hue Contures
@@ -364,13 +352,10 @@ public class VideoProcessing extends JFrame {
 //
 //								firstHuePoints = null;
 //								fCenter = null;
-//
 //							}
-//
 //						}
 //					}
 //				}
-//
 //			}
 
             //Close Contours rework
@@ -422,8 +407,6 @@ public class VideoProcessing extends JFrame {
             // writeImage(frame, "unprocessedImage.png");
             // writeImage(processedImage, "processedImage.png");
         } // END for loop
-        System.out.println(".(" + i + ")");
-
         cap.release();
     }
 
@@ -457,8 +440,8 @@ public class VideoProcessing extends JFrame {
         return bufferedImage;
     }
 
+    //Initialise ConfirmButton
     public void initButton() {
-
         confirmButton = new JButton();
         confirmButton.setPreferredSize(new Dimension(90,30));
         confirmButton.setBackground(Color.RED);
@@ -467,6 +450,7 @@ public class VideoProcessing extends JFrame {
         confirmButton.setText("Confirm");
     }
 
+    //saving hue values when confirming
     public void actionConfirm() {
         if (firstHue == 0) {
             firstHue = hLow;
@@ -518,6 +502,7 @@ public class VideoProcessing extends JFrame {
         secondHue=0;
     }
 
+    //Initialise Hue Slider
     public JSlider initHueSlider(JPanel panel) {
         int min = 1;
         int max = 160; //war mal 255
@@ -526,7 +511,6 @@ public class VideoProcessing extends JFrame {
         //Erstellung Slider mit Position, Min, Max, Aktuell
         JSlider slider = new JSlider(JSlider.VERTICAL, min, max, init);
         Dimension d = slider.getPreferredSize();
-
         slider.setPreferredSize(new Dimension(d.width + 100, d.height + 100));
         slider.setMajorTickSpacing(50);
         slider.setMinorTickSpacing(25);
@@ -541,6 +525,7 @@ public class VideoProcessing extends JFrame {
         return slider;
     }
 
+    //Initialise Saturation Slider
     public JSlider initSaturationSliderLow(JPanel panel) {
         int min = 1;
         int max = 255;

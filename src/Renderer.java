@@ -114,7 +114,6 @@ public class Renderer extends GLCanvas implements GLEventListener {
         // (see class definition of the interaction handler)
         interactionHandler = new InteractionHandler(entities, clicked, pmvMatrix);
         this.addMouseListener(interactionHandler);
-
     }
 
 
@@ -206,14 +205,12 @@ public class Renderer extends GLCanvas implements GLEventListener {
 
         // Position of one light for all shapes
         float[] lightPos = {0f, 3f, 0f};
-
         pmvMatrix.glPushMatrix();
 
 
 
         // displays scene
         omegaLoader.omegaDisplay();
-
         pmvMatrix.glPopMatrix();
     }
 
@@ -252,15 +249,12 @@ public class Renderer extends GLCanvas implements GLEventListener {
         for(int i=0; i<entities.length; i++){
             entities[i].getInitObject().getShaderProgram().deleteShaderProgram();
         }
-
         // deactivate VAO and VBO
         gl.glBindVertexArray(0);
         gl.glDisableVertexAttribArray(0);
         gl.glDisableVertexAttribArray(1);
-
         gl.glDisable(GL.GL_CULL_FACE);
         gl.glDisable(GL.GL_DEPTH_TEST);
-
         System.exit(0);
     }
 }

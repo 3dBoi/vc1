@@ -75,6 +75,7 @@ public class MainWindow extends JFrame {
     }
 
     public MainWindow() {
+        //Cursor tracking
         jLabelRED.setOpaque(true);
         jLabelRED.setBackground(new Color(255,0,0));
         jLabelRED.setBounds(0,0,15,15);
@@ -87,9 +88,6 @@ public class MainWindow extends JFrame {
         jLabelGREEN.setBackground(Color.GREEN);
         jLabelGREEN.setBounds(0,30,15,15);
 
-
-
-
         // Setup an OpenGL context for the Canvas
         // Setup OpenGL to use the programmable pipeline
         // Setting to OpenGL 3
@@ -101,39 +99,20 @@ public class MainWindow extends JFrame {
         // Create the OpenGL rendering canvas
         GLCanvas canvas = new Renderer(CANVAS_WIDTH, CANVAS_HEIGHT, capabilities);
         canvas.setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
-
-        //redoing lost code
-
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
-
-
         layeredPane.add(jLabelRED);
         layeredPane.add(jLabelGREEN);
         layeredPane.add(jLabelBLUE);
-
         layeredPane.add(canvas);
-
-
-
-
-        // Create an animator that drives the canvas display() at the specified
-        // frame rate.
-        final FPSAnimator animator = new FPSAnimator(canvas, FPS, true);
-
-        // Create the top-level container frame
-        //this.getContentPane().setSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
-//        this.getContentPane().setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
-//        this.getContentPane().setBounds(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
-//        this.getContentPane().add(layeredPane);
-//        this.getContentPane().setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
-
         jTabbedPane.add("Comutergrafik", layeredPane);
-
         add(jTabbedPane);
         setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
         setResizable(false);
 
+        // Create an animator that drives the canvas display() at the specified
+        // frame rate.
+        final FPSAnimator animator = new FPSAnimator(canvas, FPS, true);
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -156,7 +135,6 @@ public class MainWindow extends JFrame {
         this.pack();
         this.setVisible(true);
         animator.start(); // start the animation loop	// TODO Auto-generated constructor stub
-
         // OpenGL: request focus for canvas
         canvas.requestFocusInWindow();
     }
@@ -195,7 +173,6 @@ public class MainWindow extends JFrame {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
         //System.loadLibrary( "opencv_videoio_ffmpeg440_64" );
         new VideoProcessing();
-        //testhalo
     }
 
 }

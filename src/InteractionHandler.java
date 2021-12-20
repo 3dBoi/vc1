@@ -37,20 +37,17 @@ public class InteractionHandler implements MouseListener{
     private long elapseNanos6;
     private long elapseNanos7;
 
-
     PMVMatrix pmvMatrix;
     Entity[] entities;
     boolean clicked;
     boolean fertig = false;
     float[] verticies;
-
     Audio audio = new Audio();
 
     /**
      * Standard constructor for creation of the interaction handler.
      */
     public InteractionHandler(Entity[] entities, boolean clicked, PMVMatrix pmvMatrix) {
-
         this.entities = entities;
         this.clicked = clicked;
         this.pmvMatrix = pmvMatrix;
@@ -83,21 +80,16 @@ public class InteractionHandler implements MouseListener{
      */
     public void mouseClicked(MouseEvent e) {
 
-
         float mouseX = e.getX();
         float mouseY = e.getY();
 
         int[] viewport = {0, 0, 1400, 1050};
         float winX, winY;
         float[] pos1 = new float[3];// posX, posY, posZ;
-
         Ray ray = new Ray();
-
         float[] pos2 = new float[3];
-
         winX = mouseX;
         winY = viewport[3] - mouseY;
-
 
         // Casts Ray at mouseposition into the scene
         pmvMatrix.gluUnProjectRay(winX, winY, 0.0f, 1.0f, viewport, 0, ray);
@@ -109,7 +101,6 @@ public class InteractionHandler implements MouseListener{
 
         this.verticies = new float[]{pos1[0], pos1[1], pos1[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
                 pos2[0], pos2[1], pos2[2], 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
-
         float raylength = 99999;
         int i = 0;
 
@@ -184,128 +175,81 @@ public class InteractionHandler implements MouseListener{
             entities[28].getCollision().resetCollision();
         }
 
-
         // play Animation of selected obj
         switch (i){
 
             // BigDrum
             case 1:
-
                 audio.playAudio("BassDrum.wav");
-
                 entities[0].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[1].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[2].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[3].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[4].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[5].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
 
             // Crash Symbal
             case 2:
-
                 audio.playAudio("Crash.wav");
-
                 entities[7].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
 
             // SmallDrum
             case 3:
-
                 audio.playAudio("Snare.wav");
-
                 entities[9].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[10].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[11].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[12].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
 
             // SmollDrum
             case 4:
-
                 audio.playAudio("TomTom.wav");
-
                 entities[14].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[15].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[16].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[17].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
 
             // MidDrum
             case 5:
-
                 audio.playAudio("StandTom.wav");
-
                 entities[19].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[20].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[21].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[22].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
 
             // Ride Symbal
             case 6:
-
                 audio.playAudio("Ride.wav");
-
                 entities[24].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
 
             // Hi-Hat
             case 7:
-
                 audio.playAudio("Hi-Hat.wav");
-
                 entities[26].getAnimationHandler().setAnimationTrigger(true);
-
                 entities[27].getAnimationHandler().setAnimationTrigger(true);
-
                 break;
             default:
                 break;
         }
-
         i=0;
-
-
         clicked = true;
         fertig = true;
     }
 
     public void imageProcessResult(float x, float y) {
-
-
         int[] viewport = {0, 0, 1400, 1050};
         float winX, winY;
         float[] pos1 = new float[3];// posX, posY, posZ;
-
         Ray ray = new Ray();
-
         float[] pos2 = new float[3];
-
         winX = x;
         winY = viewport[3] - y;
-
-
         pmvMatrix.gluUnProjectRay(winX, winY, 0.0f, 1.0f, viewport, 0, ray);
 
         pos1 = ray.orig;
@@ -389,12 +333,9 @@ public class InteractionHandler implements MouseListener{
             entities[28].getCollision().resetCollision();
         }
 
-
         switch (i){
-
             // BigDrum
             case 1:
-
                 if(elapseNanos1+ 1500000000 < System.nanoTime()){
 
                     audio.playAudio("BassDrum.wav");
@@ -412,112 +353,68 @@ public class InteractionHandler implements MouseListener{
                     entities[5].getAnimationHandler().setAnimationTrigger(true);
 
                     elapseNanos1 = System.nanoTime();}
-
                 break;
             // Crash Symbal
             case 2:
-
                 if(elapseNanos2+ 1500000000 < System.nanoTime()){
-
                     audio.playAudio("Crash.wav");
-
                     entities[7].getAnimationHandler().setAnimationTrigger(true);
-
                     elapseNanos2 = System.nanoTime();}
-
                 break;
 
             // SmallDrum
             case 3:
-
                 if(elapseNanos3+ 1500000000 < System.nanoTime()){
-
                     audio.playAudio("Snare.wav");
-
                     entities[9].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[10].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[11].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[12].getAnimationHandler().setAnimationTrigger(true);
-
                     elapseNanos3 = System.nanoTime();}
-
                 break;
 
             // SmollDrum
             case 4:
-
                 if(elapseNanos4+ 1500000000 < System.nanoTime()){
-
                     audio.playAudio("TomTom.wav");
-
                     entities[14].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[15].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[16].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[17].getAnimationHandler().setAnimationTrigger(true);
-
                     elapseNanos4 = System.nanoTime();}
-
                 break;
 
             // MidDrum
             case 5:
-
                 if(elapseNanos5+ 1500000000 < System.nanoTime()){
-
                     audio.playAudio("StandTom.wav");
-
                     entities[19].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[20].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[21].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[22].getAnimationHandler().setAnimationTrigger(true);
-
                     elapseNanos5 = System.nanoTime();}
-
                 break;
 
             // Ride Symbal
             case 6:
-
                 if(elapseNanos6+ 1500000000 < System.nanoTime()){
-
                     audio.playAudio("Ride.wav");
-
                     entities[24].getAnimationHandler().setAnimationTrigger(true);
-
                     elapseNanos6 = System.nanoTime();}
-
                 break;
 
             // Hi-Hat
             case 7:
-
                 if(elapseNanos7+ 1500000000 < System.nanoTime()){
-
                     audio.playAudio("Hi-Hat.wav");
-
                     entities[26].getAnimationHandler().setAnimationTrigger(true);
-
                     entities[27].getAnimationHandler().setAnimationTrigger(true);
-
                     elapseNanos7 = System.nanoTime();}
-
                 break;
             default:
                 break;
         }
-
         i=0;
-
-
         clicked = true;
         fertig = true;
     }

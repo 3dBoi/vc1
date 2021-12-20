@@ -22,7 +22,6 @@ public class DisplayObject {
         }
         // BEGIN: Draw the second object (object 1)
         gl.glUseProgram(shaderProgram.getShaderProgramID());
-
         // Transfer the PVM-Matrix (model-view and projection matrix) to the vertex shader
         gl.glUniformMatrix4fv(0, 1, false, pmvMatrix.glGetPMatrixf());
         gl.glUniformMatrix4fv(1, 1, false, pmvMatrix.glGetMvMatrixf());
@@ -38,9 +37,7 @@ public class DisplayObject {
         gl.glUniform4fv(10, 1, material.getDiffuse(), 0);
         gl.glUniform4fv(11, 1, material.getSpecular(), 0);
         gl.glUniform1f(12, material.getShininess());
-
         gl.glBindVertexArray(vaoName[bufferIndex]);
-
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.length);
     }
 
@@ -73,9 +70,7 @@ public class DisplayObject {
         gl.glUniform4fv(10, 1, material.getDiffuse(), 0);
         gl.glUniform4fv(11, 1, material.getSpecular(), 0);
         gl.glUniform1f(12, material.getShininess());
-
         gl.glBindVertexArray(vaoName[bufferIndex]);
-
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.length);
     }
 
@@ -88,7 +83,6 @@ public class DisplayObject {
         }
         // BEGIN: Draw the second object (object 1)
         gl.glUseProgram(shaderProgram.getShaderProgramID());
-
         // Transfer the PVM-Matrix (model-view and projection matrix) to the vertex shader
         gl.glUniformMatrix4fv(0, 1, false, pmvMatrix.glGetPMatrixf());
         gl.glUniformMatrix4fv(1, 1, false, pmvMatrix.glGetMvMatrixf());
@@ -104,9 +98,7 @@ public class DisplayObject {
         gl.glUniform4fv(10, 1, material.getDiffuse(), 0);
         gl.glUniform4fv(11, 1, material.getSpecular(), 0);
         gl.glUniform1f(12, material.getShininess());
-
         gl.glBindVertexArray(vaoName[bufferIndex]);
-
         gl.glPointSize(10);
         gl.glDrawArrays(GL_LINES, 0, vertices.length);
     }

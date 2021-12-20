@@ -34,7 +34,6 @@ public class Collision {
         rayvy = ray.dir[1];
         rayvz = ray.dir[2];
 
-
         for(int counter=0; counter< verticies.length; counter++){
             // Ebene
             x1 = verticies[counter];
@@ -124,7 +123,6 @@ public class Collision {
         // Algorithm to check if Point is inside facetriangle
         // calculates new triangles with 2 points of old triangle and point in question
         // checks if angles of triangles adds up to 1
-
 
         // vectors
         float abx = x2-x1;
