@@ -66,6 +66,7 @@ public class VideoProcessing extends JFrame {
     private int hHigh = 180; //Max 180
     private int sHigh = 255; //Max 255
     private int vHigh = 255; //Max 255
+    private double resize = 2.1875;
 
     /**
      * Create object and perform the processing by calling private member functions.
@@ -302,7 +303,7 @@ public class VideoProcessing extends JFrame {
                     }
                 }
 
-                MainWindow.moveGREEN(center1.x,center1.y);
+                MainWindow.moveGREEN(center1.x * resize,center1.y* resize);
                 secondHuePoints[iterator] = center1;
                 System.out.println("GREEN SECOND HUE: " +center1);
 
@@ -325,7 +326,7 @@ public class VideoProcessing extends JFrame {
 
             //move cursor
 
-            MainWindow.moveBLUE(center.x,center.y);
+            MainWindow.moveBLUE(center.x*resize,center.y*resize);
 
             //draw circle
             firstHuePoints[iterator] = center;
@@ -392,11 +393,13 @@ public class VideoProcessing extends JFrame {
                                 Math.abs(firstHuePoints[arr].y-secondHuePoints[arr2].y)<=60){
 
                             assert center != null;
-                            MainWindow.moveRED(center.x,center.y);
+//                            MainWindow.moveRED(center.x*resize,center.y*resize);
+                            MainWindow.moveRED((firstHuePoints[arr].x+secondHuePoints[arr2].x)/2*resize,(firstHuePoints[arr].y+secondHuePoints[arr2].y)/2*resize);
+
                             Imgproc.circle(frame, firstHuePoints[arr], (int) radius[0], new Scalar(0, 0, 255), 2);
 
-                            Renderer.interactionHandler.imageProcessResult((float)center.x,(float) center.y);
-
+//                            Renderer.interactionHandler.imageProcessResult((float)(center.x*resize),(float) (center.y*resize));
+                            Renderer.interactionHandler.imageProcessResult((float)((firstHuePoints[arr].x+secondHuePoints[arr2].x)/2*resize),(float) ((firstHuePoints[arr].y+secondHuePoints[arr2].y)/2*resize));
                             firstHuePoints[arr]=null;
                             secondHuePoints[arr2]=null;
                             center=null;
