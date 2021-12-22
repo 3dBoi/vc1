@@ -4,7 +4,6 @@ import de.hshl.obj.loader.materials.RGB;
 import de.hshl.obj.wavefront.mtl.MTL;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -73,10 +72,12 @@ public class Material {
         this.shininess = shininess;
     }
 
-    //Load Material from mtl file
+    /**
+     * Load Material from mtl file
+     */
     public void loadMaterial(String path, float shininess){
 
-        Path mtlFile = Paths.get("./resources/"+path);
+        Path mtlFile = Paths.get("resources/" +path);
 
         try{
             MTLLoader mtlLoader = new MTLLoader();

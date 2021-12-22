@@ -8,8 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -203,6 +202,8 @@ public class VideoProcessing extends JFrame {
 //
 //        setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        setVisible(true);
+
+
     }
 
     /**
@@ -221,6 +222,7 @@ public class VideoProcessing extends JFrame {
         //String filePathName = getFilePathName();
         //VideoCapture cap = new VideoCapture(filePathName);
         // END: Prepare streaming from video file
+
 
         //Initialisierung Matrizen
         Mat frame = new Mat();

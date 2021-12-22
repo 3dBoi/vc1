@@ -6,11 +6,18 @@ public class AnimationHandler {
     float tweenF = 0.0f;
     boolean direction = true;
 
+    /**
+     * Deals with Animations for Object
+     *
+     */
+
     public AnimationHandler(){
 
     }
 
-    // Tween gets increased until it reaches 1 then it goes back to 0
+    /**
+     * Tween gets increased until it reaches 1 then it goes back to 0
+     */
     public float animate(){
 
         if(tweenF<1&&direction){
@@ -23,7 +30,9 @@ public class AnimationHandler {
         return tweenF;
     }
 
-    // builds rotationquaternions from Vertexquaternion and interpolates for every vertex
+    /**
+     * builds rotationquaternions from Vertexquaternion and interpolates for every vertex
+     */
     public float[] rotate(String modelPath, String keyFramePath, float[] origin, float tween){
 
         ModelLoader modelLoader = new ModelLoader();
@@ -70,7 +79,9 @@ public class AnimationHandler {
 
     }
 
-    // calc new normals for interpolated Vertex
+    /**
+     * calc new normals for interpolated Vertex
+     */
     public float[] calcNormals(float[] verticies){
 
         float[] normals = new float[verticies.length];
@@ -147,7 +158,9 @@ public class AnimationHandler {
         return normals;
     }
 
-    // combines new verticies with normals and texturecooridnates to make them shadercompatible
+    /**
+     * combines new verticies with normals and texturecooridnates to make them shadercompatible
+     */
     public float[] combineVerticies(float[] a, float[] b, float[] c){
 
         float[] combined = new float[a.length+b.length+c.length];

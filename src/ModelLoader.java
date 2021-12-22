@@ -1,14 +1,10 @@
 import de.hshl.obj.loader.OBJLoader;
 import de.hshl.obj.loader.Resource;
 import de.hshl.obj.loader.objects.Mesh;
-import de.hshl.obj.loader.objects.Surface;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-
-import com.jogamp.opengl.*;
 
 public class ModelLoader {
 
@@ -24,8 +20,11 @@ public class ModelLoader {
     public ModelLoader(){
     }
 
+    /**
+     * load verticies of object from obj file
+     */
     public float[] getVerticies(String path){
-        Path objFile = Paths.get("./resources/"+path);
+        Path objFile = Paths.get("resources/" +path);
 
         try{
             objLoader.setLoadNormals(true);
@@ -40,8 +39,8 @@ public class ModelLoader {
 
     public float[] getCombinedVerticies(String path, String keyframe){
 
-        Path objFile = Paths.get("./resources/"+path);
-        Path keyframeObjFile = Paths.get("./resources/"+keyframe);
+        Path objFile = Paths.get("resources/" +path);
+        Path keyframeObjFile = Paths.get("resources/" +keyframe);
 
         try{
             objLoader.setLoadNormals(true);
@@ -89,8 +88,8 @@ public class ModelLoader {
 
     public float[] getHitboxVerticies(String path, String keyframe){
 
-        Path objFile = Paths.get("./resources/"+path);
-        Path keyframeObjFile = Paths.get("./resources/"+keyframe);
+        Path objFile = Paths.get("resources/" +path);
+        Path keyframeObjFile = Paths.get("resources/" +keyframe);
 
         try{
             //Load Vertices of Keyframe
@@ -135,9 +134,12 @@ public class ModelLoader {
         return combinedVertices;
     }
 
+    /**
+     * Load Vertices of Hitbox from OBJ File
+     */
     public float[] getHitboxVerticies(String path){
 
-        Path objFile = Paths.get("./resources/"+path);
+        Path objFile = Paths.get("resources/" +path);
 
         try{
             mesh = objLoader.loadMesh(Resource.file(objFile));
@@ -149,10 +151,12 @@ public class ModelLoader {
         return verticies;
     }
 
-    // loads only texture coordinates in an array
+    /**
+     * loads only texture coordinates in an array
+     */
     public float[] getTexCoordinates(String path){
 
-        Path objFile = Paths.get("./resources/"+path);
+        Path objFile = Paths.get("resources/" +path);
 
         try{
             objLoader.setLoadTextureCoordinates(true);

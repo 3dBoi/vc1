@@ -27,9 +27,8 @@
  */
 
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.stream.Collectors;
 
 import com.jogamp.opengl.GL2ES2;
 
@@ -160,12 +159,17 @@ public class ShaderProgram {
      * @return contents of the (text) file
      *
      */
+
     private String loadFileToString(String fileName) {
         String fileContent = "";
+
 
         try
         {
             StringBuffer buffer = new StringBuffer();
+
+//            InputStream initialStream = this.getClass().getResourceAsStream("/TestFileFolder/TRANSFER.xls");
+
             FileReader charStream = new FileReader(fileName);
 
             int bufferItem;

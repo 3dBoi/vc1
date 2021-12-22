@@ -9,6 +9,9 @@ import static com.jogamp.opengl.GL.*;
 
 public class DisplayObject {
 
+    /**
+     * Deals with displaying the Object in the scene
+     */
     public DisplayObject(){
 
     }
@@ -41,7 +44,10 @@ public class DisplayObject {
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.length);
     }
 
-    // uses Animationshader
+    /**
+     * uses Animation Shader
+     *
+     */
     public void displayObjectAnimation(GL3 gl, ShaderProgram shaderProgram, float[] vertices, int[] vaoName, Material material, PMVMatrix pmvMatrix, LightSource light, int bufferIndex, Texture texture, float tweenF){
 
         // Bind Texture to correct object

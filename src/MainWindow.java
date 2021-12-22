@@ -30,6 +30,7 @@
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.*;
 
@@ -137,6 +138,7 @@ public class MainWindow extends JFrame {
         animator.start(); // start the animation loop	// TODO Auto-generated constructor stub
         // OpenGL: request focus for canvas
         canvas.requestFocusInWindow();
+
     }
 
 

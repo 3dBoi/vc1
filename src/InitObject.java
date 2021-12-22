@@ -22,6 +22,10 @@ public class InitObject {
     int[] vboName;
     int[] vaoName;
 
+    /**
+     * Initilises Objects
+     */
+
     public InitObject(){
     }
 
@@ -29,7 +33,7 @@ public class InitObject {
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
         this.shaderProgram = new ShaderProgram(gl);
-        shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
+        shaderProgram.loadShaderAndCreateProgram("resources\\",
                 vertexShader, fragmentShader);
 
         //load Model from OBJ
@@ -63,7 +67,7 @@ public class InitObject {
         // Load and prepare texture
         if(texturePath!=null){
             try {
-                File textureFile = new File(".\\resources\\"+texturePath);
+                File textureFile = new File("resources\\"+texturePath);
                 texture = TextureIO.newTexture(textureFile, true);
 
                 texture.setTexParameteri(gl, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
@@ -74,7 +78,7 @@ public class InitObject {
                 e.printStackTrace();
             }
             if (texture != null) {
-                   System.out.println("Texture loaded successfully from: " + ".\\resources\\"+texturePath);
+                   System.out.println("Texture loaded successfully from: " + "resources\\"+texturePath);
             }
             else
                 System.err.println("Error loading textue.");
@@ -94,7 +98,7 @@ public class InitObject {
 
         gl.glBindVertexArray(vaoName[bufferIndex]);
         this.shaderProgram = new ShaderProgram(gl);
-        shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
+        shaderProgram.loadShaderAndCreateProgram("resources\\",
                 vertexShader, fragmentShader);
 
         //load Model from OBJ
@@ -136,7 +140,7 @@ public class InitObject {
         // Load and prepare texture
         if(texturePath!=null){
             try {
-                File textureFile = new File(".\\resources\\"+texturePath);
+                File textureFile = new File("resources\\"+texturePath);
                 texture = TextureIO.newTexture(textureFile, true);
 
                 texture.setTexParameteri(gl, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
@@ -147,7 +151,7 @@ public class InitObject {
                 e.printStackTrace();
             }
             if (texture != null) {
-                System.out.println("Texture loaded successfully from: " + ".\\resources\\"+texturePath);
+                System.out.println("Texture loaded successfully from: " + "resources\\"+texturePath);
             }
             else
                 System.err.println("Error loading textue.");
@@ -247,7 +251,7 @@ public class InitObject {
     public void initHitbox(GL3 gl,String[] modelPath, String vertexShader, String fragmentShader, int[] vaoName, int bufferIndex){
         gl.glBindVertexArray(vaoName[bufferIndex]);
         this.shaderProgram = new ShaderProgram(gl);
-        shaderProgram.loadShaderAndCreateProgram(".\\resources\\",
+        shaderProgram.loadShaderAndCreateProgram("resources\\",
                 vertexShader, fragmentShader);
 
         //load Model from OBJ

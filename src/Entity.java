@@ -44,6 +44,9 @@ public class Entity {
     Collision collision;
 
 
+    /**
+     * Organizes the Objects
+     */
     public Entity(GL3 gl, String[] modelPath, String texturePath, String materialPath, int[] vaoName, int[] vboName, int bufferIndex, PMVMatrix pmvMatrix, LightSource light){
 
         this.gl = gl;
@@ -62,7 +65,10 @@ public class Entity {
         this.light = light;
     }
 
-    // Initialization for rotatable Object (not used)
+    /**
+     * Initialisation for rotatable Object (not used)
+     *
+     */
     public Entity(GL3 gl, String[] modelPath, String texturePath, String materialPath, int[] vaoName, int[] vboName, int bufferIndex, PMVMatrix pmvMatrix, LightSource light, float[] origin){
 
         this.gl = gl;
@@ -99,7 +105,10 @@ public class Entity {
         this.collision = new Collision();
     }
 
-    // Standard Initialization without Keyframe
+    /**
+     * Standard Initialization without Keyframe
+     *
+     */
     public void initEntity(){
 
         if(hitbox){
@@ -117,18 +126,27 @@ public class Entity {
         }
     }
 
-    // Standard Display without Animation
+    /**
+     * Standard Display without Animation
+     *
+     */
     public void displayEntity(){
         if(!hitbox)
         displayObject.displayObject(gl, initObject.getShaderProgram(), initObject.getVertices(), vaoName, initObject.getMaterial(), pmvMatrix, light, index, initObject.getTexture());
     }
 
-    // Update Entity for Animation (not used)
+    /**
+     * Update Entity for Animation (not used)
+     *
+     */
     public void updateEntity(int keyframeIndex){
         initObject.updateKeyframe(gl, modelPath, vboName, index, keyframeIndex);
     }
 
-    // Display actual Animation
+    /**
+     * Display actual Animation
+     *
+     */
     public void playAnimation(){
 
 
@@ -166,7 +184,10 @@ public class Entity {
         }
     }
 
-    // Play rotationanimation (not used)
+    /**
+     * Play rotationanimation (not used)
+     *
+     */
     public void playRotation(){
 
         if(animationHandler.getDirection()){

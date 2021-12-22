@@ -7,10 +7,20 @@ public class Collision {
     float raylength = 99999;
     boolean collision = false;
 
+    /**
+     * Deals with Collision of Object
+     *
+     */
     public Collision(){
 
     }
 
+
+    /**
+     * hinreichende Bedingung : Schnittpunkt Ebene Face und Ray
+     * notwendige Bedingung: Schnittpunkt auf Face (in Boundingbox)
+     *
+     */
     public boolean rayCollision(Ray ray, float[] verticies){
 
         // hinreichende Bedingung : Schnittpunkt Ebene Face und Ray
@@ -118,11 +128,13 @@ public class Collision {
         return collision;
     }
 
+    /**
+     * Algorithm to check if Point is inside facetriangle
+     * calculates new triangles with 2 points of old triangle and point in question
+     * checks if angles of triangles adds up to 1
+     *
+     */
     public boolean isInside(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4){
-
-        // Algorithm to check if Point is inside facetriangle
-        // calculates new triangles with 2 points of old triangle and point in question
-        // checks if angles of triangles adds up to 1
 
         // vectors
         float abx = x2-x1;

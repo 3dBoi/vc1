@@ -1,4 +1,3 @@
-import javax.print.attribute.standard.Media;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -12,11 +11,14 @@ public class Audio {
 
     }
 
-    // plays Audio from selected path
+    /**
+     * plays Audio from selected path
+     *
+     */
     public void playAudio(String path){
 
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./resources/Audio/"+path).getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("resources/Audio/" +path).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
