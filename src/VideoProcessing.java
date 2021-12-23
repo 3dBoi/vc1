@@ -444,7 +444,9 @@ public class VideoProcessing extends JFrame {
         return bufferedImage;
     }
 
-    //Initialise ConfirmButton
+    /**
+     * Initialise ConfirmButton
+     */
     public void initButton() {
         confirmButton = new JButton();
         confirmButton.setPreferredSize(new Dimension(90,30));
@@ -454,7 +456,9 @@ public class VideoProcessing extends JFrame {
         confirmButton.setText("Confirm");
     }
 
-    //saving hue values when confirming
+    /**
+     * saving hue values when confirming
+     */
     public void actionConfirm() {
         if (firstHue == 0) {
             firstHue = hLow;
@@ -473,7 +477,9 @@ public class VideoProcessing extends JFrame {
         }
     }
 
-    //Initialise Button
+    /**
+     * Initialise Button
+     */
     public void initFlipButton() {
         flipButton = new JButton();
         flipButton.setPreferredSize(new Dimension(90,30));
@@ -482,7 +488,9 @@ public class VideoProcessing extends JFrame {
         flipButton.setText("Flip");
     }
 
-    //saving hue values when confirming
+    /**
+     * saving hue values when confirming
+     */
     public void actionConfirm2() {
         if (flip) {
             flip = false;
@@ -491,7 +499,9 @@ public class VideoProcessing extends JFrame {
         }
     }
 
-    //Initialise Button
+    /**
+     * Initialise Button
+     */
     public void initResetButton() {
         resetButton = new JButton();
         resetButton.setPreferredSize(new Dimension(90,30));
@@ -500,13 +510,17 @@ public class VideoProcessing extends JFrame {
         resetButton.setText("Reset");
     }
 
-    //saving hue values when confirming
+    /**
+     *saving hue values when confirming
+     */
     public void actionConfirm3() {
         firstHue=0;
         secondHue=0;
     }
 
-    //Initialise Hue Slider
+    /**
+     *Initialise Hue Slider
+     */
     public JSlider initHueSlider(JPanel panel) {
         int min = 1;
         int max = 160; //war mal 255
@@ -529,7 +543,9 @@ public class VideoProcessing extends JFrame {
         return slider;
     }
 
-    //Initialise Saturation Slider
+    /**
+     *Initialise Saturation Slider
+     */
     public JSlider initSaturationSliderLow(JPanel panel) {
         int min = 1;
         int max = 255;
